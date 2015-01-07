@@ -251,9 +251,9 @@
 		 * 
 		 * @param {Object}             crumbs                  The crumbs that make the cookie.
 		 * @param {String}             crumbs.name             The name of the cookie.
-		 * @param {String}             [crumbs.value]          The value of the cookie. The provided value will undergo a basic `toString()` transformation, complex objects should be dealt with beforehand. If set to `undefined` or `null`; the cookie will be deleted.
-		 * @param {Date|String|Number} [crumbs.expires]        The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. If providing a timestamp with value `Infinity`, the cookie will be set to expire at `31 Dec 9999 23:59:59 GMT`.
-		 * @param {Number}             [crumbs.age]            The duration (in minutes) of which the cookie can live. When defined, any provided expiry date is ignored. If set to `Infinity` the cookie will be set to expire at `31 Dec 9999 23:59:59 GMT`.
+		 * @param {String}             [crumbs.value]          The value of the cookie. The provided value will undergo a basic `toString()` transformation, complex objects should be dealt with beforehand. If set to `undefined` or `null`; the cookie will be removed by forcing it to immediately expire, ignoring any `age` or `expires` crumb that may be provided.
+		 * @param {Date|String|Number} [crumbs.expires]        The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. If provided a timestamp equivalent to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
+		 * @param {Number}             [crumbs.age]            The duration (in minutes) of which the cookie can live. When defined, any provided expiry date is ignored. If set to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
 		 * @param {String}             [crumbs.path = '/']     The path of which the cookie will be sent.
 		 * @param {String}             [crumbs.domain]         The (sub)domain of which the cookie will be sent. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.`, it will set the domain to the root domain of the document, consequently making it available on all subdomains. Defaults to the domain of the document (i.e. the value of `document.cookie`).
 		 * @param {Boolean}            [crumbs.secure = false] Indicates whether the cookie should only be passed over HTTPS connections.
@@ -393,7 +393,7 @@
 		},
 
 		/**
-		 * Removes a cookie.
+		 * Removes a cookie by forcing it to immediately expire.
 		 * 
 		 * Example usage:
 		 * 
@@ -432,7 +432,39 @@
 			{
 				name : crumbs.name, path : crumbs.path, domain : crumbs.domain, secure : !!crumbs.secure
 			});
-		}
+		},
+
+		// ------------------------------------------------
+
+		/**
+		 * This will remove Crumble from the global namespace, restoring what was there before (if anything). This is for browser usage only!
+		 * 
+		 * Example usage:
+		 * 
+		 * ```
+		 * Namespace.Crumble = Crumble.noConflict();
+		 * ```
+		 * 
+		 * @method noConflict
+		 * 
+		 * @public
+		 * 
+		 * @static
+		 * 
+		 * @return {Object} The Crumble object to be assigned to any variable you wish.
+		 */
+		noConflict : (function (context)
+		{
+			var _Crumble = context.Crumble;
+			
+			return function ()
+			{
+				context.Crumble = _Crumble;
+				
+				return this;
+			};
+
+		}) (this)
 	};
 
 	// ----------------------------------------------------

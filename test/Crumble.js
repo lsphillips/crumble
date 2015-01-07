@@ -559,4 +559,28 @@ describe('Crumble', function ()
 			global.document.cookie.should.equal('name=;path=/;max-age=-60000;expires=Wed, 03 Dec 1980 23:59:00 GMT');
 		});
 	});
+
+	// ----------------------------------------------------
+	
+	describe('Object Crumble.noConflict()', function ()
+	{
+		it('returns the Crumble object', function ()
+		{
+			var crumble = Crumble;
+		 // ----------------------
+
+			Crumble.noConflict().should.equal(crumble);
+
+			// Restore.
+			Crumble = crumble;
+		});
+
+		it('removes the Crumble object from the current context and restores what was there before', function ()
+		{
+			Crumble.noConflict();
+		 // ---------------------
+
+			should(Crumble).be.undefined;
+		});
+	});
 });
