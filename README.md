@@ -8,13 +8,13 @@ A simple utility that abstracts the legacy API that is `document.cookie`.
 
 Determines whether the client has cookies enabled.
 
-### `bool Crumble.has(string cookie)`
+### `bool Crumble.has(string name)`
 
 Determines if a cookie exists.
 
-### `string Crumble.get(string cookie)`
+### `string Crumble.get(string name)`
 
-Retrieves the value of a cookie. If the cookie does not exist `null` will be returned.
+Retrieves the value of a cookie. `null` will be returned if the cookie does not exist.
 
 ### `void Crumble.set(Object crumbs)`
 
@@ -23,7 +23,7 @@ Sets a cookie.
 The cookie crumbs to provide are:
 
 * `name` (string, required) - The name of the cookie.
-* `value` (string, optional) - The value of the cookie. The provided value will undergo a basic `toString()` transformation, complex objects should be dealt with beforehand. If set to `undefined` or `null` the cookie will be removed by forcing it to immediately expire, ignoring any `age` or `expires` crumb that may be provided.
+* `value` (string, optional) - The value of the cookie. If set to `undefined` or `null` the cookie will be removed by forcing it to immediately expire, ignoring any `age` or `expires` crumb that may be provided.
 * `expires` (Date|String|Number, optional) - The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. If provided a timestamp equivalent to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
 * `age` (Number, optional) - The duration (in minutes) of which the cookie can live. When defined, any provided expiry date is ignored. If set to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
 * `path` (string, optional) - The path of which the cookie will be sent. Defaults to `/`.
@@ -32,8 +32,7 @@ The cookie crumbs to provide are:
 
 Example usage:
 
-js
-```
+``` js
 Crumble.set(
 {
 	name : 'name',
@@ -92,7 +91,7 @@ To remove Crumble from the global namespace, you can use `Crumble.noConflict()`,
 Namespace.Crumble = Crumble.noConflict();
 ```
 
-Crumble is wrapped using the Universal Module Definition (UMD), so it works in both CommonJS and AMD environments. It's also available through the Node Package Manage (NPM), so you can install like so:
+Crumble is wrapped using the Universal Module Definition (UMD), so it also works in both CommonJS and AMD environments. It's also available through the Node Package Manage, so you can install like so:
 
 ``` sh
 npm install crumble

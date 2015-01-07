@@ -212,7 +212,7 @@
 		 * 
 		 * @static
 		 * 
-		 * @return {String} The value of the cookie. If the cookie doesn't exist `null` will be returned.
+		 * @return {String} The value of the cookie. `null` will be returned if the cookie doesn't exist.
 		 * 
 		 * @param {String} name The name of the cookie to fetch.
 		 */
@@ -251,7 +251,7 @@
 		 * 
 		 * @param {Object}             crumbs                  The crumbs that make the cookie.
 		 * @param {String}             crumbs.name             The name of the cookie.
-		 * @param {String}             [crumbs.value]          The value of the cookie. The provided value will undergo a basic `toString()` transformation, complex objects should be dealt with beforehand. If set to `undefined` or `null`; the cookie will be removed by forcing it to immediately expire, ignoring any `age` or `expires` crumb that may be provided.
+		 * @param {String}             [crumbs.value]          The value of the cookie. If set to `undefined` or `null`; the cookie will be removed by forcing it to immediately expire, ignoring any `age` or `expires` crumb that may be provided.
 		 * @param {Date|String|Number} [crumbs.expires]        The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. If provided a timestamp equivalent to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
 		 * @param {Number}             [crumbs.age]            The duration (in minutes) of which the cookie can live. When defined, any provided expiry date is ignored. If set to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
 		 * @param {String}             [crumbs.path = '/']     The path of which the cookie will be sent.
