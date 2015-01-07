@@ -149,7 +149,7 @@
 		 * 
 		 * @static
 		 * 
-		 * @return {boolean} `true` if cookies are enabled, otherwise `false`.
+		 * @return {Boolean} `true` if cookies are enabled, otherwise `false`.
 		 * 
 		 * @todo Should this be cached for the document, as some clients don't require a refresh to 
 		 */
@@ -194,7 +194,7 @@
 		 * 
 		 * @static
 		 * 
-		 * @return {boolean} `true` if the cookie exists, otherwise `false`.
+		 * @return {Boolean} `true` if the cookie exists, otherwise `false`.
 		 * 
 		 * @param {String} name The name of the cookie to test the presence of.
 		 */
@@ -437,7 +437,7 @@
 		// ------------------------------------------------
 
 		/**
-		 * This will remove Crumble from the global namespace, restoring what was there before (if anything). This is for browser usage only!
+		 * This will remove Crumble from the global namespace, restoring what was there before (if anything). This is for environments that are not using CommonJS or AMD.
 		 * 
 		 * Example usage:
 		 * 
@@ -466,9 +466,9 @@
 
 		}) (this)
 	};
-
+	
 	// ----------------------------------------------------
-
+	
 	return Crumble;
 
 }, this);

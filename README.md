@@ -14,7 +14,7 @@ Determines if a cookie exists.
 
 ### `string Crumble.get(string cookie)`
 
-Retrieves the value of a cookie.
+Retrieves the value of a cookie. If the cookie does not exist `null` will be returned.
 
 ### `void Crumble.set(Object crumbs)`
 
@@ -27,8 +27,8 @@ The cookie crumbs to provide are:
 * `expires` (Date|String|Number, optional) - The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. If provided a timestamp equivalent to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
 * `age` (Number, optional) - The duration (in minutes) of which the cookie can live. When defined, any provided expiry date is ignored. If set to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
 * `path` (string, optional) - The path of which the cookie will be sent. Defaults to `/`.
-* `domain` (string, optional) The (sub)domain of which the cookie will be sent. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.`, it will set the domain to the root domain of the document, consequently making it available on all subdomains. Defaults to the domain of the document (i.e. the value of `document.cookie`).
-* `secure` (string, optional) Indicates whether the cookie should only be passed over HTTPS connections. Defaults to `false`.
+* `domain` (string, optional) - The (sub)domain of which the cookie will be sent. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.`, it will set the domain to the root domain of the document, consequently making it available on all subdomains. Defaults to the domain of the document (i.e. the value of `document.cookie`).
+* `secure` (string, optional) - Indicates whether the cookie should only be passed over HTTPS connections. Defaults to `false`.
 
 Example usage:
 
@@ -56,13 +56,12 @@ The cookie crumbs you can provide are very similar to what you can provide to `C
 
 * `name` (string, required) - The name of the cookie.
 * `path` (string, optional) - The path of which the cookie will be sent. Defaults to `/`.
-* `domain` (string, optional) The (sub)domain of which the cookie will be sent. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.`, it will set the domain to the root domain of the document, consequently making it available on all subdomains. Defaults to the domain of the document (i.e. the value of `document.cookie`).
-* `secure` (string, optional) Indicates whether the cookie should only be passed over HTTPS connections. Defaults to `false`.
+* `domain` (string, optional) - The (sub)domain of which the cookie will be sent. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.`, it will set the domain to the root domain of the document, consequently making it available on all subdomains. Defaults to the domain of the document (i.e. the value of `document.cookie`).
+* `secure` (string, optional) - Indicates whether the cookie should only be passed over HTTPS connections. Defaults to `false`.
 
 Example usage:
 
-js
-```
+``` js
 Crumble.remove(
 {
 	name : 'name'
@@ -71,8 +70,7 @@ Crumble.remove(
 
 As the only way to remove a cookie is to set it to expire, the above is just a more expressive way of doing the following:
 
-js
-```
+``` js
 Crumble.set(
 {
 	name : 'name',
@@ -94,7 +92,7 @@ To remove Crumble from the global namespace, you can use `Crumble.noConflict()`,
 Namespace.Crumble = Crumble.noConflict();
 ```
 
-Crumble is wrapped using UMD, so it works in both CommonJS and AMD environments. It's also available through the Node Package Manager:
+Crumble is wrapped using the Universal Module Definition (UMD), so it works in both CommonJS and AMD environments. It's also available through the Node Package Manage (NPM), so you can install like so:
 
 ``` sh
 npm install crumble
