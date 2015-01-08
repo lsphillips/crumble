@@ -8,9 +8,7 @@
 	"author" :
 	{
 		"name" : "Luke Phillips",
-
 		"email" : "lukephil92@gmail.com",
-
 		"url" : "http://lsphillips.com"
 	},
 
@@ -58,7 +56,6 @@
 	"repository" :
 	{
 		"type" : "git",
-
 		"url" : "https://github.com/lsphillips/Crumble.git"
 	},
 
