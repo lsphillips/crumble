@@ -401,7 +401,7 @@
 		 * Crumble.remove({ name : 'name' });
 		 * ```
 		 * 
-		 * As the only way to remove a cookie is to set it to expire, the above is just a more expressive way of doing the following:
+		 * The above is just a more expressive way of doing the following:
 		 * 
 		 * ```
 		 * Crumble.set({ name : 'name', value : null });
@@ -417,9 +417,9 @@
 		 * 
 		 * @param {Object}  crumbs                  The crumbs of the cookie to remove.
 		 * @param {String}  crumbs.name             The name of the cookie.
-		 * @param {String}  [crumbs.path]           The path of which the cookie will be removed from. Defaults to the current path of the document.
+		 * @param {String}  [crumbs.path = '/']     The path of which the cookie will be removed from.
 		 * @param {String}  [crumbs.domain]         The (sub)domain of which the cookie will be removed from. The domain can only be a domain that the current document is in, however cookies can cross subdomains. Defaults to the domain of the document. If set to `.`, it will remove the cookie from the primary domain of the document and all of it's subdomains.
-		 * @param {Boolean} [crumbs.secure = false] Indicates whether the cookie should only be deleted over HTTPS connections.
+		 * @param {Boolean} [crumbs.secure = false] Indicates whether the cookie should only be removed over HTTPS connections.
 		 */
 		remove : function (crumbs)
 		{
