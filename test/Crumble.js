@@ -567,6 +567,7 @@ describe('Crumble', function ()
 		it('returns the Crumble object', function ()
 		{
 			var crumble = Crumble;
+		 // ----------------------
 
 			Crumble.noConflict().should.equal(crumble);
 
@@ -577,6 +578,7 @@ describe('Crumble', function ()
 		it('removes the Crumble object from the current context and restores what was there before', function ()
 		{
 			Crumble.noConflict();
+		 // ---------------------
 
 			should(Crumble).be.undefined;
 		});
