@@ -255,7 +255,7 @@
 		 * @param {Date|String|Number} [crumbs.expires]        The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. If provided a timestamp equivalent to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
 		 * @param {Number}             [crumbs.age]            The duration (in minutes) of which the cookie can live. When defined, any provided expiry date is ignored. If set to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
 		 * @param {String}             [crumbs.path = '/']     The path of which the cookie will be sent.
-		 * @param {String}             [crumbs.domain]         The (sub)domain of which the cookie will be sent. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.`, it will set the domain to the root domain of the document, consequently making it available on all subdomains. Defaults to the domain of the document (i.e. the value of `document.cookie`).
+		 * @param {String}             [crumbs.domain]         The (sub)domain of which the cookie will be sent. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.` the domain will be set to the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.cookie`).
 		 * @param {Boolean}            [crumbs.secure = false] Indicates whether the cookie should only be passed over HTTPS connections.
 		 */
 		set : function (crumbs)
@@ -418,7 +418,7 @@
 		 * @param {Object}  crumbs                  The crumbs of the cookie to remove.
 		 * @param {String}  crumbs.name             The name of the cookie.
 		 * @param {String}  [crumbs.path = '/']     The path of which the cookie will be removed from.
-		 * @param {String}  [crumbs.domain]         The (sub)domain of which the cookie will be removed from. The domain can only be a domain that the current document is in, however cookies can cross subdomains. Defaults to the domain of the document. If set to `.`, it will remove the cookie from the primary domain of the document and all of it's subdomains.
+		 * @param {String}  [crumbs.domain]         The (sub)domain of which the cookie will be removed from. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.` the cookie will be removed from the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.cookie`).
 		 * @param {Boolean} [crumbs.secure = false] Indicates whether the cookie should only be removed over HTTPS connections.
 		 */
 		remove : function (crumbs)

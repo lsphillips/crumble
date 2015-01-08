@@ -27,7 +27,7 @@ The cookie crumbs you can provide are:
 * `expires` (Date|String|Number, optional) - The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. If provided a timestamp equivalent to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
 * `age` (Number, optional) - The duration (in minutes) of which the cookie can live. When defined, any provided expiry date is ignored. If set to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
 * `path` (String, optional) - The path of which the cookie will be sent. Defaults to `/`.
-* `domain` (String, optional) - The (sub)domain of which the cookie will be sent. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.`, it will set the domain to the root domain of the document, consequently making it available on all subdomains. Defaults to the domain of the document (i.e. the value of `document.cookie`).
+* `domain` (String, optional) - The (sub)domain of which the cookie will be sent. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.` the domain will be set to the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.cookie`).
 * `secure` (Boolean, optional) - Indicates whether the cookie should only be passed over HTTPS connections. Defaults to `false`.
 
 Example usage:
@@ -55,7 +55,7 @@ The cookie crumbs you can provide are:
 
 * `name` (String, required) - The name of the cookie.
 * `path` (String, optional) - The path of which the cookie will be sent. Defaults to `/`.
-* `domain` (String, optional) - The (sub)domain of which the cookie will be removed from. The domain can only be a domain that the current document is in, however cookies can cross subdomains. Defaults to the domain of the document. If set to `.`, it will remove the cookie from the primary domain of the document and all of it's subdomains.
+* `domain` (String, optional) - The (sub)domain of which the cookie will be removed from. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.` the cookie will be removed from the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.cookie`).
 * `secure` (Boolean, optional) - Indicates whether the cookie should only be removed over HTTPS connections. Defaults to `false`.
 
 Example usage:
