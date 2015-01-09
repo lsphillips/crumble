@@ -1,7 +1,7 @@
 {
 	"name" : "crumble",
 
-	"version" : "0.1.0",
+	"version" : "0.1.1",
 
 	"description" : "A simple utility that abstracts the legacy API that is document.cookie",
 
@@ -14,13 +14,9 @@
 
 	"keywords" :
 	[
-		"class",
-		"prototype",
-		"extend",
-		"base",
-		"include",
-		"trait", 
-		"mixin"
+		"cookie",
+		"document"
+		"browser"
 	],
 
 	"homepage" : "https://github.com/lsphillips/Crumble",
