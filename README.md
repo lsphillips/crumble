@@ -51,7 +51,7 @@ Crumble.set(
 	name : 'name',
 	domain : 'a.domain.com',
 	path : '/a/document/path',
-	secure : false,
+	secure : false
 
 }, 'value');
 ```
