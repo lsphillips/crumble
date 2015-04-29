@@ -165,7 +165,18 @@ describe('Crumble', function ()
 			}).should.throw();
 		});
 
-		it('a cookie with a `value` crumb, will be set with that value', function ()
+		it('a cookie with a `value`, will be set with that value', function ()
+        {
+            Crumble.set(
+			{
+				name : 'name'
+
+			}, 'value');
+
+			global.document.cookie.should.equal('name=value;path=/');
+        });
+
+		it('a cookie without a `value`, will be set with the value of the `value` crumb', function ()
 		{
 			Crumble.set(
 			{
@@ -175,7 +186,7 @@ describe('Crumble', function ()
 			global.document.cookie.should.equal('name=value;path=/');
 		});
 
-		it('a cookie with a `value` crumb that needs encoding, will be set with that value URL encoded', function ()
+		it('a cookie with a `value` or `value` crumb that needs encoding, will be set with that value URL encoded', function ()
 		{
 			Crumble.set(
 			{
@@ -183,9 +194,17 @@ describe('Crumble', function ()
 			});
 
 			global.document.cookie.should.equal('name=a%20value%20that%20needs%20encoding;path=/');
+
+			Crumble.set(
+			{
+				name : 'name'
+
+			}, 'another value that needs encoding');
+
+			global.document.cookie.should.equal('name=another%20value%20that%20needs%20encoding;path=/');
 		});
 
-		it('a cookie without a `value` crumb, will be removed by forcing it to immediately expire', function ()
+		it('a cookie without a `value` or `value` crumb, will be removed by forcing it to immediately expire', function ()
 		{
 			Crumble.set(
 			{
@@ -195,12 +214,20 @@ describe('Crumble', function ()
 			global.document.cookie.should.equal('name=;path=/;max-age=-60000;expires=Wed, 03 Dec 1980 23:59:00 GMT');
 		});
 
-		it('a cookie with a `value` crumb set to `null`, will be removed by forcing it to immediately expire', function ()
+		it('a cookie with a `value` or `value` crumb set to `null`, will be removed by forcing it to immediately expire', function ()
 		{
 			Crumble.set(
 			{
 				name : 'name', value : null
 			});
+
+			global.document.cookie.should.equal('name=;path=/;max-age=-60000;expires=Wed, 03 Dec 1980 23:59:00 GMT');
+
+			Crumble.set(
+			{
+				name : 'name'
+
+			}, null);
 
 			global.document.cookie.should.equal('name=;path=/;max-age=-60000;expires=Wed, 03 Dec 1980 23:59:00 GMT');
 		});
@@ -427,9 +454,9 @@ describe('Crumble', function ()
 			global.document.cookie.should.equal('name=value;path=/;max-age=3600000;expires=Thu, 04 Dec 1980 01:00:00 GMT');
 		});
 	});
-	
+
 	// ----------------------------------------------------
-	
+
 	describe('void Crumble.remove(Object crumbs)', function ()
 	{
 		it('a cookie with a `name` crumb, will be removed by forcing it to immediately expire', function ()
@@ -561,7 +588,7 @@ describe('Crumble', function ()
 	});
 
 	// ----------------------------------------------------
-	
+
 	describe('Object Crumble.noConflict()', function ()
 	{
 		it('returns the Crumble object', function ()

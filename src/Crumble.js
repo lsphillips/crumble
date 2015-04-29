@@ -14,58 +14,58 @@
 	{
 		context[name] = factory.call(context);
 	}
-	
+
 }) ('Crumble', function ()
 {
 	'use strict';
 
 	/**
 	 * The name of any test cookies created by Crumble.
-	 * 
+	 *
 	 * @property TEST_COOKIE_NAME
-	 * 
+	 *
 	 * @private
-	 * 
+	 *
 	 * @static
-	 * 
+	 *
 	 * @final
-	 * 
+	 *
 	 * @type {String}
-	 * 
+	 *
 	 * @for Crumble
 	 */
 	var TEST_COOKIE_NAME = 'crumble';
 
 	/**
 	 * The value given to any test cookies created by Crumble.
-	 * 
+	 *
 	 * @property TEST_COOKIE_VALUE
-	 * 
+	 *
 	 * @private
-	 * 
+	 *
 	 * @static
-	 * 
+	 *
 	 * @final
-	 * 
+	 *
 	 * @type {String}
-	 * 
+	 *
 	 * @for Crumble
 	 */
 	var TEST_COOKIE_VALUE = 'nom nom nom';
 
 	/**
 	 * The maximum expiry date.
-	 * 
+	 *
 	 * @property MAXIMUM_EXPIRY_DATE
-	 * 
+	 *
 	 * @private
-	 * 
+	 *
 	 * @static
-	 * 
+	 *
 	 * @final
-	 * 
+	 *
 	 * @type {String}
-	 * 
+	 *
 	 * @for Crumble
 	 */
 	var MAXIMUM_EXPIRY_DATE = new Date('Fri, 31 Dec 9999 23:59:59 GMT');
@@ -74,17 +74,17 @@
 
 	/**
 	 * Determines the root domain of the document.
-	 * 
+	 *
 	 * For example if the document is on the `www.test.domain.co.uk` domain, the root domain would be `domain.co.uk`.
-	 * 
+	 *
 	 * @method getRootDomain
-	 * 
+	 *
 	 * @private
-	 * 
+	 *
 	 * @static
-	 * 
+	 *
 	 * @for Crumble
-	 * 
+	 *
 	 * @return {String} The root domain of the document.
 	 */
 	var getRootDomain = (function ()
@@ -133,25 +133,25 @@
 
 	/**
 	 * A simple utility that abstracts the legacy API that is `document.cookie`.
-	 * 
+	 *
 	 * @class Crumble
-	 * 
+	 *
 	 * @static
 	 */
 	var Crumble =
 	{
 		/**
 		 * Determines whether the client has cookies enabled.
-		 * 
+		 *
 		 * @method isEnabled
-		 * 
+		 *
 		 * @public
-		 * 
+		 *
 		 * @static
-		 * 
+		 *
 		 * @return {Boolean} `true` if cookies are enabled, otherwise `false`.
-		 * 
-		 * @todo Should this be cached for the document, as some clients don't require a refresh to 
+		 *
+		 * @todo Should this be cached for the document, as some clients don't require a refresh to
 		 */
 		isEnabled : (function ()
 		{
@@ -187,15 +187,15 @@
 
 		/**
 		 * Determines if a cookie exists.
-		 * 
+		 *
 		 * @method has
-		 * 
+		 *
 		 * @public
-		 * 
+		 *
 		 * @static
-		 * 
+		 *
 		 * @return {Boolean} `true` if the cookie exists, otherwise `false`.
-		 * 
+		 *
 		 * @param {String} name The name of the cookie to test the presence of.
 		 */
 		has : function (name)
@@ -205,15 +205,15 @@
 
 		/**
 		 * Retrieves the value of a cookie.
-		 * 
+		 *
 		 * @method get
-		 * 
+		 *
 		 * @public
-		 * 
+		 *
 		 * @static
-		 * 
+		 *
 		 * @return {String} The value of the cookie. `null` will be returned if the cookie doesn't exist.
-		 * 
+		 *
 		 * @param {String} name The name of the cookie to fetch.
 		 */
 		get : function (name)
@@ -230,25 +230,29 @@
 
 		/**
 		 * Sets a cookie.
-		 * 
+		 *
 		 * Example usage:
-		 * 
+		 *
 		 * ```
 		 * Crumble.set({ name : 'name', value : 'value', domain : 'a.domain.com', path : '/a/document/path', secure : false });
 		 * ```
-		 * 
-		 * This would set a cookie called `name` with a value of `value`, that would be sent to a document with path `/a/document/path` on or on the sub domain of the domain `a.domain.com`.
-		 * 
-		 * This will produce a cookie that supports both the HTTP 1.0 `expires` attributes as well as the HTTP 1.1 `max-age` attribute regardless of whether you provide an `age` or `expires` crumb.
-		 * 
+		 *
+		 * Alternatively you can separate the value from the cookie crumbs, like so:
+		 *
+		 * ```
+		 * Crumble.set({ name : 'name', domain : 'a.domain.com', path : '/a/document/path', secure : false }, 'value');
+		 * ```
+		 *
+		 * This is useful as the value is usually the variable when setting a cookie whereas the other cookie crumbs are usually fixed.
+		 *
 		 * @method set
-		 * 
+		 *
 		 * @public
-		 * 
+		 *
 		 * @static
-		 * 
+		 *
 		 * @return {void}
-		 * 
+		 *
 		 * @param {Object}             crumbs                  The crumbs that make the cookie.
 		 * @param {String}             crumbs.name             The name of the cookie.
 		 * @param {String}             [crumbs.value]          The value of the cookie. If set to `undefined` or `null`; the cookie will be removed by forcing it to immediately expire, ignoring any `age` or `expires` crumb that may be provided.
@@ -257,11 +261,11 @@
 		 * @param {String}             [crumbs.path = '/']     The path of which the cookie will be sent.
 		 * @param {String}             [crumbs.domain]         The (sub)domain of which the cookie will be sent. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.` the domain will be set to the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.cookie`).
 		 * @param {Boolean}            [crumbs.secure = false] Indicates whether the cookie should only be passed over HTTPS connections.
+		 * @param {String}             [value]                 The value of the cookie, see the documentation for `crumbs.value`. If omitted `crumbs.value` will be used.
 		 */
-		set : function (crumbs)
+		set : function (crumbs, value)
 		{
 			var name    = crumbs.name,
-			    value   = crumbs.value,
 			    expires = crumbs.expires,
 			    age     = crumbs.age,
 			    path    = crumbs.path,
@@ -275,11 +279,16 @@
 
 			var cookie = encodeURIComponent(name) + '=';
 
-			// If the value is `undefined` or `null`, then
-			// force the cookie to expire.
-			// 
-			// Also to keep things tidy, ensure the value is
-			// also omitted.
+            if (value === undefined)
+            {
+                value = crumbs.value;
+            }
+
+			// If the value is still `undefined` or is
+			// `null`, then force the cookie to expire.
+			//
+			// Also to keep things tidy, ensure the value
+			// is also omitted.
 			if (value === undefined || value === null)
 			{
 				age = -1;
@@ -338,7 +347,7 @@
 					);
 				}
 
-				// HTTP 1.1 
+				// HTTP 1.1
 				cookie += ';max-age=' + age;
 
 				// HTTP 1.0
@@ -353,7 +362,7 @@
 						expires = (expires === Infinity) ? MAXIMUM_EXPIRY_DATE : new Date(expires);
 					}
 
-					// If we don't have a date object at 
+					// If we don't have a date object at
 					// this point, we were not provided a
 					// valid date format in the first place.
 					if ( !(expires instanceof Date) )
@@ -394,27 +403,27 @@
 
 		/**
 		 * Removes a cookie by forcing it to immediately expire.
-		 * 
+		 *
 		 * Example usage:
-		 * 
+		 *
 		 * ```
 		 * Crumble.remove({ name : 'name' });
 		 * ```
-		 * 
+		 *
 		 * The above is just a more expressive way of doing the following:
-		 * 
+		 *
 		 * ```
 		 * Crumble.set({ name : 'name', value : null });
 		 * ```
-		 * 
+		 *
 		 * @method remove
-		 * 
+		 *
 		 * @public
-		 * 
+		 *
 		 * @static
-		 * 
+		 *
 		 * @return {void}
-		 * 
+		 *
 		 * @param {Object}  crumbs                  The crumbs of the cookie to remove.
 		 * @param {String}  crumbs.name             The name of the cookie.
 		 * @param {String}  [crumbs.path = '/']     The path of which the cookie will be removed from.
@@ -427,7 +436,7 @@
 			{
 				throw new Error('[Crumble] Cannot remove cookie, a cookie name must be provided');
 			}
-			
+
 			this.set(
 			{
 				name : crumbs.name, path : crumbs.path, domain : crumbs.domain, secure : !!crumbs.secure
@@ -438,37 +447,37 @@
 
 		/**
 		 * This will remove Crumble from the global namespace, restoring what was there before (if anything). This is for environments that are not using CommonJS or AMD.
-		 * 
+		 *
 		 * Example usage:
-		 * 
+		 *
 		 * ```
 		 * Namespace.Crumble = Crumble.noConflict();
 		 * ```
-		 * 
+		 *
 		 * @method noConflict
-		 * 
+		 *
 		 * @public
-		 * 
+		 *
 		 * @static
-		 * 
+		 *
 		 * @return {Object} The Crumble object to be assigned to any variable you wish.
 		 */
 		noConflict : (function (context)
 		{
 			var _Crumble = context.Crumble;
-			
+
 			return function ()
 			{
 				context.Crumble = _Crumble;
-				
+
 				return this;
 			};
 
 		}) (this)
 	};
-	
+
 	// ----------------------------------------------------
-	
+
 	return Crumble;
 
 }, this);

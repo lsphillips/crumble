@@ -16,7 +16,7 @@ Determines if a cookie exists.
 
 Retrieves the value of a cookie. `null` will be returned if the cookie does not exist.
 
-### `void Crumble.set(Object crumbs)`
+### `void Crumble.set(Object crumbs [, string value])`
 
 Sets a cookie.
 
@@ -43,9 +43,20 @@ Crumble.set(
 });
 ```
 
-This would set a cookie called `name` with a value of `value`, that would be sent to a document with path `/a/document/path` on or on the sub domain of the domain `a.domain.com`.
+Alternatively you can separate the value from the cookie crumbs, like so:
 
-This will produce a cookie that supports both the HTTP 1.0 `expires` attributes as well as the HTTP 1.1 `max-age` attribute regardless of whether you provide an `age` or `expires` crumb.
+``` js
+Crumble.set(
+{
+	name : 'name',
+	domain : 'a.domain.com',
+	path : '/a/document/path',
+	secure : false,
+
+}, 'value');
+```
+
+This is useful as the value is usually the variable when setting a cookie whereas the other cookie crumbs are usually fixed.
 
 ### `void Crumble.remove(Object crumbs)`
 
