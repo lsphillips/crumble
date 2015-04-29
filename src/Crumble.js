@@ -93,8 +93,6 @@
 
 	    return function ()
 	    {
-			// If the document has not changed, just grab
-			// it from the cache.
 	        if (_document !== document)
 	        {
 	            var domains = document.domain.split('.');
@@ -159,8 +157,6 @@
 
 			return function ()
 			{
-				// If the document has not changed, just grab
-	    		// it from the cache.
 				if (_document !== document)
 				{
 					Crumble.set(
