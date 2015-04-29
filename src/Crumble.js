@@ -93,7 +93,7 @@
 
 	    return function ()
 	    {
-	    	// If the document has not changed, just grab
+			// If the document has not changed, just grab
 			// it from the cache.
 	        if (_document !== document)
 	        {
