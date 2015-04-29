@@ -94,7 +94,7 @@
 	    return function ()
 	    {
 	    	// If the document has not changed, just grab
-	    	// it from the cache.
+			// it from the cache.
 	        if (_document !== document)
 	        {
 	            var domains = document.domain.split('.');
@@ -279,10 +279,10 @@
 
 			var cookie = encodeURIComponent(name) + '=';
 
-            if (value === undefined)
-            {
-                value = crumbs.value;
-            }
+			if (value === undefined)
+			{
+				value = crumbs.value;
+			}
 
 			// If the value is still `undefined` or is
 			// `null`, then force the cookie to expire.
@@ -302,16 +302,16 @@
 
 			if (domain)
 			{
-	            cookie += ';domain=';
+				cookie += ';domain=';
 
-	            if (domain === '.')
-	            {
-	            	cookie += getRootDomain();
-	            }
-	            else
-	            {
-	            	cookie += domain;
-	            }
+				if (domain === '.')
+				{
+					cookie += getRootDomain();
+				}
+				else
+				{
+					cookie += domain;
+				}
 			}
 
 			var now;

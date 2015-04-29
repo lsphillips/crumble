@@ -89,7 +89,6 @@ describe('Crumble', function ()
 		it('returns the value of a cookie', function ()
 		{
 			global.document.cookie = 'name=value';
-		 // --------------------------------------
 
 			Crumble.get('name').should.equal('value');
 		});
@@ -97,7 +96,6 @@ describe('Crumble', function ()
 		it('returns the value URL decoded if required', function ()
 		{
 			global.document.cookie = 'name=a%20value%20that%20needs%20decoding';
-		 // --------------------------------------------------------------------
 
 			Crumble.get('name').should.equal('a value that needs decoding');
 		});
@@ -117,7 +115,6 @@ describe('Crumble', function ()
 		it('returns `true` when a cookie does exist', function ()
 		{
 			global.document.cookie = 'name=value';
-		 // --------------------------------------
 
 			Crumble.has('name').should.be.true;
 		});
@@ -166,15 +163,15 @@ describe('Crumble', function ()
 		});
 
 		it('a cookie with a `value`, will be set with that value', function ()
-        {
-            Crumble.set(
+		{
+			Crumble.set(
 			{
 				name : 'name'
 
 			}, 'value');
 
 			global.document.cookie.should.equal('name=value;path=/');
-        });
+		});
 
 		it('a cookie without a `value`, will be set with the value of the `value` crumb', function ()
 		{
