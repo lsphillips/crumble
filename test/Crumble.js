@@ -259,7 +259,7 @@ describe('Crumble', function ()
 			global.document.cookie.should.equal('name=value;path=/;domain=sub.domain.com');
 		});
 
-		it('a cookie without a `domain` crumb, will be set to be available only on the domain of the current document', function ()
+		it('a cookie without a `domain` crumb, will be set to be available on the domain of the current document', function ()
 		{
 			Crumble.set(
 			{
@@ -301,6 +301,18 @@ describe('Crumble', function ()
 			});
 
 			global.document.cookie.should.equal('name=value;path=/;domain=domain.com');
+		});
+
+		it('a cookie with a `domain` crumb set to a value equal to `document.domain`, will be set to be available on the domain of the current document', function ()
+		{
+			global.document.domain = 'a.domain.com';
+
+			Crumble.set(
+			{
+				name : 'name', value : 'value', domain : 'a.domain.com'
+			});
+
+			global.document.cookie.should.equal('name=value;path=/');
 		});
 
 		it('a cookie with a `secure` crumb equating to `true`, will be set to be available only over HTTPS', function ()

@@ -3,9 +3,9 @@ module.exports = function (grunt)
 	// Dependencies
 	// ----------------------------------------------------
 
-	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-mocha-test');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-mocha-cli');
 
 	// Configuration
 	// ----------------------------------------------------
@@ -16,60 +16,63 @@ module.exports = function (grunt)
 
 		// ------------------------------------------------
 
-		jshint : // https://github.com/gruntjs/grunt-contrib-jshint
+		jshint :
 		{
-			options :
+			test :
 			{
-				jshintrc : '.jshintrc'
-			},
-
-			src : ['src/Crumble.js', 'test/Crumble.js']
-		},
-
-		uglify : // https://github.com/gruntjs/grunt-contrib-uglify
-		{
-			build :
-			{
-				files :
+				options :
 				{
-					'build/Crumble.js' : 'src/Crumble.js'
-				}
-			},
+					jshintrc : '.jshintrc'
+				},
 
-			options :
-			{
-				banner : '// Crumble                                                        \n'
-				       + '// Version: <%= package.version %>                                \n'
-				       + '// Author: <%= package.author.name %> (<%= package.author.url %>) \n'
-				       + '// License: <%= package.license %>                                \n',
-
-				report : 'gzip'
+				src : ['src/Crumble.js', 'test/Crumble.js']
 			}
 		},
 
-		mochaTest :
+		uglify :
 		{
-			options :
+			build :
 			{
-				reporter : 'spec'
-			},
+				options :
+				{
+					banner : '// Crumble                                                        \n'
+					       + '// Version: <%= package.version %>                                \n'
+					       + '// Author: <%= package.author.name %> (<%= package.author.url %>) \n'
+					       + '// License: <%= package.license %>                                \n',
 
-			src : ['test/Crumble.js']
+					report : 'gzip'
+				},
+
+				files : { 'build/Crumble.js' : 'src/Crumble.js' }
+			}
+		},
+
+		mochacli :
+		{
+			test :
+			{
+				options :
+				{
+					reporter : 'spec'
+				},
+
+				src : ['test/Crumble.js']
+			}
 		}
 	});
-	
+
 	// Task: `test`
 	// ----------------------------------------------------
-	
-	grunt.registerTask('test', ['jshint', 'mochaTest']);
-	
+
+	grunt.registerTask('test', ['jshint:test', 'mochacli:test']);
+
 	// Task: `build`
 	// ----------------------------------------------------
-	
-	grunt.registerTask('build', ['test', 'uglify']);
-	
+
+	grunt.registerTask('build', ['test', 'uglify:build']);
+
 	// Task `default`
 	// ----------------------------------------------------
-	
+
 	grunt.registerTask('default', ['build']);
 };

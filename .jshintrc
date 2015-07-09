@@ -30,8 +30,8 @@
 	"shadow"       : true,
 	"singleGroups" : false,
 	"undef"        : true,
-	"unused"       : true,
-
+	"unused"       : "var",
+	
 	"asi"          : false,
 	"boss"         : false,
 	"debug"        : false,

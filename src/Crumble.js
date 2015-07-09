@@ -298,15 +298,14 @@
 
 			if (domain)
 			{
-				cookie += ';domain=';
-
 				if (domain === '.')
 				{
-					cookie += getRootDomain();
+					domain = getRootDomain();
 				}
-				else
+				
+				if (domain !== document.domain)
 				{
-					cookie += domain;
+					cookie += ';domain=' + domain;
 				}
 			}
 
