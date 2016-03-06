@@ -1,78 +1,49 @@
 module.exports = function (grunt)
 {
 	// Dependencies
-	// ----------------------------------------------------
+	// -------------------------------------------------------
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-mocha-cli');
 
 	// Configuration
-	// ----------------------------------------------------
+	// -------------------------------------------------------
 
 	grunt.initConfig(
 	{
-		package : grunt.file.readJSON('package.json'),
-
-		// ------------------------------------------------
-
 		jshint :
 		{
-			test :
+			options :
 			{
-				options :
-				{
-					jshintrc : '.jshintrc'
-				},
+				jshintrc : '.jshintrc'
+			},
 
-				src : ['src/Crumble.js', 'test/Crumble.js']
-			}
-		},
-
-		uglify :
-		{
-			build :
-			{
-				options :
-				{
-					banner : '// Crumble                                                        \n'
-					       + '// Version: <%= package.version %>                                \n'
-					       + '// Author: <%= package.author.name %> (<%= package.author.url %>) \n'
-					       + '// License: <%= package.license %>                                \n',
-
-					report : 'gzip'
-				},
-
-				files : { 'build/Crumble.js' : 'src/Crumble.js' }
-			}
+			src : ['src/Crumble.js', 'tests/Crumble.js']
 		},
 
 		mochacli :
 		{
-			test :
+			options :
 			{
-				options :
-				{
-					reporter : 'spec'
-				},
+				reporter : 'spec'
+			},
 
-				src : ['test/Crumble.js']
-			}
+			src : ['tests/Crumble.js']
 		}
 	});
 
 	// Task: `test`
-	// ----------------------------------------------------
+	// -------------------------------------------------------
 
-	grunt.registerTask('test', ['jshint:test', 'mochacli:test']);
+	grunt.registerTask('test', ['jshint', 'mochacli']);
 
 	// Task: `build`
-	// ----------------------------------------------------
+	// -------------------------------------------------------
 
-	grunt.registerTask('build', ['test', 'uglify:build']);
+	grunt.registerTask('build', ['test']);
 
 	// Task `default`
-	// ----------------------------------------------------
+	// -------------------------------------------------------
 
 	grunt.registerTask('default', ['build']);
 };

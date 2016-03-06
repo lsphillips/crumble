@@ -2,6 +2,9 @@
 # -----------------
 
 .DS_Store
+.jshintrc
+.gitignore
+Gruntfile.js
 
 # File Types
 # -----------------
@@ -13,7 +16,7 @@
 *.sublime-*
 *.log.*
 
-# NPM
+# Directories
 # -----------------
 
-/node_modules
+/tests

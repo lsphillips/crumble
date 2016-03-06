@@ -1,78 +1,92 @@
-## Crumble
+# Crumble
 
-A simple utility that abstracts the legacy API that is `document.cookie`.
+A simple wrapper that makes reading the cookies of a given document easy and expressive.
 
 ## Usage
 
-### `Boolean Crumble.isEnabled()`
+The Crumble constructor has this signature:
 
-Determines whether the client has cookies enabled.
+```
+Crumble(HTMLDocument document)
+```
 
-### `Boolean Crumble.has(string name)`
+Example usage:
 
-Determines if a cookie exists.
+```
+var cookies = new Crumble(window.document);
 
-### `String Crumble.get(string name)`
+if (cookies.isEnabled())
+{
+	alert('You do not have cookies enabled.');
+}
+```
 
-Retrieves the value of a cookie. `null` will be returned if the cookie does not exist.
+### Interface
 
-### `void Crumble.set(Object crumbs [, string value])`
+#### `Boolean Crumble#isEnabled()`
 
-Sets a cookie.
+Determines whether cookies are enabled in the target document.
+
+#### `Boolean Crumble#has(string name)`
+
+Determines whether a cookie exists in the target document.
+
+#### `String Crumble#get(string name)`
+
+Retrieves the value of a cookie from the target document. `null` will be returned if the cookie does not exist.
+
+#### `void Crumble.set(Object crumbs [, string value])`
+
+Sets a cookie in the target document.
 
 The cookie crumbs you can provide are:
 
 * `name` (String, required) - The name of the cookie.
-* `value` (String, optional) - The value of the cookie. If set to `undefined` or `null` the cookie will be removed by forcing it to immediately expire, ignoring any `age` or `expires` crumb that may be provided.
+* `value` (String, optional) - The value of the cookie. If set to `undefined` the cookie will be removed by forcing it to immediately expire, ignoring any `age` or `expires` crumb that may be provided.
+* `age` (Number, optional) - The duration (in milliseconds) of which the cookie can live. When defined, any provided expiry date is ignored. If set to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
 * `expires` (Date|String|Number, optional) - The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. If provided a timestamp equivalent to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
-* `age` (Number, optional) - The duration (in minutes) of which the cookie can live. When defined, any provided expiry date is ignored. If set to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
-* `path` (String, optional) - The path of which the cookie will be sent. Defaults to `/`.
-* `domain` (String, optional) - The (sub)domain of which the cookie will be sent. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.` the domain will be set to the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.cookie`).
+* `path` (String, optional) - The path of which the cookie will be created. Defaults to the path of the target document.
+* `domain` (String, optional) - The (sub)domain of which the cookie will be created. The domain can only be a domain that the target document is in, however cookies can cross subdomains. If set to `.` the domain will be set to the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.domain`).
 * `secure` (Boolean, optional) - Indicates whether the cookie should only be passed over HTTPS connections. Defaults to `false`.
+* `firstPartyOnly` (Boolean, optional) - Indicates whether the cookie should only be sent in a first-party context. This is subject to client support. Defaults to `false`.
 
 Example usage:
 
 ``` js
-Crumble.set(
+cookies.set(
 {
-	name : 'name',
-	value : 'value',
-	domain : 'a.domain.com',
-	path : '/a/document/path',
-	secure : false
+	name : 'name', value : 'value', domain : 'a.domain.com', path : '/a/document/path', secure : false
 });
 ```
 
-Alternatively you can separate the value from the cookie crumbs, like so:
+Alternatively you can separate the value from the cookie crumbs:
 
 ``` js
-Crumble.set(
+cookies.set(
 {
-	name : 'name',
-	domain : 'a.domain.com',
-	path : '/a/document/path',
-	secure : false
+	name : 'name', domain : 'a.domain.com', path : '/a/document/path', secure : false
 
 }, 'value');
 ```
 
 This is useful as the value is usually the variable when setting a cookie whereas the other cookie crumbs are usually fixed.
 
-### `void Crumble.remove(Object crumbs)`
+#### `void Crumble.remove(Object crumbs)`
 
-Removes a cookie by forcing it to immediately expire.
+Removes a cookie from the target document by forcing it to immediately expire.
 
 The cookie crumbs you can provide are:
 
 * `name` (String, required) - The name of the cookie.
-* `path` (String, optional) - The path of which the cookie will be sent. Defaults to `/`.
-* `domain` (String, optional) - The (sub)domain of which the cookie will be removed from. The domain can only be a domain that the current document is in, however cookies can cross subdomains. If set to `.` the cookie will be removed from the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.cookie`).
+* `path` (String, optional) - The path of which the cookie will be removed from. Defaults to the path of the target document.
+* `domain` (String, optional) - The (sub)domain of which the cookie will be removed from. The domain can only be a domain that the target document is in, however cookies can cross subdomains. If set to `.` the cookie will be removed from the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.domain`).
 * `secure` (Boolean, optional) - Indicates whether the cookie should only be removed over HTTPS connections. Defaults to `false`.
+* `firstPartyOnly` (Boolean, optional) - Indicates whether the cookie should only be sent in a first-party context. This is subject to client support. Defaults to `false`.
 
 Example usage:
 
 ``` js
-Crumble.remove(
+cookies.remove(
 {
 	name : 'name'
 });
@@ -81,28 +95,15 @@ Crumble.remove(
 The above is just a more expressive way of doing the following:
 
 ``` js
-Crumble.set(
+cookies.set(
 {
-	name : 'name',
-	value : null
+	name : 'name', value : undefined
 });
 ```
 
 ## Getting started
 
-To use Crumble, just use a script tag like so:
-
-``` html
-<script type="text/javascript" src="path/to/Crumble.js"></script>
-```
-
-To remove Crumble from the global namespace, you can use `Crumble.noConflict()`, like so:
-
-``` js
-Namespace.Crumble = Crumble.noConflict();
-```
-
-Crumble is wrapped using the Universal Module Definition (UMD), so it also works in both CommonJS and AMD environments. It's also available through the Node Package Manage, so you can install Crumble like so:
+It's available through the Node Package Manager (NPM), so you can install it like so:
 
 ``` sh
 npm install crumble
@@ -116,18 +117,14 @@ Grunt is used to handle the build process for Crumble. To perform a full build, 
 grunt build
 ```
 
-which is just an alias for the `default` task:
-
-``` sh
-grunt
-```
-
-To only check code quality and/or run unit tests use the `test` task:
+To only run tests use the `test` task:
 
 ``` sh
 grunt test
 ```
 
+This also runs code quality checks using JSHint. Please refer to the `.jshintrc` file to familiar yourself with the rules.
+
 ## License
 
-Crumble is released under the MIT License.
+This project is released under the MIT License.
