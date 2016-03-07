@@ -3,7 +3,7 @@
 
 	"version" : "0.3.0",
 
-	"description" : "A simple utility that abstracts the legacy API that is document.cookie",
+	"description" : "A simple wrapper that makes reading the cookies of a given document easy and expressive.",
 
 	"author" :
 	{
