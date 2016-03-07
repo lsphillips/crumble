@@ -242,7 +242,7 @@ function removeCookieFromDocument (document, name, path, domain, secure, firstPa
  *
  * @static
  *
- * @returns {Boolean} `true` if cookies are enabled, othrwise `false`.
+ * @returns {Boolean} `true` if cookies are enabled, otherwise `false`.
  *
  * @param {HTMLDocument} document The document to test.
  *
