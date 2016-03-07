@@ -242,7 +242,7 @@ function removeCookieFromDocument (document, name, path, domain, secure, firstPa
  *
  * @static
  *
- * @returns {Boolean}
+ * @returns {Boolean} `true` if cookies are enabled, othrwise `false`.
  *
  * @param {HTMLDocument} document The document to test.
  *
@@ -272,7 +272,7 @@ function isCookiesEnabledInDocument (document)
  *
  * @static
  *
- * @returns {String}
+ * @returns {String} The root domain of the given document.
  *
  * @param {HTMLDocument} document The document to retrieve the root domain from.
  *
@@ -313,9 +313,9 @@ function getRootDomainForDocument (document)
  * ```
  * var cookies = new Crumble(window.document);
  *
- * if (cookies.isEnabled())
+ * if (cookies.isEnabled() === false)
  * {
- *    alert('You do not have cookies enabled.');
+ *    window.alert('You do not have cookies enabled.');
  * }
  * ```
  *
@@ -378,9 +378,9 @@ Crumble.prototype =
 	 * Example usage:
 	 *
 	 * ```
-	 * if (cookies.isEnabled())
+	 * if (cookies.isEnabled() === false)
 	 * {
-	 *    alert('You do not have cookies enabled.');
+	 *    window.alert('You do not have cookies enabled.');
 	 * }
 	 * ```
 	 *
@@ -464,8 +464,6 @@ Crumble.prototype =
 	 * This is useful as the value is usually the variable when setting a cookie whereas the other cookie crumbs are usually fixed.
 	 *
 	 * @instance
-	 *
-	 * @returns {void}
 	 *
 	 * @param {Object}             crumbs                          The crumbs that make the cookie.
 	 * @param {String}             crumbs.name                     The name of the cookie.
@@ -557,8 +555,6 @@ Crumble.prototype =
 	 * ```
 	 *
 	 * @instance
-	 *
-	 * @returns {void}
 	 *
 	 * @param {Object}  crumbs                          The crumbs of the cookie to remove.
 	 * @param {String}  crumbs.name                     The name of the cookie.

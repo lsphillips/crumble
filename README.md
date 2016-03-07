@@ -15,9 +15,9 @@ Example usage:
 ```
 var cookies = new Crumble(window.document);
 
-if (cookies.isEnabled())
+if (cookies.isEnabled() === false)
 {
-	alert('You do not have cookies enabled.');
+	window.alert('You do not have cookies enabled.');
 }
 ```
 
