@@ -485,12 +485,12 @@ Crumble.prototype =
 	set : function (crumbs, value)
 	{
 		var name           = crumbs.name,
-			age            = crumbs.age,
-			expires        = crumbs.expires,
-			path           = crumbs.path,
-			domain         = crumbs.domain,
-			secure         = crumbs.secure,
-			firstPartyOnly = crumbs.firstPartyOnly;
+		    age            = crumbs.age,
+		    expires        = crumbs.expires,
+		    path           = crumbs.path,
+		    domain         = crumbs.domain,
+		    secure         = crumbs.secure,
+		    firstPartyOnly = crumbs.firstPartyOnly;
 
 		if (value === undefined)
 		{
@@ -572,10 +572,10 @@ Crumble.prototype =
 	remove : function (crumbs)
 	{
 		var name           = crumbs.name,
-			path           = crumbs.path,
-			domain         = crumbs.domain,
-			secure         = crumbs.secure,
-			firstPartyOnly = crumbs.firstPartyOnly;
+		    path           = crumbs.path,
+		    domain         = crumbs.domain,
+		    secure         = crumbs.secure,
+		    firstPartyOnly = crumbs.firstPartyOnly;
 
 		if (domain === ROOT_DOMAIN)
 		{
