@@ -306,7 +306,7 @@ function getRootDomainForDocument (document)
 // --------------------------------------------------------
 
 /**
- * A simple wrapper that makes reading the cookies of a given document easy and expressive.
+ * Creates a new Crumble interface to a given document object.
  *
  * Example usage:
  *
@@ -321,7 +321,7 @@ function getRootDomainForDocument (document)
  *
  * @class Crumble
  *
- * @constructor
+ * @classdesc A simple wrapper that makes reading the cookies of a given document easy and expressive.
  *
  * @param {HTMLDocument} document The document that the Crumble will be reading
  *
