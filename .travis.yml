@@ -3,8 +3,8 @@
 
 language: node_js
 node_js:
-    - "5.11"
     - "4.4"
+    - "5.11"
 before_script: "npm install -g grunt-cli"
 
 # Deployment
@@ -14,5 +14,7 @@ deploy:
     provider: npm
     on:
         tags: true
+        node: "5.11"
+    api_key:
+        secure: "AME1AOrdFLGJLCPpY2iGWWI7LhhtMiLdd46GXRoW6qb0Q/J4G46KXSeY/FDEMzkTqKtvc2VssTQxedERuJW0Wa8o4luBGNzpjsTTlaerDKw/MvXtMpOfS8I2xaqyhZGJSgrLNLMrrQXqKORSJ+kNqAWubr4Zcu8QBhsZEK/RCq3I9v/UPGshM8+oTUbExmsq4B5UuX7oMwyz3hDk+EIC/LiY5JUFDMkMeCveA0TEfWEFUPVf6cgtqjrMkFN9bTYl3uEBcw777FM1dXvahs7oUic6OelLymliI18IjvgNjPcyzzDEn7p9WJuZZOsvF12IGyZBwxmYgxkPyO0Wb+r8R0BgtHfWGecp3jZ6+UiPAc2cd5vKvanz6PhvQSTnxIK+308qcpK6yLB0dS6Dd9kQCDXlYfKuw9aOYqWveIFxO54EAuC5mjGn6iMFGNcVR8vkdblpbXExdqMFPPyBao8aggj861uCeoCb/h2j23b4tkTzsNX7q43jwcs9WdKyripFILV3px2IVLTdpUrEVrJfpo/cbpe7QR49DNu2fF3/Cd3onWgAwoV9mHJlRxd+hRtyeS2xxzpo9rm1Pl+dlZ6R9ixrK4+YNTXTOctQfIcjfAe0wi2IAT0+zkVtIs1Xm9e0SVu1neXWoducJmMRtbsZ+7mTA2Fw0vF6CNQgx1y4dYU="
     email: "lsphillips.mail@gmail.com"
-    api_key: "IZ89aqcH3lPZwDjTG+jM/T/kQ94BieKmxk/z6UuBIIQnBiENDmZOGtXVmnAOBGzomC186qfRxdFRotbA714E+r8vwNo1SdJdoa4iiP/7GskmFkYTxnAX6fehRBlushGspj+J9P+kFWUqoqlPE49glvWpNp4uhFs2RxVgQR1zHkTqg1yevchTmvcLlYrcTAWSPigXuFUbpKRFmF6vCCrWNI5Aq0suQtwJ9KycrdMmmJ3zU4kdcmy3fpOv/6SFbA7ThAr2Z64KXcZ/ARAOX8nVsbZ5ptuISjxR9NAspoQoP6eFuy9SMF1E/24hE3NCb2MI+H04BUJkY4xvk2rbYDnhEzDvOuFvvPM2R1iD1sZXAwas0indjcOeNgP0crnQqJVgb6X3CxcD2CjMhBbyaRptGMw8s7elfw+chABRPdMiyZx//O5+hMfIXafEfNxZsBzTrKJL5Xp7Rn/gIRHp77/RSPqrA62sdxrQ3KIMyZ0UGs5wUmjXiDGRi2qOxT7LXWjfF0TOncoo7HTs5W4wVGy7aVO0wuRZLoqQqrtYM9oODOD9Ml/GSW0FX1VGROSYoOosFaiBrc05dM5mcPka0BsNbpdL879K5F11F8eCP0W1mcYvm6Z7pWRa0J7NOYyeb7OBmBaz23QqvxWH5VXfXkwFPUzbR60ri8odTeBydDF3kcs="
