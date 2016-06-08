@@ -1,5 +1,7 @@
 # Crumble
 
+![Travis Build Status](https://travis-ci.org/lsphillips/Crumble.svg?branch=master)
+
 A simple wrapper that makes reading the cookies of a given document easy and expressive.
 
 ## Usage
