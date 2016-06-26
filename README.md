@@ -1,6 +1,7 @@
 # Crumble
 
-![Travis Build Status](https://travis-ci.org/lsphillips/Crumble.svg?branch=master)
+[![Available from NPM](https://img.shields.io/npm/v/crumble.svg?maxAge=900)](https://www.npmjs.com/package/crumble)
+[![Built using Travis](https://img.shields.io/travis/lsphillips/Crumble/master.svg?maxAge=900)](https://travis-ci.org/lsphillips/Crumble)
 
 A simple wrapper that makes reading the cookies of a given document easy and expressive.
 
