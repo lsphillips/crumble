@@ -3,7 +3,7 @@ module.exports = function (grunt)
 	// Dependencies
 	// -------------------------------------------------------
 
-	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-eslint');
 	grunt.loadNpmTasks('grunt-mocha-cli');
 
 	// Configuration
@@ -11,15 +11,17 @@ module.exports = function (grunt)
 
 	grunt.initConfig(
 	{
-		jshint :
-		{
-			options :
-			{
-				jshintrc : '.jshintrc'
-			},
+		eslint :
+    {
+      options :
+      {
+        useEslintrc : true
+      },
 
-			src : ['src/Crumble.js', 'tests/Crumble.js']
-		},
+      src : ['src/**/*.js', 'tests/**/*.js']
+    },
+
+		// ------------------------------------------------------
 
 		mochacli :
 		{
@@ -35,7 +37,7 @@ module.exports = function (grunt)
 	// Task: `test`
 	// -------------------------------------------------------
 
-	grunt.registerTask('test', ['jshint', 'mochacli']);
+	grunt.registerTask('test', ['eslint', 'mochacli']);
 
 	// Task: `build`
 	// -------------------------------------------------------

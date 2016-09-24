@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 'use strict';
 
 // --------------------------------------------------------
@@ -15,7 +17,9 @@
  *
  * @memberof Crumble
  */
-var TEST_COOKIE_NAME = 'crumble';
+const TEST_COOKIE_NAME = 'crumble';
+
+// --------------------------------------------------------
 
 /**
  * The maximum expiry date a cookie can have.
@@ -30,7 +34,9 @@ var TEST_COOKIE_NAME = 'crumble';
  *
  * @memberof Crumble
  */
-var MAXIMUM_EXPIRY_DATE = new Date('Fri, 31 Dec 9999 23:59:59 GMT');
+const MAXIMUM_EXPIRY_DATE = new Date('Fri, 31 Dec 9999 23:59:59 GMT');
+
+// --------------------------------------------------------
 
 /**
  * A shorthand for the root domain.
@@ -45,96 +51,195 @@ var MAXIMUM_EXPIRY_DATE = new Date('Fri, 31 Dec 9999 23:59:59 GMT');
  *
  * @memberof Crumble
  */
-var ROOT_DOMAIN = '.';
+const ROOT_DOMAIN = '.';
 
 // --------------------------------------------------------
 
 /**
- * Determines whether a cookie exists in a given document.
+ * Retrieves the domain of the current document.
  *
  * @private
+ *
+ * @static
+ *
+ * @returns {String} The current domain.
+ *
+ * @memberof Crumble
+ */
+function getDomain ()
+{
+	return document.location.hostname;
+}
+
+// --------------------------------------------------------
+
+/**
+ * Retrieves the root domain of the current document.
+ *
+ * For example if the document is on domain `a.b.c.com` the root domain will be `c.com`.
+ *
+ * @private
+ *
+ * @static
+ *
+ * @returns {String} The current root domain.
+ *
+ * @memberof Crumble
+ */
+function getRootDomain ()
+{
+	let domain, domains = getDomain().split('.');
+
+	for (let i = 0, l = domains.length; i < l; ++i)
+	{
+		domain = domains.slice(-1 - i).join('.');
+
+		setCookie(
+		{
+			domain, name : TEST_COOKIE_NAME
+		});
+
+		if (hasCookie(TEST_COOKIE_NAME))
+		{
+			break;
+		}
+	}
+
+	removeCookie(
+	{
+		domain, name : TEST_COOKIE_NAME
+	});
+
+	return domain;
+}
+
+// --------------------------------------------------------
+
+/**
+ * Determines whether cookies are enabled.
+ *
+ * @static
+ *
+ * @returns {Boolean} `true` if cookies are enabled, otherwise `false`.
+ *
+ * @memberof Crumble
+ */
+function isCookiesEnabled ()
+{
+	return navigator.cookieEnabled;
+}
+
+// --------------------------------------------------------
+
+/**
+ * Determines whether a cookie exists.
  *
  * @static
  *
  * @returns {Boolean} `true` if the cookie exists, otherwise `false`.
  *
- * @param {HTMLDocument} document The document to search the cookie for.
- * @param {String}       name     The name of the cookie to test the presence of.
+ * @param {String} name The name of the cookie to test the presence of.
  *
  * @memberof Crumble
  */
-function hasCookieInDocument (document, name)
+function hasCookie (name)
 {
-	return new RegExp('(?:^|.*;)\\s*' + global.encodeURIComponent(name) + '\\s*\\=').test(document.cookie);
+	return new RegExp('(?:^|.*;)\\s*' + encodeURIComponent(name) + '\\s*\\=').test(document.cookie);
 }
 
+// --------------------------------------------------------
+
 /**
- * Retrieves the value of a cookie in a given document.
- *
- * @private
+ * Reads the value of a cookie.
  *
  * @static
  *
- * @returns {String} The value of the cookie or `null` if the cookie doesn't exist in the document.
+ * @returns {String} The value of the cookie or `null` if the cookie doesn't exist.
  *
- * @param {HTMLDocument} document The document to search the cookie for.
- * @param {String}       name     The name of the cookie to fetch.
+ * @param {String} name The name of the cookie to read..
  *
  * @memberof Crumble
  */
-function getCookieInDocument (document, name)
+function getCookie (name)
 {
-	var cookie = new RegExp('(?:(?:^|.*;)\\s*' + global.encodeURIComponent(name) + '\\s*\\=\\s*(.*?)(?:;|$))').exec(document.cookie);
+	let cookie = new RegExp('(?:(?:^|.*;)\\s*' + encodeURIComponent(name) + '\\s*\\=\\s*(.*?)(?:;|$))').exec(document.cookie);
 
 	if (cookie === null)
 	{
 		return null;
 	}
 
-	return global.decodeURIComponent( cookie[1] );
+	return decodeURIComponent( cookie[1] );
 }
 
+// --------------------------------------------------------
+
 /**
- * Sets a cookie in a given document.
+ * Sets a cookie.
  *
- * This will set both an `expires` and a `max-age` attribute.
+ * Example usage:
  *
- * @private
+ * ```
+ * Crumble.setCookie(
+ * {
+ *    name : "name", value : "value", domain : "a.domain.com", path : "/a/document/path", secure : false
+ * });
+ * ```
  *
- * @static
+ * Alternatively you can separate the value from the crumbs:
  *
- * @param {HTMLDocument} document                 The document to set the cookie for.
- * @param {String}       name                     The name of the cookie.
- * @param {*}            [value]                  The value of the cookie. When `undefined` or `null` this will be omitted.
- * @param {Number}       [age]                    The duration (in milliseconds) of which the cookie can live. When provided any `expires` date is ignored.
- * @param {Date}         [expires]                The expiry date of the cookie, if omitted, the cookie will expire at the end of the session.
- * @param {String}       [path]                   The path of which the cookie will be created. Defaults to the path of the document.
- * @param {String}       [domain]                 The (sub)domain of which the cookie will be created. It can only be a domain that the target document is in, however cookies can cross subdomains. Defaults to the domain of the document (i.e. the value of `document.domain`).
- * @param {Boolean}      [secure = false]         Indicates whether the cookie should only be passed over HTTPS connections.
- * @param {Boolean}      [firstPartyOnly = false] Indicates whether the cookie should only be sent in a first-party context. This is subject to client support.
+ * ```
+ * Crumble.setCookie(
+ * {
+ *    name : "name", domain : "a.domain.com", path : "/a/document/path", secure : false
  *
- * @throws {TypeError} When `name` is `null` or `undefined`.
- * @throws {TypeError} When `age` is not a valid number.
- * @throws {TypeError} When `expires` does not represent a valid date.
+ * }, 'value');
+ * ```
  *
- * @memberof Crumble
+ * This is useful as the cookie value is usually the variable whereas the other crumbs are usually fixed.
+ *
+ * @instance
+ *
+ * @param {Object}             crumbs                          The crumbs that make the cookie.
+ * @param {String}             crumbs.name                     The name of the cookie.
+ * @param {String}             [crumbs.value = null]           The value of the cookie.
+ * @param {Number}             [crumbs.age]                    The duration (in milliseconds) of which the cookie can live. When defined, any provided expiry date is ignored. When set to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
+ * @param {Date|String|Number} [crumbs.expires]                The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. When provided a timestamp equivalent to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
+ * @param {String}             [crumbs.path]                   The path of which the cookie will be created. Defaults to the path of the document.
+ * @param {String}             [crumbs.domain]                 The (sub)domain of which the cookie will be created. The domain can only be a domain that the document is in, however cookies can cross subdomains. When set to `.` the domain will be set to the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.domain`).
+ * @param {Boolean}            [crumbs.secure = false]         Indicates whether the cookie should only be passed over HTTPS connections.
+ * @param {Boolean}            [crumbs.firstPartyOnly = false] Indicates whether the cookie should only be sent in a first-party context. This is subject to client support.
+ * @param {String}             [cookieValue]                   The value of the cookie. When omitted `crumbs.value` will be used.
+ *
+ * @throws {TypeError} When `crumbs.name` is `null` or `undefined`.
+ * @throws {TypeError} When `crumbs.age` is not a valid number.
+ * @throws {TypeError} When `crumbs.expires` does not represent a valid date.
  */
-function setCookieInDocument (document, name, value, age, expires, path, domain, secure, firstPartyOnly)
+function setCookie (crumbs, cookieValue)
 {
-	if (name === undefined || name === null)
+	let { name = null, value = null, age, expires, path, domain, secure = false, firstPartyOnly = false } = crumbs;
+
+	if (name === null)
 	{
-		throw new TypeError('The cookie name cannot be `null` or `undefined`.');
+		throw new TypeError('The cookie name be provided.');
 	}
 
-	var cookie = global.encodeURIComponent(name) + '=';
+	let cookie = encodeURIComponent(name) + '=';
+
+	// When `cookieValue` is only `undefined`, then use the
+	// `value` crumb.
+	if (cookieValue !== undefined)
+	{
+		value = cookieValue;
+	}
 
 	// Value.
 	//
 	// To keep things tidy, ensure the value is omitted if it
-	// is `undefined` or `null`.
+	// results in `null`.
 	if (value !== null)
 	{
-		cookie += global.encodeURIComponent(value);
+		cookie += encodeURIComponent(value);
 	}
 
 	// Path.
@@ -150,8 +255,15 @@ function setCookieInDocument (document, name, value, age, expires, path, domain,
 	//
 	// This is to support domains like `localhost`, which when
 	// explicitly set causes the cookie not to be written.
-	if (domain && domain !== document.domain)
+	let domainOfTheDocument = getDomain();
+
+	if (domain && domain !== domainOfTheDocument)
 	{
+		if (domain === ROOT_DOMAIN)
+		{
+			domain = getRootDomain();
+		}
+
 		cookie += ';domain=' + domain;
 	}
 
@@ -161,6 +273,13 @@ function setCookieInDocument (document, name, value, age, expires, path, domain,
 		if (typeof age !== 'number' || isNaN(age))
 		{
 			throw new TypeError('The cookie age must be a valid number.');
+		}
+
+		if (age === Infinity)
+		{
+			// Determine the number of seconds between now and the
+			// maximum allowed expiry date.
+			age = MAXIMUM_EXPIRY_DATE.getTime() - Date.now();
 		}
 
 		expires = new Date();
@@ -179,7 +298,9 @@ function setCookieInDocument (document, name, value, age, expires, path, domain,
 	// Expires.
 	else if (expires)
 	{
-		if (expires instanceof Date && expires.toString() !== 'Invalid Date')
+		expires = (expires === Infinity) ? MAXIMUM_EXPIRY_DATE : new Date(expires);
+
+		if (expires.toString() !== 'Invalid Date')
 		{
 			age = expires.getTime() - Date.now();
 
@@ -210,378 +331,41 @@ function setCookieInDocument (document, name, value, age, expires, path, domain,
 	document.cookie = cookie;
 }
 
-/**
- * Removes a cookie from a given document by forcing it to immediately expire.
- *
- * @private
- *
- * @static
- *
- * @param {HTMLDocument} document                 The document to remove the cookie from.
- * @param {String}       name                     The name of the cookie to remove.
- * @param {String}       [path]                   The path of which the cookie will be removed from.
- * @param {String}       [domain]                 The (sub)domain of which the cookie will be removed from. The domain can only be a domain that the target document is in, however cookies can cross subdomains. Defaults to the domain of the document (i.e. the value of `document.domain`).
- * @param {Boolean}      [secure = false]         Indicates whether the cookie should only be removed over HTTPS connections.
- * @param {Boolean}      [firstPartyOnly = false] Indicates whether the cookie should only be removed in a first-party context. This is subject to client support.
- *
- * @throws {TypeError} When `name` is `null` or `undefined`.
- *
- * @memberof Crumble
- */
-function removeCookieFromDocument (document, name, path, domain, secure, firstPartyOnly)
-{
-	setCookieInDocument(document, name, undefined, -3600000, undefined, path, domain, secure, firstPartyOnly);
-}
-
 // --------------------------------------------------------
 
 /**
- * Determines whether cookies are enabled in a given document.
- *
- * @private
- *
- * @static
- *
- * @returns {Boolean} `true` if cookies are enabled, otherwise `false`.
- *
- * @param {HTMLDocument} document The document to test.
- *
- * @memberof Crumble
- */
-function isCookiesEnabledInDocument (document)
-{
-	setCookieInDocument(
-		document, TEST_COOKIE_NAME, undefined, undefined, undefined, undefined, undefined, undefined, undefined
-	);
-
-	var isEnabled = hasCookieInDocument(document, TEST_COOKIE_NAME);
-
-	removeCookieFromDocument(
-		document, TEST_COOKIE_NAME, undefined, undefined, undefined
-	);
-
-	return isEnabled;
-}
-
-/**
- * Retrieves the root domain of a given a document.
- *
- * For example if the document is on domain `a.b.c.d.co.uk` the root domain will be `d.co.uk`.
- *
- * @private
- *
- * @static
- *
- * @returns {String} The root domain of the given document.
- *
- * @param {HTMLDocument} document The document to retrieve the root domain from.
- *
- * @memberof Crumble
- */
-function getRootDomainForDocument (document)
-{
-	var domain, domains = document.domain.split('.');
-
-	for (var i = 0, l = domains.length; i < l; ++i)
-	{
-		domain = domains.slice(-1 - i).join('.');
-
-		setCookieInDocument(
-			document, TEST_COOKIE_NAME, undefined, undefined, undefined, undefined, domain, undefined, undefined
-		);
-
-		if (hasCookieInDocument(document, TEST_COOKIE_NAME))
-		{
-			break;
-		}
-	}
-
-	removeCookieFromDocument(
-		document, TEST_COOKIE_NAME, undefined, domain, undefined, undefined
-	);
-
-	return domain;
-}
-
-// --------------------------------------------------------
-
-/**
- * Creates a new Crumble interface to a given document object.
+ * Removes a cookie.
  *
  * Example usage:
  *
  * ```
- * var cookies = new Crumble(window.document);
- *
- * if (cookies.isEnabled() === false)
+ * Crumble.removeCookie(
  * {
- *    window.alert('You do not have cookies enabled.');
- * }
+ *    name : "name"
+ * });
  * ```
  *
- * @class Crumble
+ * @instance
  *
- * @classdesc A simple wrapper that makes reading the cookies of a given document easy and expressive.
+ * @param {Object}  crumbs                          The crumbs of the cookie to remove.
+ * @param {String}  crumbs.name                     The name of the cookie.
+ * @param {String}  [crumbs.path]                   The path of which the cookie will be removed from. Defaults to the path of the current document.
+ * @param {String}  [crumbs.domain]                 The (sub)domain of which the cookie will be removed from. The domain can only be a domain that the document is in, however cookies can cross subdomains. When set to `.` the cookie will be removed from the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.domain`).
+ * @param {Boolean} [crumbs.secure = false]         Indicates whether the cookie should only be removed over HTTPS connections.
+ * @param {Boolean} [crumbs.firstPartyOnly = false] Indicates whether the cookie should only be sent in a first-party context. This is subject to client support.
  *
- * @param {HTMLDocument} document The document that the Crumble will be reading
- *
- * @throws {TypeError} When `document` does not have both a `cookie` and `domain` property.
+ * @throws {Error} When `crumbs.name` is `null` or `undefined`.
  */
-function Crumble (document)
+function removeCookie (crumbs)
 {
-	// Perform some duck type checks to ensure the provided
-	// document is valid.
-	if (document === undefined || document.cookie === undefined || document.domain === undefined)
+	let { name, path, domain, secure, firstPartyOnly } = crumbs;
+
+	setCookie(
 	{
-		throw new TypeError('Crumble expects a document object with at least both a `cookie` and `domain` property.');
-	}
-
-	/**
-	 * The document containing the cookie data being read.
-	 *
-	 * @private
-	 *
-	 * @instance
-	 *
-	 * @type {HTMLDocument}
-	 *
-	 * @memberof Crumble
-	 */
-	this._document = document;
-
-	/**
-	 * The root domain of the document that will be used when setting a cookie with the domain `.`;
-	 *
-	 * @private
-	 *
-	 * @instance
-	 *
-	 * @type {String}
-	 *
-	 * @memberof Crumble
-	 */
-	this._rootDomain = getRootDomainForDocument(document);
+		name, path, domain, secure, firstPartyOnly, age : -3600000
+	});
 }
 
 // --------------------------------------------------------
 
-Crumble.prototype =
-{
-	/**
-	 * @ignore
-	 */
-	constructor : Crumble,
-
-	/**
-	 * Determines whether cookies are enabled in the target document.
-	 *
-	 * Example usage:
-	 *
-	 * ```
-	 * if (cookies.isEnabled() === false)
-	 * {
-	 *    window.alert('You do not have cookies enabled.');
-	 * }
-	 * ```
-	 *
-	 * @instance
-	 *
-	 * @returns {Boolean} `true` if cookies are enabled in this document, otherwise `false`.
-	 */
-	isEnabled : function ()
-	{
-		return isCookiesEnabledInDocument(this._document);
-	},
-
-	/**
-	 * Retrieves the value of a cookie from the target document.
-	 *
-	 * Example usage:
-	 *
-	 * ```
-	 * var cookie = cookies.get('cookie_name');
-	 * ```
-	 *
-	 * @instance
-	 *
-	 * @returns {String} The value of the cookie. `null` will be returned if the cookie doesn't exist.
-	 *
-	 * @param {String} name The name of the cookie to fetch.
-	 */
-	get : function (name)
-	{
-		return getCookieInDocument(this._document, name);
-	},
-
-	/**
-	 * Determines whether a cookie exists in the target document.
-	 *
-	 * Example usage:
-	 *
-	 * ```
-	 * var exists = cookies.has('cookie_name');
-	 * ```
-	 *
-	 * The above is just a more expressive (and faster) way of doing the following:
-	 *
-	 * ```
-	 * var exists = crumble.get('cookie_name') !== null;
-	 * ```
-	 *
-	 * @instance
-	 *
-	 * @returns {Boolean} `true` if the cookie exists in this document, otherwise `false`.
-	 *
-	 * @param {String} name The name of the cookie to test the presence of.
-	 */
-	has : function (name)
-	{
-		return hasCookieInDocument(this._document, name);
-	},
-
-	/**
-	 * Sets a cookie in the target document.
-	 *
-	 * Example usage:
-	 *
-	 * ```
-	 * cookies.set(
-	 * {
-	 *    name : 'name', value : 'value', domain : 'a.domain.com', path : '/a/document/path', secure : false
-	 * });
-	 * ```
-	 *
-	 * Alternatively you can separate the value from the cookie crumbs, like so:
-	 *
-	 * ```
-	 * cookies.set(
-	 * {
-	 *    name : 'name', domain : 'a.domain.com', path : '/a/document/path', secure : false
-	 *
-	 * }, 'value');
-	 * ```
-	 *
-	 * This is useful as the value is usually the variable when setting a cookie whereas the other cookie crumbs are usually fixed.
-	 *
-	 * @instance
-	 *
-	 * @param {Object}             crumbs                          The crumbs that make the cookie.
-	 * @param {String}             crumbs.name                     The name of the cookie.
-	 * @param {String}             [crumbs.value]                  The value of the cookie. When set to `undefined` the cookie will be removed by forcing it to immediately expire, ignoring any `age` or `expires` crumb that may be provided.
-	 * @param {Number}             [crumbs.age]                    The duration (in milliseconds) of which the cookie can live. When defined, any provided expiry date is ignored. When set to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
-	 * @param {Date|String|Number} [crumbs.expires]                The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. When provided a timestamp equivalent to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
-	 * @param {String}             [crumbs.path]                   The path of which the cookie will be created. Defaults to the path of the target document.
-	 * @param {String}             [crumbs.domain]                 The (sub)domain of which the cookie will be created. The domain can only be a domain that the target document is in, however cookies can cross subdomains. When set to `.` the domain will be set to the root domain of the target document. Defaults to the domain of the target document (i.e. the value of `document.domain`).
-	 * @param {Boolean}            [crumbs.secure = false]         Indicates whether the cookie should only be passed over HTTPS connections.
-	 * @param {Boolean}            [crumbs.firstPartyOnly = false] Indicates whether the cookie should only be sent in a first-party context. This is subject to client support.
-	 * @param {String}             [value]                         The value of the cookie, see the documentation for `crumbs.value`. When omitted `crumbs.value` will be used.
-	 *
-	 * @throws {TypeError} When `crumbs.name` is `null` or `undefined`.
-	 * @throws {TypeError} When `crumbs.age` is not a valid number.
-	 * @throws {TypeError} When `crumbs.expires` does not represent a valid date.
-	 */
-	set : function (crumbs, value)
-	{
-		var name           = crumbs.name,
-		    age            = crumbs.age,
-		    expires        = crumbs.expires,
-		    path           = crumbs.path,
-		    domain         = crumbs.domain,
-		    secure         = crumbs.secure,
-		    firstPartyOnly = crumbs.firstPartyOnly;
-
-		if (value === undefined)
-		{
-			value = crumbs.value;
-		}
-
-		// If no cookie value is specified we will remove the
-		// cookie instead.
-		if (value === undefined)
-		{
-			removeCookieFromDocument(this._document, name, path, domain, secure, firstPartyOnly);
-
-			return;
-		}
-
-		if (age)
-		{
-			if (age === Infinity)
-			{
-				// Determine the number of seconds between now and the
-				// maximum allowed expiry date.
-				age = MAXIMUM_EXPIRY_DATE.getTime() - Date.now();
-			}
-
-			// Ignore.
-			expires = undefined;
-		}
-
-		if (expires)
-		{
-			expires = (expires === Infinity) ? MAXIMUM_EXPIRY_DATE : new Date(expires);
-
-			// Ignore.
-			age = undefined;
-		}
-
-		if (domain === ROOT_DOMAIN)
-		{
-			domain = this._rootDomain;
-		}
-
-		setCookieInDocument(this._document, name, value, age, expires, path, domain, secure, firstPartyOnly);
-	},
-
-	/**
-	 * Removes a cookie from the target document by forcing it to immediately expire.
-	 *
-	 * Example usage:
-	 *
-	 * ```
-	 * cookies.remove(
-	 * {
-	 *    name : 'name'
-	 * });
-	 * ```
-	 *
-	 * The above is just a more expressive way of doing the following:
-	 *
-	 * ```
-	 * cookies.set(
-	 * {
-	 *    name : 'name', value : undefined
-	  * });
-	 * ```
-	 *
-	 * @instance
-	 *
-	 * @param {Object}  crumbs                          The crumbs of the cookie to remove.
-	 * @param {String}  crumbs.name                     The name of the cookie.
-	 * @param {String}  [crumbs.path]                   The path of which the cookie will be removed from. Defaults to the path of the target document.
-	 * @param {String}  [crumbs.domain]                 The (sub)domain of which the cookie will be removed from. The domain can only be a domain that the target document is in, however cookies can cross subdomains. When set to `.` the cookie will be removed from the root domain of the target document. Defaults to the domain of the target document (i.e. the value of `document.domain`).
-	 * @param {Boolean} [crumbs.secure = false]         Indicates whether the cookie should only be removed over HTTPS connections.
-	 * @param {Boolean} [crumbs.firstPartyOnly = false] Indicates whether the cookie should only be sent in a first-party context. This is subject to client support.
-	 *
-	 * @throws {Error} When `crumbs.name` is `null` or `undefined`.
-	 */
-	remove : function (crumbs)
-	{
-		var name           = crumbs.name,
-		    path           = crumbs.path,
-		    domain         = crumbs.domain,
-		    secure         = crumbs.secure,
-		    firstPartyOnly = crumbs.firstPartyOnly;
-
-		if (domain === ROOT_DOMAIN)
-		{
-			domain = this._rootDomain;
-		}
-
-		removeCookieFromDocument(this._document, name, path, domain, secure, firstPartyOnly);
-	}
-};
-
-// --------------------------------------------------------
-
-module.exports = Crumble;
+module.exports = { isCookiesEnabled, hasCookie, getCookie, setCookie, removeCookie };
