@@ -221,7 +221,7 @@ function setCookie (crumbs, cookieValue)
 
 	if (name === null)
 	{
-		throw new TypeError('The cookie name be provided.');
+		throw new TypeError('The cookie name must be provided.');
 	}
 
 	let cookie = encodeURIComponent(name) + '=';
