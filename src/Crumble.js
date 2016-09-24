@@ -182,7 +182,7 @@ function getCookie (name)
  * ```
  * Crumble.setCookie(
  * {
- *		name : "name", value : "value", domain : "a.domain.com", path : "/a/document/path", secure : false
+ *    name : "name", value : "value", domain : "a.domain.com", path : "/a/document/path", secure : false
  * });
  * ```
  *
@@ -191,7 +191,7 @@ function getCookie (name)
  * ```
  * Crumble.setCookie(
  * {
- *		name : "name", domain : "a.domain.com", path : "/a/document/path", secure : false
+ *    name : "name", domain : "a.domain.com", path : "/a/document/path", secure : false
  *
  * }, 'value');
  * ```
@@ -200,16 +200,16 @@ function getCookie (name)
  *
  * @instance
  *
- * @param {Object}						 crumbs													The crumbs that make the cookie.
- * @param {String}						 crumbs.name										 The name of the cookie.
- * @param {String}						 [crumbs.value = null]					 The value of the cookie.
- * @param {Number}						 [crumbs.age]										The duration (in milliseconds) of which the cookie can live. When defined, any provided expiry date is ignored. When set to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
- * @param {Date|String|Number} [crumbs.expires]								The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. When provided a timestamp equivalent to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
- * @param {String}						 [crumbs.path]									 The path of which the cookie will be created. Defaults to the path of the document.
- * @param {String}						 [crumbs.domain]								 The (sub)domain of which the cookie will be created. The domain can only be a domain that the document is in, however cookies can cross subdomains. When set to `.` the domain will be set to the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.domain`).
- * @param {Boolean}						[crumbs.secure = false]				 Indicates whether the cookie should only be passed over HTTPS connections.
- * @param {Boolean}						[crumbs.firstPartyOnly = false] Indicates whether the cookie should only be sent in a first-party context. This is subject to client support.
- * @param {String}						 [cookieValue]									 The value of the cookie. When omitted `crumbs.value` will be used.
+ * @param {Object}             crumbs                          The crumbs that make the cookie.
+ * @param {String}             crumbs.name                     The name of the cookie.
+ * @param {String}             [crumbs.value = null]           The value of the cookie.
+ * @param {Number}             [crumbs.age]                    The duration (in milliseconds) of which the cookie can live. When defined, any provided expiry date is ignored. When set to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
+ * @param {Date|String|Number} [crumbs.expires]                The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. When provided a timestamp equivalent to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
+ * @param {String}             [crumbs.path]                   The path of which the cookie will be created. Defaults to the path of the document.
+ * @param {String}             [crumbs.domain]                 The (sub)domain of which the cookie will be created. The domain can only be a domain that the document is in, however cookies can cross subdomains. When set to `.` the domain will be set to the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.domain`).
+ * @param {Boolean}            [crumbs.secure = false]         Indicates whether the cookie should only be passed over HTTPS connections.
+ * @param {Boolean}	           [crumbs.firstPartyOnly = false] Indicates whether the cookie should only be sent in a first-party context. This is subject to client support.
+ * @param {String}             [cookieValue]                   The value of the cookie. When omitted `crumbs.value` will be used.
  *
  * @throws {TypeError} When `crumbs.name` is `null` or `undefined`.
  * @throws {TypeError} When `crumbs.age` is not a valid number.
@@ -341,17 +341,17 @@ function setCookie (crumbs, cookieValue)
  * ```
  * Crumble.removeCookie(
  * {
- *		name : "name"
+ *    name : "name"
  * });
  * ```
  *
  * @instance
  *
- * @param {Object}	crumbs													The crumbs of the cookie to remove.
- * @param {String}	crumbs.name										 The name of the cookie.
- * @param {String}	[crumbs.path]									 The path of which the cookie will be removed from. Defaults to the path of the current document.
- * @param {String}	[crumbs.domain]								 The (sub)domain of which the cookie will be removed from. The domain can only be a domain that the document is in, however cookies can cross subdomains. When set to `.` the cookie will be removed from the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.domain`).
- * @param {Boolean} [crumbs.secure = false]				 Indicates whether the cookie should only be removed over HTTPS connections.
+ * @param {Object} crumbs                           The crumbs of the cookie to remove.
+ * @param {String} crumbs.name                      The name of the cookie.
+ * @param {String} [crumbs.path]                    The path of which the cookie will be removed from. Defaults to the path of the current document.
+ * @param {String} [crumbs.domain]                  The (sub)domain of which the cookie will be removed from. The domain can only be a domain that the document is in, however cookies can cross subdomains. When set to `.` the cookie will be removed from the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.domain`).
+ * @param {Boolean} [crumbs.secure = false]         Indicates whether the cookie should only be removed over HTTPS connections.
  * @param {Boolean} [crumbs.firstPartyOnly = false] Indicates whether the cookie should only be sent in a first-party context. This is subject to client support.
  *
  * @throws {Error} When `crumbs.name` is `null` or `undefined`.
