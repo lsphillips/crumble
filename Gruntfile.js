@@ -12,14 +12,14 @@ module.exports = function (grunt)
 	grunt.initConfig(
 	{
 		eslint :
-    {
-      options :
-      {
-        useEslintrc : true
-      },
+		{
+			options :
+			{
+				useEslintrc : true
+			},
 
-      src : ['src/**/*.js', 'tests/**/*.js']
-    },
+			src : ['src/**/*.js', 'tests/**/*.js']
+		},
 
 		// ------------------------------------------------------
 

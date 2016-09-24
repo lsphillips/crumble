@@ -36,7 +36,7 @@ function getPropertyDescriptor (object, property)
 
 module.exports = function spyOnDocumentCookie (document)
 {
-  // This will not work on a browser document; at least not
+	// This will not work on a browser document; at least not
 	// consistently.
 	//
 	// This is because the `cookie` property (and others) are
@@ -44,20 +44,20 @@ module.exports = function spyOnDocumentCookie (document)
 	//
 	// However, as we are working with a JSDOM document, we
 	// can get away with this.
-  let cookiePropertyDescriptor = getPropertyDescriptor(document, 'cookie');
+	let cookiePropertyDescriptor = getPropertyDescriptor(document, 'cookie');
 
 	if (cookiePropertyDescriptor === undefined)
 	{
 		throw new Error('Provided document does not have a `cookie` property.');
 	}
 
-  // Spy on the setter used for the document's `cookie`
+	// Spy on the setter used for the document's `cookie`
 	// property.
-  let documentCookieSpy = sinon.spy(cookiePropertyDescriptor, 'set');
+	let documentCookieSpy = sinon.spy(cookiePropertyDescriptor, 'set');
 
-  // Define a new cookie property on the document object
+	// Define a new cookie property on the document object
 	// itself using the definition being spied on.
-  Object.defineProperty(document, 'cookie', cookiePropertyDescriptor);
+	Object.defineProperty(document, 'cookie', cookiePropertyDescriptor);
 
-  return documentCookieSpy;
+	return documentCookieSpy;
 };

@@ -3,17 +3,17 @@
 
 language: node_js
 node_js:
-    - "6"
+	- "6"
 before_script: "npm install -g grunt-cli"
 
 # Deployment
 # -------------------------------------
 
 deploy:
-    provider: npm
-    on:
-        tags: true
-        node: "6"
-    api_key:
-        secure: "AME1AOrdFLGJLCPpY2iGWWI7LhhtMiLdd46GXRoW6qb0Q/J4G46KXSeY/FDEMzkTqKtvc2VssTQxedERuJW0Wa8o4luBGNzpjsTTlaerDKw/MvXtMpOfS8I2xaqyhZGJSgrLNLMrrQXqKORSJ+kNqAWubr4Zcu8QBhsZEK/RCq3I9v/UPGshM8+oTUbExmsq4B5UuX7oMwyz3hDk+EIC/LiY5JUFDMkMeCveA0TEfWEFUPVf6cgtqjrMkFN9bTYl3uEBcw777FM1dXvahs7oUic6OelLymliI18IjvgNjPcyzzDEn7p9WJuZZOsvF12IGyZBwxmYgxkPyO0Wb+r8R0BgtHfWGecp3jZ6+UiPAc2cd5vKvanz6PhvQSTnxIK+308qcpK6yLB0dS6Dd9kQCDXlYfKuw9aOYqWveIFxO54EAuC5mjGn6iMFGNcVR8vkdblpbXExdqMFPPyBao8aggj861uCeoCb/h2j23b4tkTzsNX7q43jwcs9WdKyripFILV3px2IVLTdpUrEVrJfpo/cbpe7QR49DNu2fF3/Cd3onWgAwoV9mHJlRxd+hRtyeS2xxzpo9rm1Pl+dlZ6R9ixrK4+YNTXTOctQfIcjfAe0wi2IAT0+zkVtIs1Xm9e0SVu1neXWoducJmMRtbsZ+7mTA2Fw0vF6CNQgx1y4dYU="
-    email: "lsphillips.mail@gmail.com"
+	provider: npm
+	on:
+		tags: true
+		node: "6"
+	api_key:
+		secure: "AME1AOrdFLGJLCPpY2iGWWI7LhhtMiLdd46GXRoW6qb0Q/J4G46KXSeY/FDEMzkTqKtvc2VssTQxedERuJW0Wa8o4luBGNzpjsTTlaerDKw/MvXtMpOfS8I2xaqyhZGJSgrLNLMrrQXqKORSJ+kNqAWubr4Zcu8QBhsZEK/RCq3I9v/UPGshM8+oTUbExmsq4B5UuX7oMwyz3hDk+EIC/LiY5JUFDMkMeCveA0TEfWEFUPVf6cgtqjrMkFN9bTYl3uEBcw777FM1dXvahs7oUic6OelLymliI18IjvgNjPcyzzDEn7p9WJuZZOsvF12IGyZBwxmYgxkPyO0Wb+r8R0BgtHfWGecp3jZ6+UiPAc2cd5vKvanz6PhvQSTnxIK+308qcpK6yLB0dS6Dd9kQCDXlYfKuw9aOYqWveIFxO54EAuC5mjGn6iMFGNcVR8vkdblpbXExdqMFPPyBao8aggj861uCeoCb/h2j23b4tkTzsNX7q43jwcs9WdKyripFILV3px2IVLTdpUrEVrJfpo/cbpe7QR49DNu2fF3/Cd3onWgAwoV9mHJlRxd+hRtyeS2xxzpo9rm1Pl+dlZ6R9ixrK4+YNTXTOctQfIcjfAe0wi2IAT0+zkVtIs1Xm9e0SVu1neXWoducJmMRtbsZ+7mTA2Fw0vF6CNQgx1y4dYU="
+	email: "lsphillips.mail@gmail.com"
