@@ -6,7 +6,7 @@
 // --------------------------------------------------------
 
 const sinon = require('sinon');
-const chai	= require('chai');
+const chai  = require('chai');
 const jsdom = require('jsdom');
 
 // Helpers
