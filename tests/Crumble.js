@@ -52,8 +52,8 @@ describe('Crumble', function ()
 
 				// Expose `document`, `window` & `navigator` as globals
 				// to emulate a browser environment.
-				global.document	= window.document;
-				global.window		= window;
+				global.document  = window.document;
+				global.window    = window;
 				global.navigator = window.navigator;
 
 				done();
