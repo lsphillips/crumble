@@ -86,13 +86,7 @@ npm install crumble
 
 ## Development
 
-Grunt is used to handle the build process for Crumble. To perform a full build, use the `build` task:
-
-``` sh
-grunt build
-```
-
-To only run tests use the `test` task:
+This project doesn't have much of a build process. It does have tests though; which you can run with Grunt like so:
 
 ``` sh
 grunt test

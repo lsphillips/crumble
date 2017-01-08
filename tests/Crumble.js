@@ -187,9 +187,7 @@ describe('Crumble', function ()
 				}, 'value');
 
 				// Assert.
-				chai.expect(
-					spy.calledWithExactly('name=value')
-				).to.be.true;
+				sinon.assert.calledWithExactly(spy, 'name=value');
 			});
 
 			it('with the value specified by `crumbs.value` when `cookieValue` is `undefined`', function ()
@@ -204,9 +202,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithExactly('name=value')
-				).to.be.true;
+				sinon.assert.calledWithExactly(spy, 'name=value');
 			});
 
 			it('ignore `crumbs.value` when `cookieValue` is not `undefined`', function ()
@@ -222,9 +218,7 @@ describe('Crumble', function ()
 				}, 'value');
 
 				// Assert.
-				chai.expect(
-					spy.calledWithExactly('name=value')
-				).to.be.true;
+				sinon.assert.calledWithExactly(spy, 'name=value');
 			});
 
 			it('with the value URL encoded when required', function ()
@@ -240,9 +234,7 @@ describe('Crumble', function ()
 				}, 'a value that needs encoding');
 
 				// Assert.
-				chai.expect(
-					spy.calledWithExactly('name=a%20value%20that%20needs%20encoding')
-				).to.be.true;
+				sinon.assert.calledWithExactly(spy, 'name=a%20value%20that%20needs%20encoding');
 
 				// Reset.
 				spy.reset();
@@ -254,9 +246,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithExactly('name=another%20value%20that%20needs%20encoding')
-				).to.be.true;
+				sinon.assert.calledWithExactly(spy, 'name=another%20value%20that%20needs%20encoding');
 			});
 
 			it('with no value when `cookieValue` or `crumbs.value` is `null`', function ()
@@ -272,9 +262,7 @@ describe('Crumble', function ()
 				}, null);
 
 				// Assert.
-				chai.expect(
-					spy.calledWithExactly('name=')
-				).to.be.true;
+				sinon.assert.calledWithExactly(spy, 'name=');
 
 				// Reset.
 				spy.reset();
@@ -286,9 +274,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithExactly('name=')
-				).to.be.true;
+				sinon.assert.calledWithExactly(spy, 'name=');
 			});
 
 			it('with no value when `crumbs.value` is `undefined`', function ()
@@ -303,9 +289,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithExactly('name=')
-				).to.be.true;
+				sinon.assert.calledWithExactly(spy, 'name=');
 			});
 
 			it('that is only available on the path specified by `crumbs.path`', function ()
@@ -320,9 +304,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';path=/a/document/path')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';path=/a/document/path');
 			});
 
 			it('that is only available on the path of the document when `crumbs.path` is `undefined', function ()
@@ -337,9 +319,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';path=')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';path=');
 			});
 
 			it('that is only available on the domain specified by `crumbs.domain`', function ()
@@ -354,9 +334,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';domain=sub.domain.com')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';domain=sub.domain.com');
 			});
 
 			it('that is only available on the domain of the document when `crumbs.domain` is `undefined`', function ()
@@ -371,9 +349,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';domain=')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';domain=');
 			});
 
 			it('that is only available on the root domain of the document when `crumbs.domain` is `.`', function ()
@@ -388,9 +364,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';domain=crumble.co.uk')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';domain=crumble.co.uk');
 			});
 
 			it('by ignoring `crumbs.domain` when it matches the domain of the document', function ()
@@ -405,9 +379,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';domain=')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';domain=');
 			});
 
 			it('that is only available over HTTPS when `crumbs.secure` equates to `true`', function ()
@@ -422,9 +394,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';secure')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';secure');
 			});
 
 			it('that is available over both HTTP and HTTPS when `crumbs.secure` equates to `false`', function ()
@@ -439,9 +409,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';secure')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';secure');
 			});
 
 			it('that is available over both HTTP and HTTPS when `crumbs.secure` is `undefined`', function ()
@@ -456,9 +424,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';secure')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';secure');
 			});
 
 			it('that will expire after the number of milliseconds specified by `crumbs.age`', function ()
@@ -473,14 +439,10 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';max-age=3600')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';max-age=3600');
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';expires=Thu, 04 Dec 1980 01:00:00 GMT')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';expires=Thu, 04 Dec 1980 01:00:00 GMT');
 			});
 
 			it('that will expire at 23:59:59 on 31 Dec 9999 when `crumbs.age` is `Infinity`', function ()
@@ -495,14 +457,10 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';max-age=253057564799')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';max-age=253057564799');
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';expires=Fri, 31 Dec 9999 23:59:59 GMT')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';expires=Fri, 31 Dec 9999 23:59:59 GMT');
 			});
 
 			it('that will expire at the date specified by `crumbs.expires` as a date object', function ()
@@ -517,14 +475,10 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';max-age=7200')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';max-age=7200');
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';expires=Thu, 04 Dec 1980 02:00:00 GMT')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';expires=Thu, 04 Dec 1980 02:00:00 GMT');
 			});
 
 			it('that will expire at the date specified by `crumbs.expires` as a date string', function ()
@@ -539,14 +493,10 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';max-age=10800')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';max-age=10800');
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';expires=Thu, 04 Dec 1980 03:00:00 GMT')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';expires=Thu, 04 Dec 1980 03:00:00 GMT');
 			});
 
 			it('that will expire at the date specified by `crumbs.expires` as a timestamp', function ()
@@ -561,14 +511,10 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';max-age=14400')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';max-age=14400');
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';expires=Thu, 04 Dec 1980 04:00:00 GMT')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';expires=Thu, 04 Dec 1980 04:00:00 GMT');
 			});
 
 			it('that will expire at 23:59:59 on 31 Dec 9999 when `crumbs.expires` is `Infinity`', function ()
@@ -583,14 +529,10 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';max-age=253057564799')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';max-age=253057564799');
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';expires=Fri, 31 Dec 9999 23:59:59 GMT')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';expires=Fri, 31 Dec 9999 23:59:59 GMT');
 			});
 
 			it('that will expire at the end of the client session when both `crumbs.age` and `crumbs.expires` is `undefined`', function ()
@@ -605,14 +547,10 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';max-age=')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';max-age=');
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';expires=')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';expires=');
 			});
 
 			it('by ignoring `crumbs.expires` when `crumbs.age` is specified', function ()
@@ -627,14 +565,10 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';max-age=3600')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';max-age=3600');
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';expires=Thu, 04 Dec 1980 01:00:00 GMT')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';expires=Thu, 04 Dec 1980 01:00:00 GMT');
 			});
 
 			it('that is only available in first party contexts when `crumbs.firstPartyOnly` equates to `true`', function ()
@@ -649,9 +583,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';first-party-only')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';first-party-only');
 			});
 
 			it('that is available in all contexts when `crumbs.firstPartyOnly` equates to `false`', function ()
@@ -666,9 +598,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';first-party-only')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';first-party-only');
 			});
 
 			it('that is available in all contexts when `crumbs.firstPartyOnly` is `undefined`', function ()
@@ -683,9 +613,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';first-party-only')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';first-party-only');
 			});
 		});
 
@@ -766,14 +694,10 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';max-age=-3600')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';max-age=-3600');
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';expires=Wed, 03 Dec 1980 23:00:00 GMT')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';expires=Wed, 03 Dec 1980 23:00:00 GMT');
 			});
 
 			it('from the path specified by `crumbs.path`', function ()
@@ -788,9 +712,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';path=/a/document/path')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';path=/a/document/path');
 			});
 
 			it('from the path of the document when `crumbs.path` is `undefined`', function ()
@@ -805,9 +727,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';path=')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';path=');
 			});
 
 			it('from the the domain specified by `crumbs.domain`', function ()
@@ -822,9 +742,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';domain=crumble.co.uk')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';domain=crumble.co.uk');
 			});
 
 			it('from the domain of the document when `crumbs.domain` is `undefined`', function ()
@@ -839,9 +757,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';domain=')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';domain=');
 			});
 
 			it('from the root domain of the document when `crumbs.domain` is `.`', function ()
@@ -856,9 +772,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';domain=crumble.co.uk')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';domain=crumble.co.uk');
 			});
 
 			it('by ignoring `crumbs.domain` when it matches the domain of the document', function ()
@@ -873,9 +787,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';domain=')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';domain=');
 			});
 
 			it('only over HTTPS when `crumbs.secure` equates to `true`', function ()
@@ -890,9 +802,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';secure')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';secure');
 			});
 
 			it('over both HTTP and HTTPS when `crumbs.secure` equates to `false`', function ()
@@ -907,9 +817,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';secure')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';secure');
 			});
 
 			it('over both HTTP and HTTPS when `crumbs.secure` is `undefined`', function ()
@@ -924,9 +832,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';secure')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';secure');
 			});
 
 			it('only from the first party context when `crumbs.firstPartyOnly` equates to `true`', function ()
@@ -941,9 +847,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';first-party-only')
-				).to.be.true;
+				sinon.assert.calledWithMatch(spy, ';first-party-only');
 			});
 
 			it('from all contexts when `crumbs.firstPartyOnly` equates to `false`', function ()
@@ -958,9 +862,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';first-party-only')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';first-party-only');
 			});
 
 			it('from all contexts when `crumbs.firstPartyOnly` is `undefiend`', function ()
@@ -975,9 +877,7 @@ describe('Crumble', function ()
 				});
 
 				// Assert.
-				chai.expect(
-					spy.calledWithMatch(';first-party-only')
-				).to.be.false;
+				sinon.assert.neverCalledWithMatch(spy, ';first-party-only');
 			});
 		});
 
