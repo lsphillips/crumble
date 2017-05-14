@@ -3,14 +3,14 @@
 
 export interface Crumbs
 {
-    name            : string;
-    value?          : string;
-    age?            : number;
-    expires?        : string | number | Date;
-    path?           : string;
-    domain?         : string;
-    secure?         : boolean;
-    firstPartyOnly? : boolean;
+	name            : string;
+	value?          : string;
+	age?            : number;
+	expires?        : string | number | Date;
+	path?           : string;
+	domain?         : string;
+	secure?         : boolean;
+	firstPartyOnly? : boolean;
 }
 
 // --------------------------------------------------------
