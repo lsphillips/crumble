@@ -11,7 +11,7 @@ export interface Crumbs
     domain?         : string;
     secure?         : boolean;
     firstPartyOnly? : boolean;
-};
+}
 
 // --------------------------------------------------------
 
