@@ -1,7 +1,7 @@
 {
 	"name" : "crumble",
 
-	"version" : "0.4.1",
+	"version" : "0.4.2",
 
 	"description" : "A simple wrapper that makes reading the cookies of a given document easy and expressive.",
 
@@ -48,5 +48,7 @@
 	"scripts" :
 	{
 		"test" : "grunt test"
-	}
+	},
+
+	"types" : "Crumble.d.ts"
 }
