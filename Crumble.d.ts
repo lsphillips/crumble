@@ -4,7 +4,7 @@
 export interface Crumbs
 {
 	name            : string;
-	value?          : string;
+	value?          : string | null | undefined;
 	age?            : number;
 	expires?        : string | number | Date;
 	path?           : string;
@@ -27,7 +27,7 @@ export function getCookie(name : string) : string;
 
 // --------------------------------------------------------
 
-export function setCookie(crumbs : Crumbs, cookieValue? : string) : void;
+export function setCookie(crumbs : Crumbs, cookieValue? : string | null | undefined) : void;
 
 // --------------------------------------------------------
 
