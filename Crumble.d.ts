@@ -23,7 +23,7 @@ export function hasCookie(name : string) : boolean;
 
 // --------------------------------------------------------
 
-export function getCookie(name : string) : string;
+export function getCookie(name : string) : string | null;
 
 // --------------------------------------------------------
 
