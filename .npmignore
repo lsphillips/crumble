@@ -4,6 +4,10 @@
 .DS_Store
 .jshintrc
 .gitignore
+
+# Grunt
+# -----------------
+
 Gruntfile.js
 
 # File Types
