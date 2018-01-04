@@ -1,6 +1,3 @@
-// Type definitions for Crumble
-// --------------------------------------------------------
-
 export interface Crumbs
 {
 	name            : string;
@@ -27,7 +24,7 @@ export function getCookie(name : string) : string | null;
 
 // --------------------------------------------------------
 
-export function setCookie(crumbs : Crumbs, cookieValue? : string | null | undefined) : void;
+export function setCookie(crumbs : Crumbs, value? : string | null | undefined) : void;
 
 // --------------------------------------------------------
 
