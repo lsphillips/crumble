@@ -1,75 +1,42 @@
-/* eslint-env mocha */
-
 'use strict';
 
 // Dependencies
 // --------------------------------------------------------
 
-const sinon = require('sinon');
-const chai  = require('chai');
-const jsdom = require('jsdom');
+const { expect } = require('chai');
+const { JSDOM }  = require('jsdom');
 
-// Helpers
+// Subjects
 // --------------------------------------------------------
 
-const spyOnDocumentCookie = require('./helpers/spyOnDocumentCookie');
+const Crumble = require('../src/Crumble');
 
 // --------------------------------------------------------
 
 describe('Crumble', function ()
 {
-	const Crumble = require('../src/Crumble');
-
-	// -------------------------------------------------------
+	let clock = null;
 
 	beforeEach(function (done)
 	{
-		// Mock.
-		jsdom.env(
-		{
-			html :
-			`
-				<html>
-					<head>
-						<title> Crumble Test </title>
-					</head>
-					<body>
-						<!-- A document for testing Crumble -->
-					</body>
-				</html>
-			`,
-
-			done : (error, window) =>
-			{
-				if (error)
-				{
-					done(
-						new Error(`Could not create a JSDOM window. ${error}`)
-					);
-
-					return;
-				}
-
-				// Expose `document`, `window` & `navigator` as globals
-				// to emulate a browser environment.
-				global.document  = window.document;
-				global.window    = window;
-				global.navigator = window.navigator;
-
-				done();
-			},
-
+		let browser = new JSDOM('<html><head></head><body></body></html>', {
 			url : 'http://test.crumble.co.uk'
 		});
 
-		// Mock.
-		this.clock = sinon.useFakeTimers(344736000000);
-	});
+		// Expose.
+		global.document  = window.document;
+		global.window    = window;
+		global.navigator = window.navigator;
 
-	// -------------------------------------------------------
+		// Mock.
+		clock = sinon.useFakeTimers(344736000000);
+	});
 
 	afterEach(function ()
 	{
+		// Restore.
+		clock.restore();
+
 		// Close.
 		global.window.close();
 
@@ -77,19 +44,14 @@ describe('Crumble', function ()
 		delete global.document;
 		delete global.window;
 		delete global.navigator;
-
-		// Restore.
-		this.clock.restore();
 	});
-
-	// -------------------------------------------------------
 
 	describe('.isCookiesEnabled()', function ()
 	{
 		it('returns `true` when the client has cookies enabled', function ()
 		{
 			// Act & Assert.
-			chai.expect(
+			expect(
 				Crumble.isCookiesEnabled()
 			).to.be.true;
 		});
@@ -97,21 +59,18 @@ describe('Crumble', function ()
 		it('returns `false` when the client has cookies disabled', function ()
 		{
 			// Setup.
-			Object.defineProperty(global.document.defaultView.navigator, 'cookieEnabled',
-			{
-				configurable : false, writable : false, enemerable : false, value : false
+			Object.defineProperty(global.document.defaultView.navigator, 'cookieEnabled', {
+				value : false
 			});
 
 			// Act & Assert.
-			chai.expect(
+			expect(
 				Crumble.isCookiesEnabled()
 			).to.be.false;
 		});
 	});
 
-	// -------------------------------------------------------
-
-	describe('.getCookie(name)', function ()
+	describe('.getCookie(name, cookies)', function ()
 	{
 		it('returns the value of a cookie', function ()
 		{
@@ -119,7 +78,7 @@ describe('Crumble', function ()
 			global.document.cookie = 'name=value';
 
 			// Act & Assert.
-			chai.expect(
+			expect(
 				Crumble.getCookie('name')
 			).to.equal('value');
 		});
@@ -130,7 +89,7 @@ describe('Crumble', function ()
 			global.document.cookie = 'name=a%20value%20that%20needs%20decoding';
 
 			// Act & Assert.
-			chai.expect(
+			expect(
 				Crumble.getCookie('name')
 			).to.equal('a value that needs decoding');
 		});
@@ -138,7 +97,7 @@ describe('Crumble', function ()
 		it('returns `null` when a cookie does not exist', function ()
 		{
 			// Act & Assert.
-			chai.expect(
+			expect(
 				Crumble.getCookie('name')
 			).to.be.null;
 		});
@@ -154,7 +113,7 @@ describe('Crumble', function ()
 			global.document.cookie = 'name=value';
 
 			// Act & Assert.
-			chai.expect(
+			expect(
 				Crumble.hasCookie('name')
 			).to.be.true;
 		});
@@ -162,7 +121,7 @@ describe('Crumble', function ()
 		it('returns `false` when a cookie does not exist', function ()
 		{
 			// Act & Assert.
-			chai.expect(
+			expect(
 				Crumble.hasCookie('name')
 			).to.be.false;
 		});
@@ -620,7 +579,7 @@ describe('Crumble', function ()
 		it('shall throw a type error when `crumbs.name` is `undefined` or `null`', function ()
 		{
 			// Act & Assert.
-			chai.expect(function ()
+			expect(function ()
 			{
 				Crumble.setCookie(
 				{
@@ -629,7 +588,7 @@ describe('Crumble', function ()
 			}).to.throw(TypeError);
 
 			// Act & Assert.
-			chai.expect(function ()
+			expect(function ()
 			{
 				Crumble.setCookie(
 				{
@@ -642,7 +601,7 @@ describe('Crumble', function ()
 		it('shall throw a type error when `crumbs.age` is not a number', function ()
 		{
 			// Act & Assert.
-			chai.expect(function ()
+			expect(function ()
 			{
 				Crumble.setCookie(
 				{
@@ -655,7 +614,7 @@ describe('Crumble', function ()
 		it('shall throw a type error when `crumbs.expires` does not represent a valid date', function ()
 		{
 			// Act & Assert.
-			chai.expect(function ()
+			expect(function ()
 			{
 				Crumble.setCookie(
 				{
@@ -665,7 +624,7 @@ describe('Crumble', function ()
 			}).to.throw(TypeError);
 
 			// Act & Assert.
-			chai.expect(function ()
+			expect(function ()
 			{
 				Crumble.setCookie(
 				{
@@ -884,7 +843,7 @@ describe('Crumble', function ()
 		it('shall throw a type error when `crumbs.name` is `undefined` or `null`', function ()
 		{
 			// Act & Assert.
-			chai.expect(function ()
+			expect(function ()
 			{
 				Crumble.removeCookie(
 				{
@@ -893,7 +852,7 @@ describe('Crumble', function ()
 			}).to.throw(TypeError);
 
 			// Act & Assert.
-			chai.expect(function ()
+			expect(function ()
 			{
 				Crumble.removeCookie(
 				{

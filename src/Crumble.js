@@ -132,14 +132,13 @@ function isCookiesEnabled ()
  *
  * @return {Boolean} `true` if the cookie exists, otherwise `false`.
  *
- * @param {String} name                        The name of the cookie to test the presence of.
- * @param {String} [cookies = document.cookie] The cookie string to search.
+ * @param {String} name The name of the cookie to test the presence of.
  *
  * @memberof Crumble
  */
-function hasCookie (name, cookies = document.cookie)
+function hasCookie (name)
 {
-	return new RegExp('(?:^|.*;)\\s*' + encodeURIComponent(name) + '\\s*\\=').test(cookies);
+	return new RegExp('(?:^|.*;)\\s*' + encodeURIComponent(name) + '\\s*\\=').test(document.cookie);
 }
 
 // --------------------------------------------------------
@@ -151,14 +150,13 @@ function hasCookie (name, cookies = document.cookie)
  *
  * @return {String} The value of the cookie or `null` if the cookie doesn't exist.
  *
- * @param {String} name                        The name of the cookie to read.
- * @param {String} [cookies = document.cookie] The cookie string to search.
+ * @param {String} name The name of the cookie to read.
  *
  * @memberof Crumble
  */
-function getCookie (name, cookies = document.cookie)
+function getCookie (name)
 {
-	let cookie = new RegExp('(?:(?:^|.*;)\\s*' + encodeURIComponent(name) + '\\s*\\=\\s*(.*?)(?:;|$))').exec(cookies);
+	let cookie = new RegExp('(?:(?:^|.*;)\\s*' + encodeURIComponent(name) + '\\s*\\=\\s*(.*?)(?:;|$))').exec(document.cookie);
 
 	if (cookie === null)
 	{
@@ -176,7 +174,7 @@ function getCookie (name, cookies = document.cookie)
  * Example usage:
  *
  * ```
- * document.cookie = Crumble.setCookie(
+ * Crumble.setCookie(
  * {
  *    name : "name", value : "value", domain : "a.domain.com", path : "/a/document/path", secure : false
  * });
@@ -185,7 +183,7 @@ function getCookie (name, cookies = document.cookie)
  * Alternatively you can separate the value from the crumbs:
  *
  * ```
- * document.cookie = Crumble.setCookie(
+ * Crumble.setCookie(
  * {
  *    name : "name", domain : "a.domain.com", path : "/a/document/path", secure : false
  *
@@ -196,8 +194,6 @@ function getCookie (name, cookies = document.cookie)
  *
  * @static
  *
- * @return {String} A value that you assign to `document.cookie` that will set a cookie.
- *
  * @param {Object}             crumbs                          The crumbs that make the cookie.
  * @param {String}             crumbs.name                     The name of the cookie.
  * @param {String}             [crumbs.value = null]           The value of the cookie.
@@ -207,7 +203,7 @@ function getCookie (name, cookies = document.cookie)
  * @param {String}             [crumbs.domain]                 The (sub)domain of which the cookie will be created. The domain can only be a domain that the document is in, however cookies can cross subdomains. When set to `.` the domain will be set to the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.domain`).
  * @param {Boolean}            [crumbs.secure = false]         Indicates whether the cookie should only be passed over HTTPS connections.
  * @param {Boolean}            [crumbs.firstPartyOnly = false] Indicates whether the cookie should only be sent in a first-party context. This is subject to client support.
- * @param {String}             [value]                         The value of the cookie. When omitted `crumbs.value` will be used.
+ * @param {String}             [value = crumbs.value]          The value of the cookie.
  *
  * @throws {TypeError} When `crumbs.name` is `null` or `undefined`.
  * @throws {TypeError} When `crumbs.age` is not a valid number.
@@ -306,7 +302,7 @@ function setCookie (crumbs, value = crumbs.value)
 		cookie += ';first-party-only';
 	}
 
-	return cookie;
+	document.cookie = cookie;
 }
 
 // --------------------------------------------------------
@@ -317,15 +313,13 @@ function setCookie (crumbs, value = crumbs.value)
  * Example usage:
  *
  * ```
- * document.cookie = Crumble.removeCookie(
+ * Crumble.removeCookie(
  * {
  *    name : "name"
  * });
  * ```
  *
  * @static
- *
- * @return {String} A value that you assign to `document.cookie` that will remove a cookie.
  *
  * @param {Object}  crumbs                          The crumbs of the cookie to remove.
  * @param {String}  crumbs.name                     The name of the cookie.
@@ -338,7 +332,7 @@ function setCookie (crumbs, value = crumbs.value)
  */
 function removeCookie ({ name, path, domain, secure, firstPartyOnly })
 {
-	return setCookie({
+	setCookie({
 		name, path, domain, secure, firstPartyOnly, age : -3600000
 	});
 }
