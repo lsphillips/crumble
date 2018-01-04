@@ -34,7 +34,7 @@
 		"sinon" : "4.1.3",
 		"eslint-plugin-import" : "2.8.0",
 		"eslint-plugin-promise" : "3.6.0",
-		"eslint-config-protect-me-from-my-stupidity" : "~2.0.2"
+		"eslint-config-protect-me-from-my-stupidity" : "~2.0.3"
 	},
 
 	"main" : "src/Crumble.js",
