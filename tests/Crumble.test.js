@@ -16,6 +16,10 @@ const Crumble = require('../src/Crumble');
 
 function spyOnJSDomDocumentCookie ()
 {
+	// This only works because we are using a JSDOM
+	// environment as `document.cookie` is a special property
+	// in browser environments where it does not have a
+	// descriptor.
 	let cookiePropertyDescriptor = Object.getOwnPropertyDescriptor(
 		Object.getPrototypeOf(document), 'cookie'
 	);

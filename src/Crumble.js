@@ -52,7 +52,7 @@ const ROOT_DOMAIN_SHORTHAND = '.';
 // --------------------------------------------------------
 
 /**
- * Retrieves the domain of the current document.
+ * Retrieves the current domain.
  *
  * @private
  *
@@ -70,9 +70,9 @@ function getDomain ()
 // --------------------------------------------------------
 
 /**
- * Retrieves the root domain of the current document.
+ * Retrieves the current root domain.
  *
- * For example if the document is on domain `a.b.c.com` the root domain will be `c.com`.
+ * For example if the current domain is `a.b.c.com` the root domain would be `c.com`.
  *
  * @private
  *
@@ -90,7 +90,7 @@ function getRootDomain ()
 	{
 		domain = domains.slice(-1 - i).join('.');
 
-		document.cookie = setCookie({
+		setCookie({
 			domain, name : TEST_COOKIE_NAME
 		});
 
@@ -100,7 +100,7 @@ function getRootDomain ()
 		}
 	}
 
-	document.cookie = removeCookie({
+	removeCookie({
 		domain, name : TEST_COOKIE_NAME
 	});
 
@@ -169,14 +169,18 @@ function getCookie (name)
 // --------------------------------------------------------
 
 /**
- * Generates a cookie string that will set a cookie when assigned to `document.cookie`.
+ * Sets a cookie.
  *
  * Example usage:
  *
  * ```
  * Crumble.setCookie(
  * {
- *    name : "name", value : "value", domain : "a.domain.com", path : "/a/document/path", secure : false
+ *    name   : "name",
+ *    value  : "value",
+ *    domain : "a.domain.com",
+ *    path   : "/an/example/path",
+ *    secure : false
  * });
  * ```
  *
@@ -185,7 +189,10 @@ function getCookie (name)
  * ```
  * Crumble.setCookie(
  * {
- *    name : "name", domain : "a.domain.com", path : "/a/document/path", secure : false
+ *    name   : "name",
+ *    domain : "a.domain.com",
+ *    path   : "/an/example/path",
+ *    secure : false
  *
  * }, 'value');
  * ```
@@ -199,8 +206,8 @@ function getCookie (name)
  * @param {String}             [crumbs.value = null]           The value of the cookie.
  * @param {Number}             [crumbs.age]                    The duration (in milliseconds) of which the cookie can live. When defined, any provided expiry date is ignored. When set to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
  * @param {Date|String|Number} [crumbs.expires]                The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. When provided a timestamp equivalent to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
- * @param {String}             [crumbs.path]                   The path of which the cookie will be created. Defaults to the path of the document.
- * @param {String}             [crumbs.domain]                 The (sub)domain of which the cookie will be created. The domain can only be a domain that the document is in, however cookies can cross subdomains. When set to `.` the domain will be set to the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.domain`).
+ * @param {String}             [crumbs.path]                   The path of which the cookie will be created. Defaults to the current path.
+ * @param {String}             [crumbs.domain]                 The (sub)domain of which the cookie will be created. When set to `.` the domain will be set to the current root domain. Defaults to the current domain.
  * @param {Boolean}            [crumbs.secure = false]         Indicates whether the cookie should only be passed over HTTPS connections.
  * @param {Boolean}            [crumbs.firstPartyOnly = false] Indicates whether the cookie should only be sent in a first-party context. This is subject to client support.
  * @param {String}             [value = crumbs.value]          The value of the cookie.
@@ -308,7 +315,7 @@ function setCookie (crumbs, value = crumbs.value)
 // --------------------------------------------------------
 
 /**
- * Generates a cookie string that will remove a cookie when assigned to `document.cookie`.
+ * Removes a cookie.
  *
  * Example usage:
  *
@@ -323,8 +330,8 @@ function setCookie (crumbs, value = crumbs.value)
  *
  * @param {Object}  crumbs                          The crumbs of the cookie to remove.
  * @param {String}  crumbs.name                     The name of the cookie.
- * @param {String}  [crumbs.path]                   The path of which the cookie will be removed from. Defaults to the path of the current document.
- * @param {String}  [crumbs.domain]                 The (sub)domain of which the cookie will be removed from. The domain can only be a domain that the document is in, however cookies can cross subdomains. When set to `.` the cookie will be removed from the root domain of the document. Defaults to the domain of the document (i.e. the value of `document.domain`).
+ * @param {String}  [crumbs.path]                   The path of which the cookie will be removed from. Defaults to the current path.
+ * @param {String}  [crumbs.domain]                 The (sub)domain of which the cookie will be removed from. When set to `.` the cookie will be removed from the current root domain. Defaults to the current domain.
  * @param {Boolean} [crumbs.secure = false]         Indicates whether the cookie should only be removed over HTTPS connections.
  * @param {Boolean} [crumbs.firstPartyOnly = false] Indicates whether the cookie should only be sent in a first-party context. This is subject to client support.
  *
