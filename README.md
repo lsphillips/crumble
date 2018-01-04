@@ -17,11 +17,7 @@ Retrieves the value of a cookie. `null` will be returned if the cookie does not 
 
 ### `Boolean Crumble#hasCookie(string name)`
 
-Determines whether a cookie exists. This is equivalent to this:
-
-``` js
-let exists = Crumble.getCookie('cookie') !== null;
-```
+Determines whether a cookie exists.
 
 ### `void Crumble#setCookie(Object crumbs [, string value])`
 
