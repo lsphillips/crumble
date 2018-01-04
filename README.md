@@ -29,7 +29,7 @@ Sets a cookie. The cookie crumbs you can provide are:
 * `expires` (Date|string|number, optional) - The expiry date of the cookie, if omitted, the cookie will expire at the end of the session. You can provide a date object, date string or a timestamp. When provided a timestamp equivalent to `Infinity` the cookie will be set to expire with date: `31 Dec 9999 23:59:59 GMT`.
 * `path` (string, optional) - The path of which the cookie will be created. Defaults to the current path.
 * `domain` (string, optional) - The (sub)domain of which the cookie will be created. When set to `.` the domain will be set to the current root domain. Defaults to the current domain.
-* `secure` (boolean, optional) - Indicates whether the cookie should only be passed over HTTPS connections. Defaults to `false`.
+* `secure` (boolean, optional) - Indicates whether the cookie should only be sent over HTTPS connections. Defaults to `false`.
 * `firstPartyOnly` (boolean, optional) - Indicates whether the cookie should only be sent in a first-party context. This is subject to client support. Defaults to `false`.
 
 Example usage:
