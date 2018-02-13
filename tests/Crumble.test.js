@@ -542,7 +542,7 @@ describe('Crumble', function ()
 			expect(cookie).to.contain(';path=/a/document/path');
 		});
 
-		it('removes a cookie from the path of the document when `crumbs.path` is not provided', function ()
+		it('removes a cookie from the path of the current document when `crumbs.path` is not provided', function ()
 		{
 			// Act.
 			let cookie = Crumble.removeCookie({
@@ -564,7 +564,7 @@ describe('Crumble', function ()
 			expect(cookie).to.contain(';domain=crumble.co.uk');
 		});
 
-		it('removes a cookie from the domain of the document when `crumbs.domain` is not provided', function ()
+		it('removes a cookie from the domain of the current document when `crumbs.domain` is not provided', function ()
 		{
 			// Act.
 			let cookie = Crumble.removeCookie({

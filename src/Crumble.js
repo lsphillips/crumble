@@ -184,7 +184,7 @@ function getCookie (plate, name)
  * @param {Object}             crumbs                          The crumbs that make the cookie.
  * @param {String}             crumbs.name                     The name of the cookie.
  * @param {String}             [crumbs.value = null]           The value of the cookie.
- * @param {Number}             [crumbs.age]                    The duration (in milliseconds) of which the cookie can live. When omitted and no `expires` crumb is provided, the cookie will expire. This takes precedence over the `expire` crumb.
+ * @param {Number}             [crumbs.age]                    The duration (in milliseconds) of which the cookie can live. When omitted and no `expires` crumb is provided, the cookie will expire at the end of the session. This takes precedence over the `expires` crumb.
  * @param {Date|String|Number} [crumbs.expires]                The expiry date of the cookie. When omitted and no `age` crumb is provided, the cookie will expire at the end of the session.
  * @param {String}             [crumbs.path]                   The path of which the cookie will be created. Defaults to the current path.
  * @param {String}             [crumbs.domain]                 The (sub)domain of which the cookie will be created. Defaults to the current domain.

@@ -3,7 +3,7 @@
 
 	"version" : "2.0.0",
 
-		"description" : "A simple and RFC-6265 compliant library that makes reading and writing cookies easy.",
+		"description" : "A RFC-6265 compliant library that makes reading and writing cookies easy.",
 
 	"author" :
 	{
