@@ -54,5 +54,10 @@
 		"test" : "npm run lint && npm run unit"
 	},
 
+	"engines" :
+	{
+		"node" : ">=6.0.0"
+	},
+
 	"types" : "Crumble.d.ts"
 }
