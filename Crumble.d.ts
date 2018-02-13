@@ -1,7 +1,7 @@
 export interface Crumbs
 {
 	name            : string;
-	value?          : string | null | undefined;
+	value?          : string | null;
 	age?            : number;
 	expires?        : string | number | Date;
 	path?           : string;
@@ -12,20 +12,16 @@ export interface Crumbs
 
 // --------------------------------------------------------
 
-export function isCookiesEnabled() : boolean;
+export function hasCookie(plate : string, name : string) : boolean;
 
 // --------------------------------------------------------
 
-export function hasCookie(name : string) : boolean;
+export function getCookie(plate : string, name : string) : string | null;
 
 // --------------------------------------------------------
 
-export function getCookie(name : string) : string | null;
+export function setCookie(crumbs : Crumbs, value? : string | null) : string;
 
 // --------------------------------------------------------
 
-export function setCookie(crumbs : Crumbs, value? : string | null | undefined) : void;
-
-// --------------------------------------------------------
-
-export function removeCookie(crumbs : Crumbs) : void;
+export function removeCookie(crumbs : Crumbs) : string;

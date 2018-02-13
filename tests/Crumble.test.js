@@ -3,9 +3,9 @@
 // Dependencies
 // --------------------------------------------------------
 
-const { expect } = require('chai');
-const sinon      = require('sinon');
-const { JSDOM }  = require('jsdom');
+const { expect, use }   = require('chai');
+const stringsForChai    = require('chai-string');
+const { useFakeTimers } = require('sinon');
 
 // Subjects
 // --------------------------------------------------------
@@ -14,129 +14,111 @@ const Crumble = require('../src/Crumble');
 
 // --------------------------------------------------------
 
-function spyOnJSDomDocumentCookie ()
-{
-	// This only works because we are using a JSDOM
-	// environment as `document.cookie` is a special property
-	// in browser environments where it does not have a
-	// descriptor.
-	let cookiePropertyDescriptor = Object.getOwnPropertyDescriptor(
-		Object.getPrototypeOf(document), 'cookie'
-	);
-
-	// Spy on the setter used for the `document.cookie`
-	// property.
-	let documentCookieSpy = sinon.spy(cookiePropertyDescriptor, 'set');
-
-	// Redefine the `document.cookie` property using the
-	// spied on definition.
-	Object.defineProperty(document, 'cookie', cookiePropertyDescriptor);
-
-	return documentCookieSpy;
-}
-
-// --------------------------------------------------------
-
 describe('Crumble', function ()
 {
-	let clock = null;
+	let clock;
+
+	before(function ()
+	{
+		use(stringsForChai);
+	});
 
 	beforeEach(function ()
 	{
-		let browser = new JSDOM('<html><head></head><body></body></html>', {
-			url : 'http://test.crumble.co.uk'
-		});
-
-		// Expose.
-		global.window    = browser.window;
-		global.document  = browser.window.document;
-		global.navigator = browser.window.navigator;
-
-		// Mock.
-		clock = sinon.useFakeTimers(344736000000);
+		clock = useFakeTimers(344736000000);
 	});
 
 	afterEach(function ()
 	{
-		// Restore.
 		clock.restore();
-
-		// Close.
-		window.close();
-
-		// Clean.
-		delete global.document;
-		delete global.window;
-		delete global.navigator;
 	});
 
-	describe('.isCookiesEnabled()', function ()
+	describe('.getCookie(plate, name)', function ()
 	{
-		it('returns `true` when the client has cookies enabled', function ()
+		it('returns the value of the cookie with a given name', function ()
 		{
 			// Act & Assert.
 			expect(
-				Crumble.isCookiesEnabled()
-			).to.be.true;
+				Crumble.getCookie('one=three; two=one; three=two', 'one')
+			).to.equal('three');
+
+			// Act & Assert.
+			expect(
+				Crumble.getCookie('one=three; two=one; three=two', 'two')
+			).to.equal('one');
+
+			// Act & Assert.
+			expect(
+				Crumble.getCookie('one=three; two=one; three=two', 'three')
+			).to.equal('two');
 		});
 
-		it('returns `false` when the client has cookies disabled', function ()
+		it('returns the value of the cookie with a given name that needs to be encoded', function ()
 		{
-			// Setup.
-			Object.defineProperty(global.document.defaultView.navigator, 'cookieEnabled', {
-				value : false
-			});
-
 			// Act & Assert.
 			expect(
-				Crumble.isCookiesEnabled()
-			).to.be.false;
-		});
-	});
-
-	describe('.getCookie(name)', function ()
-	{
-		it('returns the value of a cookie', function ()
-		{
-			// Setup.
-			global.document.cookie = 'name=value';
-
-			// Act & Assert.
-			expect(
-				Crumble.getCookie('name')
-			).to.equal('value');
+				Crumble.getCookie('one=boring; %2C%3B%5C#$%25&+%3A%3C%3E%3D%2F%3F%40%5B%5D^%7B%7D`|%C3%A3%E2%82%AF%F0%A9%B8%BD%28%29!%22_=special; three=normal', ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_')
+			).to.equal('special');
 		});
 
-		it('returns the value of a cookie URL decoded when required', function ()
+		it('returns the value of the cookie that is decoded in accordance to RFC 6265', function ()
 		{
-			// Setup.
-			global.document.cookie = 'name=a%20value%20that%20needs%20decoding';
-
 			// Act & Assert.
 			expect(
-				Crumble.getCookie('name')
-			).to.equal('a value that needs decoding');
+				Crumble.getCookie('one=boring; two=%2C%3B%5C#$%25&+:<>=/?@[]^{}`|%C3%A3%E2%82%AF%F0%A9%B8%BD()!%22_; three=boring', 'two')
+			).to.equal(',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_');
+		});
+
+		it('returns an empty string when the cookie does not have a value', function ()
+		{
+			// Act & Assert.
+			expect(
+				Crumble.getCookie('one=three; two=; three=two', 'two')
+			).to.equal('');
 		});
 
 		it('returns `null` when a cookie does not exist', function ()
 		{
 			// Act & Assert.
 			expect(
-				Crumble.getCookie('name')
-			).to.be.null;
+				Crumble.getCookie('one=three; two=four; three=two', 'four')
+			).to.equal(null);
 		});
 	});
 
-	describe('.hasCookie(name)', function ()
+	describe('.hasCookie(plate, name)', function ()
 	{
-		it('returns `true` when a cookie exists', function ()
+		it('returns `true` when the cookie exists with a given name', function ()
 		{
-			// Setup.
-			global.document.cookie = 'name=value';
+			// Act & Assert.
+			expect(
+				Crumble.hasCookie('one=three; two=one; three=two', 'one')
+			).to.be.true;
 
 			// Act & Assert.
 			expect(
-				Crumble.hasCookie('name')
+				Crumble.hasCookie('one=three; two=one; three=two', 'two')
+			).to.be.true;
+
+			// Act & Assert.
+			expect(
+				Crumble.hasCookie('one=three; two=one; three=two', 'three')
+			).to.be.true;
+		});
+
+		it('returns `true` when the cookie exists with a given name that needs to be encoded', function ()
+		{
+			// Act & Assert.
+			expect(
+				Crumble.hasCookie('one=boring; %2C%3B%5C#$%25&+%3A%3C%3E%3D%2F%3F%40%5B%5D^%7B%7D`|%C3%A3%E2%82%AF%F0%A9%B8%BD%28%29!%22_=special; three=normal', ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_')
+			).to.be.true;
+		});
+
+		it('returns `true` when the cookie does not have a value', function ()
+		{
+			// Act & Assert.
+			expect(
+				Crumble.hasCookie('one=three; two=; three=two', 'two')
 			).to.be.true;
 		});
 
@@ -144,424 +126,329 @@ describe('Crumble', function ()
 		{
 			// Act & Assert.
 			expect(
-				Crumble.hasCookie('name')
+				Crumble.hasCookie('one=three; two=four; three=two', 'four')
 			).to.be.false;
 		});
 	});
 
-	describe('.setCookie(crumbs, cookieValue)', function ()
+	describe('.setCookie(crumbs, value)', function ()
 	{
-		it('creates a cookie with the name and value specified by `crumbs.name` and `cookieValue` respectively', function ()
+		it('creates a cookie with the name specified by `crumbs.name` and a value specified by `value`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name'
 			}, 'value');
 
 			// Assert.
-			sinon.assert.calledWithExactly(spy, 'name=value');
+			expect(cookie).to.startWith('name=value');
 		});
 
-		it('creates a cookie with the value specified by `crumbs.value` when `cookieValue` is `undefined`', function ()
+		it('creates a cookie with the name encoded in accordance to RFC 6265', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
+				name : ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_'
+			}, 'value');
+
+			// Assert.
+			expect(cookie).to.startWith('%2C%3B%5C#$%25&+%3A%3C%3E%3D%2F%3F%40%5B%5D^%7B%7D`|%C3%A3%E2%82%AF%F0%A9%B8%BD%28%29!%22_=value');
+		});
+
+		it('creates a cookie with the value specified by `crumbs.value` when `value` is not provided', function ()
+		{
+			// Act
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value'
 			});
 
 			// Assert.
-			sinon.assert.calledWithExactly(spy, 'name=value');
+			expect(cookie).to.startWith('name=value');
 		});
 
-		it('creates a cookie ignore `crumbs.value` when `cookieValue` is not `undefined`', function ()
+		it('creates a cookie by ignoring `crumbs.value` when `value` is provided', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'the value that should be ignored'
 			}, 'value');
 
 			// Assert.
-			sinon.assert.calledWithExactly(spy, 'name=value');
+			expect(cookie).to.startWith('name=value');
 		});
 
-		it('creates a cookie with the value URL encoded when required', function ()
+		it('creates a cookie with the value encoded in accordance to RFC 6265', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookieNotUsingValueCrumb = Crumble.setCookie({
 				name : 'name'
-			}, 'a value that needs encoding');
+			}, ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_');
 
 			// Assert.
-			sinon.assert.calledWithExactly(spy, 'name=a%20value%20that%20needs%20encoding');
-
-			// Reset.
-			spy.reset();
+			expect(cookieNotUsingValueCrumb).to.startWith('name=%2C%3B%5C#$%25&+:<>=/?@[]^{}`|%C3%A3%E2%82%AF%F0%A9%B8%BD()!%22_');
 
 			// Act.
-			Crumble.setCookie({
-				name : 'name', value : 'another value that needs encoding'
+			let cookieUsingValueCrumb = Crumble.setCookie({
+				name : 'name', value : ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_'
 			});
 
 			// Assert.
-			sinon.assert.calledWithExactly(spy, 'name=another%20value%20that%20needs%20encoding');
+			expect(cookieUsingValueCrumb).to.startWith('name=%2C%3B%5C#$%25&+:<>=/?@[]^{}`|%C3%A3%E2%82%AF%F0%A9%B8%BD()!%22_');
 		});
 
-		it('creates a cookie with no value when `cookieValue` or `crumbs.value` is `null`', function ()
+		it('creates a cookie with no value when `value` or `crumbs.value` is `null`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookieUsingValue = Crumble.setCookie({
 				name : 'name'
 			}, null);
 
 			// Assert.
-			sinon.assert.calledWithExactly(spy, 'name=');
-
-			// Reset.
-			spy.reset();
+			expect(cookieUsingValue).to.startWith('name=');
 
 			// Act.
-			Crumble.setCookie({
+			let cookieUsingValueCrumb = Crumble.setCookie({
 				name : 'name', value : null
 			});
 
 			// Assert.
-			sinon.assert.calledWithExactly(spy, 'name=');
+			expect(cookieUsingValueCrumb).to.startWith('name=');
 		});
 
-		it('creates a cookie with no value when `crumbs.value` is `undefined`', function ()
+		it('creates a cookie with no value when `value` and `crumbs.value` are not provided', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name'
 			});
 
 			// Assert.
-			sinon.assert.calledWithExactly(spy, 'name=');
+			expect(cookie).to.startWith('name=');
 		});
 
 		it('creates a cookie that is only available on the path specified by `crumbs.path`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value', path : '/a/document/path'
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';path=/a/document/path');
+			expect(cookie).to.contain(';path=/a/document/path');
 		});
 
-		it('creates a cookie that is only available on the path of the document when `crumbs.path` is `undefined', function ()
+		it('creates a cookie that is only available on the path of the current document when `crumbs.path` is not provided', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value'
 			});
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';path=');
+			expect(cookie).to.not.contain(';path=');
 		});
 
 		it('creates a cookie that is only available on the domain specified by `crumbs.domain`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value', domain : 'sub.domain.com'
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';domain=sub.domain.com');
+			expect(cookie).to.contain(';domain=sub.domain.com');
 		});
 
-		it('creates a cookie that is only available on the domain of the document when `crumbs.domain` is `undefined`', function ()
+		it('creates a cookie that is only available on the domain of the current document when `crumbs.domain` is not provided', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value'
 			});
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';domain=');
+			expect(cookie).to.not.contain(';domain=');
 		});
 
-		it('creates a cookie that is only available on the root domain of the document when `crumbs.domain` is `.`', function ()
+		it('creates a cookie that is only available over HTTPS when `crumbs.secure` is `true`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
-				name : 'name', value : 'value', domain : '.'
-			});
-
-			// Assert.
-			sinon.assert.calledWithMatch(spy, ';domain=crumble.co.uk');
-		});
-
-		it('creates a cookie by ignoring `crumbs.domain` when it matches the domain of the document', function ()
-		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
-			// Act.
-			Crumble.setCookie({
-				name : 'name', value : 'value', domain : 'test.crumble.co.uk'
-			});
-
-			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';domain=');
-		});
-
-		it('creates a cookie that is only available over HTTPS when `crumbs.secure` equates to `true`', function ()
-		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
-			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value', secure : true
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';secure');
+			expect(cookie).to.contain(';secure');
 		});
 
-		it('creates a cookie that is available over both HTTP and HTTPS when `crumbs.secure` equates to `false`', function ()
+		it('creates a cookie that is available over both HTTP and HTTPS when `crumbs.secure` is `false`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value', secure : false
 			});
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';secure');
+			expect(cookie).to.not.contain(';secure');
 		});
 
-		it('creates a cookie that is available over both HTTP and HTTPS when `crumbs.secure` is `undefined`', function ()
+		it('creates a cookie that is available over both HTTP and HTTPS when `crumbs.secure` is not provided', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value'
 			});
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';secure');
+			expect(cookie).to.not.contain(';secure');
 		});
 
 		it('creates a cookie that will expire after the number of milliseconds specified by `crumbs.age`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value', age : 3600000
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';max-age=3600');
+			expect(cookie).to.contain(';max-age=3600');
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';expires=Thu, 04 Dec 1980 01:00:00 GMT');
+			expect(cookie).to.contain(';expires=Thu, 04 Dec 1980 01:00:00 GMT');
 		});
 
-		it('creates a cookie that will expire at 23:59:59 on 31 Dec 9999 when `crumbs.age` is `Infinity`', function ()
+		it('creates a cookie that will expire at `23:59:59 on 31 Dec 9999` when `crumbs.age` is `Infinity`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value', age : Infinity
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';max-age=253057564799');
+			expect(cookie).to.contain(';max-age=253057564799');
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';expires=Fri, 31 Dec 9999 23:59:59 GMT');
+			expect(cookie).to.contain(';expires=Fri, 31 Dec 9999 23:59:59 GMT');
 		});
 
 		it('creates a cookie that will expire at the date specified by `crumbs.expires` as a date object', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value', expires : new Date('Thu, 04 Dec 1980 02:00:00 GMT')
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';max-age=7200');
+			expect(cookie).to.contain(';max-age=7200');
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';expires=Thu, 04 Dec 1980 02:00:00 GMT');
+			expect(cookie).to.contain(';expires=Thu, 04 Dec 1980 02:00:00 GMT');
 		});
 
 		it('creates a cookie that will expire at the date specified by `crumbs.expires` as a date string', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value', expires : 'Thu, 04 Dec 1980 03:00:00 GMT'
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';max-age=10800');
+			expect(cookie).to.contain(';max-age=10800');
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';expires=Thu, 04 Dec 1980 03:00:00 GMT');
+			expect(cookie).to.contain(';expires=Thu, 04 Dec 1980 03:00:00 GMT');
 		});
 
 		it('creates a cookie that will expire at the date specified by `crumbs.expires` as a timestamp', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value', expires : 344750400000
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';max-age=14400');
+			expect(cookie).to.contain(';max-age=14400');
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';expires=Thu, 04 Dec 1980 04:00:00 GMT');
+			expect(cookie).to.contain(';expires=Thu, 04 Dec 1980 04:00:00 GMT');
 		});
 
-		it('creates a cookie that will expire at 23:59:59 on 31 Dec 9999 when `crumbs.expires` is `Infinity`', function ()
+		it('creates a cookie that will expire at `23:59:59 on 31 Dec 9999` when `crumbs.expires` is `Infinity`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value', expires : Infinity
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';max-age=253057564799');
+			expect(cookie).to.contain(';max-age=253057564799');
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';expires=Fri, 31 Dec 9999 23:59:59 GMT');
+			expect(cookie).to.contain(';expires=Fri, 31 Dec 9999 23:59:59 GMT');
 		});
 
-		it('creates a cookie that will expire at the end of the client session when both `crumbs.age` and `crumbs.expires` is `undefined`', function ()
+		it('creates a cookie that will expire at the end of the current session when both `crumbs.age` and `crumbs.expires` are not provided', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value'
 			});
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';max-age=');
+			expect(cookie).to.not.contain(';max-age=');
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';expires=');
+			expect(cookie).to.not.contain(';expires=');
 		});
 
-		it('creates a cookie shall create a cookie by ignoring `crumbs.expires` when `crumbs.age` is specified', function ()
+		it('creates a cookie by ignoring `crumbs.expires` when `crumbs.age` is provided', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value', age : 3600000, expires : new Date('Thu, 04 Dec 1980 05:00:00 GMT')
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';max-age=3600');
+			expect(cookie).to.contain(';max-age=3600');
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';expires=Thu, 04 Dec 1980 01:00:00 GMT');
+			expect(cookie).to.contain(';expires=Thu, 04 Dec 1980 01:00:00 GMT');
 		});
 
-		it('creates a cookie that is only available in first party contexts when `crumbs.firstPartyOnly` equates to `true`', function ()
+		it('creates a cookie that is only available in first party contexts when `crumbs.firstPartyOnly` is `true`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value', firstPartyOnly : true
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';first-party-only');
+			expect(cookie).to.contain(';first-party-only');
 		});
 
-		it('creates a cookie that is available in all contexts when `crumbs.firstPartyOnly` equates to `false`', function ()
+		it('creates a cookie that is available in all contexts when `crumbs.firstPartyOnly` is `false`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value', firstPartyOnly : false
 			});
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';first-party-only');
+			expect(cookie).to.not.contain(';first-party-only');
 		});
 
-		it('creates a cookie that is available in all contexts when `crumbs.firstPartyOnly` is `undefined`', function ()
+		it('creates a cookie that is available in all contexts when `crumbs.firstPartyOnly` is not provided', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.setCookie({
+			let cookie = Crumble.setCookie({
 				name : 'name', value : 'value'
 			});
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';first-party-only');
+			expect(cookie).to.not.contain(';first-party-only');
 		});
 
-		it('throws a type error when `crumbs.name` is `undefined` or `null`', function ()
+		it('throws a type error when `crumbs.name` is `null` or not provided', function ()
 		{
 			// Act & Assert.
 			expect(function ()
@@ -580,7 +467,7 @@ describe('Crumble', function ()
 			}).to.throw(TypeError);
 		});
 
-		it('throws a type error when `crumbs.age` is not a number', function ()
+		it('throws a type error when `crumbs.age` is not a valid number', function ()
 		{
 			// Act & Assert.
 			expect(function ()
@@ -618,190 +505,143 @@ describe('Crumble', function ()
 	{
 		it('removes a cookie with the name specified by `crumbs.name` by forcing it to immediately expire', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.removeCookie({
+			let cookie = Crumble.removeCookie({
 				name : 'name'
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';max-age=-3600');
+			expect(cookie).to.startWith('name=');
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';expires=Wed, 03 Dec 1980 23:00:00 GMT');
+			expect(cookie).to.contain(';max-age=-3600');
+
+			// Assert.
+			expect(cookie).to.contain(';expires=Wed, 03 Dec 1980 23:00:00 GMT');
+		});
+
+		it('removes a cookie with the name encoded in accordance to RFC 6265', function ()
+		{
+			// Act
+			let cookie = Crumble.removeCookie({
+				name : ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_'
+			});
+
+			// Assert.
+			expect(cookie).to.startWith('%2C%3B%5C#$%25&+%3A%3C%3E%3D%2F%3F%40%5B%5D^%7B%7D`|%C3%A3%E2%82%AF%F0%A9%B8%BD%28%29!%22_=');
 		});
 
 		it('removes a cookie from the path specified by `crumbs.path`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.removeCookie({
+			let cookie = Crumble.removeCookie({
 				name : 'name', path : '/a/document/path'
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';path=/a/document/path');
+			expect(cookie).to.contain(';path=/a/document/path');
 		});
 
-		it('removes a cookie from the path of the document when `crumbs.path` is `undefined`', function ()
+		it('removes a cookie from the path of the document when `crumbs.path` is not provided', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.removeCookie({
+			let cookie = Crumble.removeCookie({
 				name : 'name'
 			});
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';path=');
+			expect(cookie).to.not.contain(';path=');
 		});
 
 		it('removes a cookie from the the domain specified by `crumbs.domain`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.removeCookie({
+			let cookie = Crumble.removeCookie({
 				name : 'name', domain : 'crumble.co.uk'
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';domain=crumble.co.uk');
+			expect(cookie).to.contain(';domain=crumble.co.uk');
 		});
 
-		it('removes a cookie from the domain of the document when `crumbs.domain` is `undefined`', function ()
+		it('removes a cookie from the domain of the document when `crumbs.domain` is not provided', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.removeCookie({
+			let cookie = Crumble.removeCookie({
 				name : 'name'
 			});
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';domain=');
+			expect(cookie).to.not.contain(';domain=');
 		});
 
-		it('removes a cookie from the root domain of the document when `crumbs.domain` is `.`', function ()
+		it('removes a cookie only over HTTPS when `crumbs.secure` is `true`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.removeCookie({
-				name : 'name', value : 'value', domain : '.'
-			});
-
-			// Assert.
-			sinon.assert.calledWithMatch(spy, ';domain=crumble.co.uk');
-		});
-
-		it('removes a cookie by ignoring `crumbs.domain` when it matches the domain of the document', function ()
-		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
-			// Act.
-			Crumble.removeCookie({
-				name : 'name', value : 'value', domain : 'test.crumble.co.uk'
-			});
-
-			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';domain=');
-		});
-
-		it('removes a cookie only over HTTPS when `crumbs.secure` equates to `true`', function ()
-		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
-			// Act.
-			Crumble.removeCookie({
+			let cookie = Crumble.removeCookie({
 				name : 'name', secure : true
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';secure');
+			expect(cookie).to.contain(';secure');
 		});
 
-		it('removes a cookie over both HTTP and HTTPS when `crumbs.secure` equates to `false`', function ()
+		it('removes a cookie over both HTTP and HTTPS when `crumbs.secure` is `false`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.removeCookie({
+			let cookie = Crumble.removeCookie({
 				name : 'name', secure : false
 			});
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';secure');
+			expect(cookie).to.not.contain(';secure');
 		});
 
-		it('removes a cookie over both HTTP and HTTPS when `crumbs.secure` is `undefined`', function ()
+		it('removes a cookie over both HTTP and HTTPS when `crumbs.secure` is not provided', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.removeCookie({
+			let cookie = Crumble.removeCookie({
 				name : 'name'
 			});
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';secure');
+			expect(cookie).to.not.contain(';secure');
 		});
 
-		it('removes a cookie only from the first party context when `crumbs.firstPartyOnly` equates to `true`', function ()
+		it('removes a cookie only from the first party context when `crumbs.firstPartyOnly` is `true`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.removeCookie({
+			let cookie = Crumble.removeCookie({
 				name : 'name', firstPartyOnly : true
 			});
 
 			// Assert.
-			sinon.assert.calledWithMatch(spy, ';first-party-only');
+			expect(cookie).to.contain(';first-party-only');
 		});
 
-		it('removes a cookie from all contexts when `crumbs.firstPartyOnly` equates to `false`', function ()
+		it('removes a cookie from all contexts when `crumbs.firstPartyOnly` is `false`', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.removeCookie({
+			let cookie = Crumble.removeCookie({
 				name : 'name', firstPartyOnly : false
 			});
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';first-party-only');
+			expect(cookie).to.not.contain(';first-party-only');
 		});
 
-		it('removes a cookie from all contexts when `crumbs.firstPartyOnly` is `undefiend`', function ()
+		it('removes a cookie from all contexts when `crumbs.firstPartyOnly` is not provided', function ()
 		{
-			// Spy.
-			let spy = spyOnJSDomDocumentCookie(global.document);
-
 			// Act.
-			Crumble.removeCookie({
+			let cookie = Crumble.removeCookie({
 				name : 'name'
 			});
 
 			// Assert.
-			sinon.assert.neverCalledWithMatch(spy, ';first-party-only');
+			expect(cookie).to.not.contain(';first-party-only');
 		});
 
-		it('throws a type error when `crumbs.name` is `undefined` or `null`', function ()
+		it('throws a type error when `crumbs.name` is `null` or not provided', function ()
 		{
 			// Act & Assert.
 			expect(function ()
