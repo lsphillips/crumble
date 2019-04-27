@@ -1,18 +1,13 @@
 'use strict';
 
-// Dependencies
-// --------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const { expect, use }   = require('chai');
 const stringsForChai    = require('chai-string');
 const { useFakeTimers } = require('sinon');
+const Crumble           = require('../src/Crumble');
 
-// Subjects
-// --------------------------------------------------------
-
-const Crumble = require('../src/Crumble');
-
-// --------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 describe('Crumble', function ()
 {

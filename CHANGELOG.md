@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] (2019-04-27)
+
+### Added
+
+- Introduced documentation to the Typescript type definitons.
+
 ## [2.0.0] (2018-02-13)
 
 This version changes the focus of Crumble. It is now a cookie string library rather than an abstraction of `document.cookie`.
