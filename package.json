@@ -1,61 +1,61 @@
 {
-	"name" : "crumble",
+    "name" : "crumble",
 
-	"version" : "2.1.0",
+    "version" : "2.1.0",
 
-	"description" : "A RFC-6265 compliant library that makes reading and writing cookies easy.",
+    "description" : "A RFC-6265 compliant library that makes reading and writing cookies easy.",
 
-	"author" :
-	{
-		"name" : "Luke Phillips",
-		"email" : "lsphillips.mail@gmail.com"
-	},
+    "author" :
+    {
+        "name" : "Luke Phillips",
+        "email" : "lsphillips.mail@gmail.com"
+    },
 
-	"keywords" :
-	[
-		"cookies"
-	],
+    "keywords" :
+    [
+        "cookies"
+    ],
 
-	"homepage" : "https://github.com/lsphillips/Crumble",
+    "homepage" : "https://github.com/lsphillips/Crumble",
 
-	"bugs" :
-	{
-		"url" : "https://github.com/lsphillips/Crumble/issues"
-	},
+    "bugs" :
+    {
+        "url" : "https://github.com/lsphillips/Crumble/issues"
+    },
 
-	"devDependencies" :
-	{
-		"mocha" : "6.1.4",
-		"chai" : "4.2.0",
-		"chai-string" : "1.5.0",
-		"sinon" : "7.3.2",
-		"eslint" : "5.16.0",
-		"eslint-plugin-import" : "2.17.2",
-		"eslint-plugin-promise" : "4.1.1",
-		"eslint-config-protect-me-from-my-stupidity" : "~3.1.3"
-	},
+    "devDependencies" :
+    {
+        "mocha" : "6.1.4",
+        "chai" : "4.2.0",
+        "chai-string" : "1.5.0",
+        "sinon" : "7.3.2",
+        "eslint" : "5.16.0",
+        "eslint-plugin-import" : "2.17.2",
+        "eslint-plugin-promise" : "4.1.1",
+        "eslint-config-protect-me-from-my-stupidity" : "~3.1.3"
+    },
 
-	"main" : "src/Crumble.js",
+    "main" : "src/Crumble.js",
 
-	"repository" :
-	{
-		"type" : "git",
-		"url" : "https://github.com/lsphillips/Crumble.git"
-	},
+    "repository" :
+    {
+        "type" : "git",
+        "url" : "https://github.com/lsphillips/Crumble.git"
+    },
 
-	"license" : "MIT",
+    "license" : "MIT",
 
-	"scripts" :
-	{
-		"lint" : "eslint \"src/**/*.js\" \"tests/**/*.js\"",
-		"unit" : "mocha \"tests/**/*.js\"",
-		"test" : "npm run lint && npm run unit"
-	},
+    "scripts" :
+    {
+        "lint" : "eslint \"src/**/*.js\" \"tests/**/*.js\"",
+        "unit" : "mocha \"tests/**/*.js\"",
+        "test" : "npm run lint && npm run unit"
+    },
 
-	"engines" :
-	{
-		"node" : ">=6.0.0"
-	},
+    "engines" :
+    {
+        "node" : ">=6.0.0"
+    },
 
-	"types" : "Crumble.d.ts"
+    "types" : "Crumble.d.ts"
 }

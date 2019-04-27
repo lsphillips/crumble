@@ -1,15 +1,15 @@
 {
-    "extends" : "protect-me-from-my-stupidity",
+	"extends" : "protect-me-from-my-stupidity",
 
-    "env" :
-    {
-        "browser"  : true,
-        "es6"      : true,
-        "commonjs" : true
-    },
+	"env" :
+	{
+		"browser"  : true,
+		"es6"      : true,
+		"commonjs" : true
+	},
 
-    "parserOptions" :
-    {
-        "sourceType" : "script"
-    }
+	"parserOptions" :
+	{
+		"sourceType" : "script"
+	}
 }
