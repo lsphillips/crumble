@@ -47,8 +47,8 @@
 
 	"scripts" :
 	{
-		"lint" : "eslint 'src/**/*.js' 'tests/**/*.js'",
-		"unit" : "mocha 'tests/**/*.js'",
+		"lint" : "eslint \"src/**/*.js\" \"tests/**/*.js\"",
+		"unit" : "mocha \"tests/**/*.js\"",
 		"test" : "npm run lint && npm run unit"
 	},
 
