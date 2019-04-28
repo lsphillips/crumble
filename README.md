@@ -118,7 +118,7 @@ This module also has a robust test suite:
 npm run test
 ```
 
-This includes a code quality checks using ESLint. Please refer to the `.eslintrc` files to familiar yourself with the rules.
+This includes a code quality check using ESLint. Please refer to the `.eslintrc` files to familiar yourself with the rules.
 
 ## License
 
