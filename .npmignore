@@ -11,6 +11,11 @@
 
 .travis.yml
 
+# Rollup
+# -----------------
+
+rollup.config.js
+
 # Directories
 # -----------------
 

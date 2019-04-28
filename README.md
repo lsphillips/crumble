@@ -55,7 +55,7 @@ document.cookie = Crumble.setCookie(
 });
 ```
 
-Alternatively you can separate the value from the rest of the crumbs, like so:
+Alternatively you can separate the value from the rest of the crumbs:
 
 ``` js
 document.cookie = Crumble.setCookie(
@@ -94,24 +94,32 @@ document.cookie = Crumble.removeCookie(
 
 ## Getting started
 
-This project is available through the Node Package Manager (NPM), so you can install it like so:
+This module is available through the Node Package Manager (NPM):
 
 ``` sh
 npm install crumble
 ```
 
-This is a `commonjs` module; so you will need to use a bundler.
-
 ## Development
 
-This project doesn't have much of a build process. It does have tests though; which you can run like so:
+### Building
+
+You can build a browser entry point that is ES5 compatible and minified:
 
 ``` sh
-npm test
+npm run build
 ```
 
-This also runs code quality checks using ESLint. Please refer to the `.eslintrc` files to familiar yourself with the rules.
+### Testing
+
+This module also has a robust test suite:
+
+``` sh
+npm run test
+```
+
+This includes a code quality checks using ESLint. Please refer to the `.eslintrc` files to familiar yourself with the rules.
 
 ## License
 
-This project is released under the MIT License.
+This module is released under the [MIT License](LICENSE.txt).
