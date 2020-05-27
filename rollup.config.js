@@ -4,7 +4,7 @@
 
 const commonjs   = require('rollup-plugin-commonjs');
 const buble      = require('rollup-plugin-buble');
-const { uglify } = require('rollup-plugin-uglify');
+const { terser } = require('rollup-plugin-terser');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -16,7 +16,7 @@ module.exports = function build ()
 		[
 			commonjs(),
 			buble(),
-			uglify()
+			terser()
 		],
 
 		output :
