@@ -4,7 +4,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [2.3.0] (2021-05-14)
 
+### Changed
+
 - The library is now exposed by the `crumble` global variable instead of `Crumble`.
+- This module is now transpiled using Babel.
 
 ## [2.2.0] (2019-04-28)
 
