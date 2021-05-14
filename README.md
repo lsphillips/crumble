@@ -120,7 +120,7 @@ npm install crumble
 
 ### Building
 
-You can build a UMD version of this module that is also ES5 compatible and minified:
+You can build UMD and ESM versions of this module that are both ES5 compatible and minified:
 
 ``` sh
 npm run build

@@ -4,10 +4,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [2.3.0] (2021-05-14)
 
+### Added
+
+- Introduced an ESM version of this module that will be used when being imported using `import`.
+
 ### Changed
 
-- The library is now exposed by the `crumble` global variable instead of `Crumble`.
 - This module is now transpiled using Babel.
+- The UMD version of this module now exposes itself using the name `crumble` instead of `Crumble`.
 
 ## [2.2.0] (2019-04-28)
 
