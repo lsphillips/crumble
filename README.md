@@ -7,9 +7,7 @@ A RFC-6265 compliant library that makes reading and writing cookies easy.
 
 ## Usage
 
-This module is bundled using the Univeral Module Definition (UMD).
-
-It can be imported as an ES module:
+This module can be treated as an ES module:
 
 ``` js
 import * as crumble from 'crumble';
@@ -17,15 +15,15 @@ import * as crumble from 'crumble';
 import { getCookie, hasCookie, setCookie, removeCookie } from 'crumble';
 ```
 
-It can also be imported as a CommonJS module:
+This module can also be treated as a CommonJS module:
 
 ``` js
-const cookie = require('crumble');
+const crumble = require('crumble');
 // or
 const { getCookie, hasCookie, setCookie, removeCookie } = require('crumble');
 ```
 
-#### `string getCookie(string plate, string name)`
+### `string getCookie(string plate, string name)`
 
 Reads the value of a cookie from a plate of cookies like `document.cookie`.
 
@@ -37,7 +35,7 @@ let cookie = getCookie(document.cookie, 'cookie');
 
 **Note:** The value will be decoded for you, and if the cookie does not exist then `null` will be returned instead.
 
-#### `bool hasCookie(string plate, string name)`
+### `bool hasCookie(string plate, string name)`
 
 Determines whether a cookie exists in a plate of cookies like `document.cookie`.
 
@@ -47,7 +45,7 @@ Example usage:
 let exists = hasCookie(document.cookie, 'cookie');
 ```
 
-#### `string setCookie(Object crumbs [, string value])`
+### `string setCookie(Object crumbs [, string value])`
 
 Creates a string that will set a cookie when assigned to a plate like `document.cookie`.
 
@@ -88,7 +86,7 @@ document.cookie = setCookie(
 
 This can be useful when the cookie value is the variable and the other crumbs are fixed.
 
-#### `string removeCookie(Object crumbs)`
+### `string removeCookie(Object crumbs)`
 
 Creates a string that will remove a cookie when assigned to a plate like `document.cookie`.
 
