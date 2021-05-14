@@ -1,32 +1,25 @@
-'use strict';
+import { babel }  from '@rollup/plugin-babel';
+import { terser } from 'rollup-plugin-terser';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const commonjs   = require('rollup-plugin-commonjs');
-const buble      = require('rollup-plugin-buble');
-const { terser } = require('rollup-plugin-terser');
+export default {
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	plugins :
+	[
+		babel({
+			babelHelpers : 'bundled'
+		}),
+		terser()
+	],
 
-module.exports = function build ()
-{
-	return {
+	input : 'src/crumble.js',
 
-		plugins :
-		[
-			commonjs(),
-			buble(),
-			terser()
-		],
-
-		output :
-		{
-			file : 'Crumble.js',
-			format : 'umd',
-			name : 'Crumble',
-			exports : 'named'
-		},
-
-		input : 'src/Crumble.js'
-	};
+	output :
+	{
+		file : 'crumble.cjs',
+		format : 'umd',
+		name : 'crumble',
+		exports : 'named'
+	}
 };

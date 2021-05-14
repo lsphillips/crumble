@@ -5,31 +5,49 @@
 
 A RFC-6265 compliant library that makes reading and writing cookies easy.
 
-## Interface
+## Usage
 
-### `string Crumble#getCookie(string plate, string name)`
+This module is bundled using the Univeral Module Definition (UMD).
+
+It can be imported as an ES module:
+
+``` js
+import * as crumble from 'crumble';
+// or
+import { getCookie, hasCookie, setCookie, removeCookie } from 'crumble';
+```
+
+It can also be imported as a CommonJS module:
+
+``` js
+const cookie = require('crumble');
+// or
+const { getCookie, hasCookie, setCookie, removeCookie } = require('crumble');
+```
+
+#### `string getCookie(string plate, string name)`
 
 Reads the value of a cookie from a plate of cookies like `document.cookie`.
 
 Example usage:
 
 ``` js
-let cookie = Crumble.getCookie(document.cookie, 'cookie');
+let cookie = getCookie(document.cookie, 'cookie');
 ```
 
 **Note:** The value will be decoded for you, and if the cookie does not exist then `null` will be returned instead.
 
-### `bool Crumble#hasCookie(string plate, string name)`
+#### `bool hasCookie(string plate, string name)`
 
 Determines whether a cookie exists in a plate of cookies like `document.cookie`.
 
 Example usage:
 
 ``` js
-let exists = Crumble.hasCookie(document.cookie, 'cookie');
+let exists = hasCookie(document.cookie, 'cookie');
 ```
 
-### `string Crumble#setCookie(Object crumbs [, string value])`
+#### `string setCookie(Object crumbs [, string value])`
 
 Creates a string that will set a cookie when assigned to a plate like `document.cookie`.
 
@@ -45,7 +63,7 @@ Creates a string that will set a cookie when assigned to a plate like `document.
 Example usage:
 
 ``` js
-document.cookie = Crumble.setCookie(
+document.cookie = setCookie(
 {
 	name   : 'name',
 	value  : 'value',
@@ -58,7 +76,7 @@ document.cookie = Crumble.setCookie(
 Alternatively you can separate the value from the rest of the crumbs:
 
 ``` js
-document.cookie = Crumble.setCookie(
+document.cookie = setCookie(
 {
 	name   : 'name',
 	domain : 'a.domain.com',
@@ -70,7 +88,7 @@ document.cookie = Crumble.setCookie(
 
 This can be useful when the cookie value is the variable and the other crumbs are fixed.
 
-### `string Crumble#removeCookie(Object crumbs)`
+#### `string removeCookie(Object crumbs)`
 
 Creates a string that will remove a cookie when assigned to a plate like `document.cookie`.
 
@@ -83,7 +101,7 @@ Creates a string that will remove a cookie when assigned to a plate like `docume
 Example usage:
 
 ``` js
-document.cookie = Crumble.removeCookie(
+document.cookie = removeCookie(
 {
 	name   : 'name',
 	domain : 'a.domain.com',

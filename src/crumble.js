@@ -1,7 +1,3 @@
-'use strict';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 const MAXIMUM_EXPIRY_DATE = new Date('Fri, 31 Dec 9999 23:59:59 GMT');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -162,4 +158,4 @@ function removeCookie ({ name, path, domain, secure, firstPartyOnly })
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-module.exports = { hasCookie, getCookie, setCookie, removeCookie };
+export { hasCookie, getCookie, setCookie, removeCookie };

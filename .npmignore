@@ -11,10 +11,11 @@
 
 .travis.yml
 
-# Rollup
+# Configuration
 # -----------------
 
 rollup.config.js
+babel.config.js
 
 # Directories
 # -----------------

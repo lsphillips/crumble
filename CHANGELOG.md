@@ -2,6 +2,10 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] (2021-05-14)
+
+- The library is now exposed by the `crumble` global variable instead of `Crumble`.
+
 ## [2.2.0] (2019-04-28)
 
 ### Added
