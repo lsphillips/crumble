@@ -131,7 +131,7 @@ npm run build
 This module also has a robust test suite:
 
 ``` sh
-npm run test
+npm test
 ```
 
 This includes a code quality check using ESLint. Please refer to the `.eslintrc` files to familiar yourself with the rules.
