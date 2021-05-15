@@ -5,7 +5,7 @@ import { getCookie, hasCookie, setCookie, removeCookie } from '../src/crumble.js
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-describe('Crumble', function ()
+describe('crumble', function ()
 {
 	let clock;
 

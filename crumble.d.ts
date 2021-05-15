@@ -64,7 +64,7 @@ export interface Crumbs
  * Example usage:
  *
  * ``` js
- * Crumble.hasCookie(document.cookie, 'cookie');
+ * crumble.hasCookie(document.cookie, 'cookie');
  * ```
  *
  * @returns `true` if the cookie exists, otherwise `false`.
@@ -80,7 +80,7 @@ export function hasCookie(plate : string, name : string) : boolean;
  * Example usage:
  *
  * ``` js
- * Crumble.getCookie(document.cookie, 'cookie');
+ * crumble.getCookie(document.cookie, 'cookie');
  * ```
  *
  * @returns The decoded value of the cookie or `null` if the cookie doesn't exist.
@@ -96,7 +96,7 @@ export function getCookie(plate : string, name : string) : string | null;
  * Example usage:
  *
  * ``` js
- * document.cookie = Crumble.setCookie(
+ * document.cookie = crumble.setCookie(
  * {
  *    name   : "name",
  *    value  : "value",
@@ -109,7 +109,7 @@ export function getCookie(plate : string, name : string) : string | null;
  * Alternatively you can separate the value from the rest of the crumbs, like so:
  *
  * ``` js
- * document.cookie = Crumble.setCookie(
+ * document.cookie = crumble.setCookie(
  * {
  *    name   : "name",
  *    domain : "a.domain.com",
@@ -134,7 +134,7 @@ export function setCookie(crumbs : Crumbs, value? : string | null) : string;
  * Example usage:
  *
  * ``` js
- * document.cookie = Crumble.removeCookie(
+ * document.cookie = crumble.removeCookie(
  * {
  *    name   : "name",
  *    domain : "a.domain.com",

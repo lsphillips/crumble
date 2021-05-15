@@ -61,7 +61,7 @@
 
     "scripts" :
     {
-        "test:lint" : "eslint \"**/*.js\"",
+        "test:lint" : "eslint \"**/*.js\" --ignore-path .gitignore",
         "test:unit" : "mocha \"tests/**/*.test.js\"",
         "test" : "npm run test:lint && npm run test:unit",
         "build" : "rollup --config",
