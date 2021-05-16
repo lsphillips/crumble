@@ -1,4 +1,4 @@
-# NPM
+# Dependencies
 # -----------------
 
 /node_modules
@@ -8,3 +8,8 @@
 
 /crumble.js
 /crumble.cjs
+
+# Pack
+# -----------------
+
+*.tgz

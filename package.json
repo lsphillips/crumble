@@ -1,7 +1,7 @@
 {
     "name" : "crumble",
 
-    "version" : "2.3.0",
+    "version" : "2.3.1",
 
     "type" : "module",
 
@@ -50,6 +50,16 @@
         "require" : "./crumble.cjs",
         "default" : "./crumble.cjs"
     },
+
+    "files" :
+    [
+        "/README.md",
+        "/CHANGELOG.md",
+        "/LICENSE.txt",
+        "/crumble.js",
+        "/crumble.cjs",
+        "/crumble.d.ts"
+    ],
 
     "repository" :
     {

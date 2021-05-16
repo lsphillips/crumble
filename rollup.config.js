@@ -3,41 +3,37 @@ import { terser } from 'rollup-plugin-terser';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-function plugins ()
+function bundle (output)
 {
-	return [
-		babel({
-			babelHelpers : 'bundled'
-		}),
-		terser()
-	];
+	return {
+
+		input : 'src/crumble.js',
+
+		plugins :
+		[
+			babel({
+				babelHelpers : 'bundled'
+			}),
+			terser()
+		],
+
+		output
+	};
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default [
-	{
-		input : 'src/crumble.js',
+export default
+[
+	bundle({
+		file : 'crumble.js',
+		format : 'esm'
+	}),
 
-		output :
-		{
-			file : 'crumble.js',
-			format : 'esm'
-		},
-
-		plugins : plugins()
-	},
-	{
-		input : 'src/crumble.js',
-
-		output :
-		{
-			file : 'crumble.cjs',
-			format : 'umd',
-			name : 'crumble',
-			exports : 'named'
-		},
-
-		plugins : plugins()
-	}
+	bundle({
+		file : 'crumble.cjs',
+		format : 'umd',
+		name : 'crumble',
+		exports : 'named'
+	})
 ];
