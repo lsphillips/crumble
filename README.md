@@ -62,12 +62,12 @@ Example usage:
 
 ``` js
 document.cookie = setCookie({
-	name     : 'name',
-	value    : 'value',
-	domain   : 'a.domain.com',
-	path     : '/an/example/path',
+  name     : 'name',
+  value    : 'value',
+  domain   : 'a.domain.com',
+  path     : '/an/example/path',
   age      : 3600,
-	secure   : false,
+  secure   : false,
   sameSite : 'strict'
 });
 ```
@@ -76,11 +76,11 @@ Alternatively you can separate the value from the rest of the crumbs:
 
 ``` js
 document.cookie = setCookie({
-	name     : 'name',
-	domain   : 'a.domain.com',
-	path     : '/an/example/path',
+  name     : 'name',
+  domain   : 'a.domain.com',
+  path     : '/an/example/path',
   age      : 3600,
-	secure   : false,
+  secure   : false,
   sameSite : 'strict'
 }, 'value');
 ```
@@ -99,9 +99,9 @@ Example usage:
 
 ``` js
 document.cookie = removeCookie({
-	name   : 'name',
-	domain : 'a.domain.com',
-	path   : '/an/example/path'
+  name   : 'name',
+  domain : 'a.domain.com',
+  path   : '/an/example/path'
 });
 ```
 
