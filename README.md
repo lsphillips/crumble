@@ -61,27 +61,28 @@ Creates a string that will set a cookie when assigned to a plate like `document.
 Example usage:
 
 ``` js
-document.cookie = setCookie(
-{
-	name   : 'name',
-	value  : 'value',
-	domain : 'a.domain.com',
-	path   : '/an/example/path',
-	secure : false
+document.cookie = setCookie({
+	name     : 'name',
+	value    : 'value',
+	domain   : 'a.domain.com',
+	path     : '/an/example/path',
+  age      : 3600,
+	secure   : false,
+  sameSite : 'strict'
 });
 ```
 
 Alternatively you can separate the value from the rest of the crumbs:
 
 ``` js
-document.cookie = setCookie(
-{
-	name   : 'name',
-	domain : 'a.domain.com',
-	path   : '/an/example/path',
-	secure : false
-
-}, "value");
+document.cookie = setCookie({
+	name     : 'name',
+	domain   : 'a.domain.com',
+	path     : '/an/example/path',
+  age      : 3600,
+	secure   : false,
+  sameSite : 'strict'
+}, 'value');
 ```
 
 This can be useful when the cookie value is the variable and the other crumbs are fixed.
@@ -97,8 +98,7 @@ Creates a string that will remove a cookie when assigned to a plate like `docume
 Example usage:
 
 ``` js
-document.cookie = removeCookie(
-{
+document.cookie = removeCookie({
 	name   : 'name',
 	domain : 'a.domain.com',
 	path   : '/an/example/path'
