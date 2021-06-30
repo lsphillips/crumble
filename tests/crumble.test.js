@@ -406,29 +406,18 @@ describe('crumble', function ()
 			expect(cookie).to.contain(';expires=Thu, 04 Dec 1980 01:00:00 GMT');
 		});
 
-		it('creates a cookie that is only available in first party contexts when `crumbs.firstPartyOnly` is `true`', function ()
+		it('creates a cookie with a SameSite policy specified by `crumbs.sameSite`', function ()
 		{
 			// Act.
 			let cookie = setCookie({
-				name : 'name', value : 'value', firstPartyOnly : true
+				name : 'name', value : 'value', sameSite : 'strict'
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';first-party-only');
+			expect(cookie).to.contain(';samesite=strict');
 		});
 
-		it('creates a cookie that is available in all contexts when `crumbs.firstPartyOnly` is `false`', function ()
-		{
-			// Act.
-			let cookie = setCookie({
-				name : 'name', value : 'value', firstPartyOnly : false
-			});
-
-			// Assert.
-			expect(cookie).to.not.contain(';first-party-only');
-		});
-
-		it('creates a cookie that is available in all contexts when `crumbs.firstPartyOnly` is not provided', function ()
+		it('creates a cookie with a Lax SameSite policy when `crumbs.sameSite` is not provided', function ()
 		{
 			// Act.
 			let cookie = setCookie({
@@ -436,7 +425,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.not.contain(';first-party-only');
+			expect(cookie).to.contain(';samesite=lax');
 		});
 
 		it('throws a type error when `crumbs.name` is `null` or not provided', function ()
@@ -489,6 +478,30 @@ describe('crumble', function ()
 				});
 
 			}).to.throw(TypeError);
+		});
+
+		it('throws a type error when `crumbs.sameSite` is not `none`, `lax` or `strict`', function ()
+		{
+			// Act & Assert.
+			expect(function ()
+			{
+				setCookie({
+					name : 'name', value : 'value', sameSite : 'spy'
+				});
+
+			}).to.throw(TypeError);
+		});
+
+		it('throws an error when `crumbs.secure` is `false` and `crumbs.sameSite` is `none`', function ()
+		{
+			// Act & Assert.
+			expect(function ()
+			{
+				setCookie({
+					name : 'name', value : 'value', sameSite : 'none', secure : false
+				});
+
+			}).to.throw(Error);
 		});
 	});
 
@@ -564,72 +577,6 @@ describe('crumble', function ()
 
 			// Assert.
 			expect(cookie).to.not.contain(';domain=');
-		});
-
-		it('removes a cookie only over HTTPS when `crumbs.secure` is `true`', function ()
-		{
-			// Act.
-			let cookie = removeCookie({
-				name : 'name', secure : true
-			});
-
-			// Assert.
-			expect(cookie).to.contain(';secure');
-		});
-
-		it('removes a cookie over both HTTP and HTTPS when `crumbs.secure` is `false`', function ()
-		{
-			// Act.
-			let cookie = removeCookie({
-				name : 'name', secure : false
-			});
-
-			// Assert.
-			expect(cookie).to.not.contain(';secure');
-		});
-
-		it('removes a cookie over both HTTP and HTTPS when `crumbs.secure` is not provided', function ()
-		{
-			// Act.
-			let cookie = removeCookie({
-				name : 'name'
-			});
-
-			// Assert.
-			expect(cookie).to.not.contain(';secure');
-		});
-
-		it('removes a cookie only from the first party context when `crumbs.firstPartyOnly` is `true`', function ()
-		{
-			// Act.
-			let cookie = removeCookie({
-				name : 'name', firstPartyOnly : true
-			});
-
-			// Assert.
-			expect(cookie).to.contain(';first-party-only');
-		});
-
-		it('removes a cookie from all contexts when `crumbs.firstPartyOnly` is `false`', function ()
-		{
-			// Act.
-			let cookie = removeCookie({
-				name : 'name', firstPartyOnly : false
-			});
-
-			// Assert.
-			expect(cookie).to.not.contain(';first-party-only');
-		});
-
-		it('removes a cookie from all contexts when `crumbs.firstPartyOnly` is not provided', function ()
-		{
-			// Act.
-			let cookie = removeCookie({
-				name : 'name'
-			});
-
-			// Assert.
-			expect(cookie).to.not.contain(';first-party-only');
 		});
 
 		it('throws a type error when `crumbs.name` is `null` or not provided', function ()

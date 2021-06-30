@@ -49,11 +49,11 @@ export interface Crumbs
 	secure? : boolean;
 
 	/**
-	 * Indicates whether the cookie should only be sent in a first-party context.
+	 * The context restrictions that the cookie should be subject to.
 	 *
-	 * This is subject to client support.
+	 * Defaults to lax.
 	 */
-	firstPartyOnly? : boolean;
+	sameSite? : 'none' | 'lax' | 'strict';
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -138,8 +138,7 @@ export function setCookie(crumbs : Crumbs, value? : string | null) : string;
  * {
  *    name   : "name",
  *    domain : "a.domain.com",
- *    path   : "/an/example/path",
- *    secure : false
+ *    path   : "/an/example/path"
  * });
  * ```
  *

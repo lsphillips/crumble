@@ -56,7 +56,7 @@ Creates a string that will set a cookie when assigned to a plate like `document.
 * `path` (string, optional) - The path of which the cookie will be created. Defaults to the current path.
 * `domain` (string, optional) - The (sub)domain of which the cookie will be created. Defaults to the current domain.
 * `secure` (boolean, optional) - Indicates whether the cookie should only be passed over HTTPS connections. Defaults to `false`.
-* `firstPartyOnly` (boolean, optional) - Indicates whether the cookie should only be sent in a first-party context. This is subject to client support. Defaults to `false`.
+* `sameSite` (string, optional) - Indicates the context restrictions that the cookie should be subject to. Defaults to `lax`.
 
 Example usage:
 
@@ -93,8 +93,6 @@ Creates a string that will remove a cookie when assigned to a plate like `docume
 * `name` (string, required) - The name of the cookie.
 * `path` (string, optional) - The path of which the cookie will be removed from. Defaults to the current path.
 * `domain` (string, optional) - The (sub)domain of which the cookie will be removed from. Defaults to the current domain.
-* `secure` (boolean, optional) - Indicates whether the cookie should only be removed over HTTPS connections. Defaults to `false`.
-* `firstPartyOnly` (boolean, optional) - Indicates whether the cookie should only be sent in a first-party context. This is subject to client support. Defaults to `false`.
 
 Example usage:
 
@@ -103,8 +101,7 @@ document.cookie = removeCookie(
 {
 	name   : 'name',
 	domain : 'a.domain.com',
-	path   : '/an/example/path',
-	secure : false
+	path   : '/an/example/path'
 });
 ```
 

@@ -58,7 +58,7 @@ function getCookie (plate, name)
 
 function setCookie (crumbs, value = crumbs.value)
 {
-	let { name = null, age, expires, path, domain, secure = false, firstPartyOnly = false } = crumbs;
+	let { name = null, age, expires, path, domain, secure = false, sameSite = 'lax' } = crumbs;
 
 	if (name === null)
 	{
@@ -90,7 +90,7 @@ function setCookie (crumbs, value = crumbs.value)
 	{
 		if (typeof age !== 'number' || isNaN(age))
 		{
-			throw new TypeError('The cookie age must be a valid number.');
+			throw new TypeError('The cookie age setting must be a valid number.');
 		}
 
 		if (age === Infinity)
@@ -118,7 +118,7 @@ function setCookie (crumbs, value = crumbs.value)
 
 		if (expires.toString() === 'Invalid Date')
 		{
-			throw new TypeError('The cookie expiry must represent a valid date.');
+			throw new TypeError('The cookie expiry setting must represent a valid date.');
 		}
 		else
 		{
@@ -132,16 +132,24 @@ function setCookie (crumbs, value = crumbs.value)
 		}
 	}
 
+	// SameSite.
+	if (sameSite !== 'none' && sameSite !== 'lax' && sameSite !== 'strict')
+	{
+		throw new TypeError('The cookie samesite setting must take the value of `none`, `lax`, or `strict`.');
+	}
+	else
+	{
+		cookie += ';samesite=' + sameSite;
+	}
+
 	// Secure.
 	if (secure)
 	{
 		cookie += ';secure';
 	}
-
-	// First-Party-Only.
-	if (firstPartyOnly)
+	else if (sameSite === 'none')
 	{
-		cookie += ';first-party-only';
+		throw new Error('The cookie must be secure to set the samesite setting to `none`.');
 	}
 
 	return cookie;
@@ -149,10 +157,10 @@ function setCookie (crumbs, value = crumbs.value)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-function removeCookie ({ name, path, domain, secure, firstPartyOnly })
+function removeCookie ({ name, path, domain })
 {
 	return setCookie({
-		name, path, domain, secure, firstPartyOnly, age : -3600000
+		name, path, domain, age : -3600000
 	});
 }
 

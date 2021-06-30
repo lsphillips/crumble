@@ -2,6 +2,20 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] (2021-06-29)
+
+### Added
+
+- `crumble.setCookie()` now accepts a `crumbs.sameSite` attribute, this defaults to `lax` when not provided.
+
+### Changed
+
+- `crumble.removeCookie()` no longer accepts a `crumbs.secure` flag as it is not required to remove a cookie.
+
+### Removed
+
+- Removed the `crumbs.firstPartyOnly` flag as it has been superseded by `crumbs.sameSite`.
+
 ## [2.3.1] (2021-05-16)
 
 ### Changed
