@@ -135,7 +135,7 @@ function setCookie (crumbs, value = crumbs.value)
 	// SameSite.
 	if (sameSite !== 'none' && sameSite !== 'lax' && sameSite !== 'strict')
 	{
-		throw new TypeError('The cookie samesite setting must take the value of `none`, `lax`, or `strict`.');
+		throw new TypeError('The cookie samesite setting must take the value of `none`, `lax` or `strict`.');
 	}
 	else
 	{
@@ -149,7 +149,7 @@ function setCookie (crumbs, value = crumbs.value)
 	}
 	else if (sameSite === 'none')
 	{
-		throw new Error('The cookie must be secure to set the samesite setting to `none`.');
+		throw new Error('The cookie must be secure inorder to set its samesite setting to `none`.');
 	}
 
 	return cookie;

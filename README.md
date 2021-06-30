@@ -56,7 +56,7 @@ Creates a string that will set a cookie when assigned to a plate like `document.
 * `path` (string, optional) - The path of which the cookie will be created. Defaults to the current path.
 * `domain` (string, optional) - The (sub)domain of which the cookie will be created. Defaults to the current domain.
 * `secure` (boolean, optional) - Indicates whether the cookie should only be passed over HTTPS connections. Defaults to `false`.
-* `sameSite` (string, optional) - Indicates the context restrictions that the cookie should be subject to. Defaults to `lax`.
+* `sameSite` (string, optional) - Indicates the context restrictions that the cookie should be subject to. This can take the value of `none`, `lax` or `secure`. Defaults to `lax`.
 
 Example usage:
 
@@ -104,6 +104,8 @@ document.cookie = removeCookie(
 	path   : '/an/example/path'
 });
 ```
+
+**Note:** When a cookie was set with a specific path and/or domain, then you must provide the same values during removal.
 
 ## Getting started
 
