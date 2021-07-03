@@ -13,6 +13,8 @@ jobs:
 
   build-and-test:
 
+    name: Build and Test
+
     steps:
 
       - name: Checkout
