@@ -1,6 +1,6 @@
 import { expect, use }                                   from 'chai';
 import stringsForChai                                    from 'chai-string';
-import sinon                                             from 'sinon';
+import { useFakeTimers }                                 from 'sinon';
 import { getCookie, hasCookie, setCookie, removeCookie } from '../src/crumble.js';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -16,7 +16,7 @@ describe('crumble', function ()
 
 	beforeEach(function ()
 	{
-		clock = sinon.useFakeTimers(344736000000);
+		clock = useFakeTimers(344736000000);
 	});
 
 	afterEach(function ()
