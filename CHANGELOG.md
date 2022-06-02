@@ -43,7 +43,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
-- Introduced documentation to the Typescript type definitons.
+- Introduced documentation to the Typescript type definitions.
 
 ## 2.0.0 - 2018-02-13
 
