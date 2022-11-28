@@ -33,7 +33,7 @@
         "mocha" : "10.1.0",
         "chai" : "4.3.7",
         "chai-string" : "1.5.0",
-        "sinon" : "14.0.2",
+        "sinon" : "15.0.0",
         "eslint" : "8.28.0",
         "eslint-plugin-import" : "2.26.0",
         "eslint-plugin-promise" : "6.1.1",
