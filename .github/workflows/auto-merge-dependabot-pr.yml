@@ -19,7 +19,7 @@ jobs:
     steps:
 
       - name: Extract metadata from PR
-        uses: dependabot/fetch-metadata@v1.1.1
+        uses: dependabot/fetch-metadata@v1
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
         id: metadata
