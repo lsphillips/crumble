@@ -1,8 +1,9 @@
 name: Automatically Merge Dependabot Pull Requests
 
-pull_request:
-  branches:
-    - master
+on:
+  pull_request:
+    branches:
+      - master
 
 permissions:
   contents: write
