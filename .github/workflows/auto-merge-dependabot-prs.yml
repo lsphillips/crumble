@@ -1,4 +1,4 @@
-name: Automatically Merge Dependabot Pull Request
+name: Automatically Merge Dependabot Pull Requests
 
 pull_request:
   branches:
@@ -12,7 +12,7 @@ jobs:
 
   auto-merge-dependabot-pr:
 
-    name: Automatically Merge Dependabot Pull Request
+    name: Automatically Merge Dependabot Pull Requests
 
     if: ${{ github.actor == 'dependabot[bot]' }}
 
