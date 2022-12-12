@@ -4,6 +4,8 @@ on:
   pull_request:
     branches:
       - master
+    types:
+      - opened
 
 permissions:
   contents: write
@@ -15,7 +17,7 @@ jobs:
 
     name: Automatically Merge Dependabot Pull Requests
 
-    if: ${{ github.actor == 'dependabot[bot]' }}
+    if: ${{ github.event.pull_request.sender.login == 'dependabot[bot]' }}
 
     steps:
 
