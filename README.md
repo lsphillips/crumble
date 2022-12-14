@@ -1,7 +1,7 @@
 # Crumble
 
 [![Available from NPM](https://img.shields.io/npm/v/crumble.svg?maxAge=900)](https://www.npmjs.com/package/crumble)
-[![Built using GitHub Action](https://github.com/lsphillips/Crumble/actions/workflows/build-and-test.yml/badge.svg?branch=master)](https://github.com/lsphillips/Crumble/actions)
+[![Built using GitHub Action](https://github.com/lsphillips/Crumble/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/lsphillips/Crumble/actions)
 
 A RFC-6265 compliant library that makes reading and writing cookies easy.
 
