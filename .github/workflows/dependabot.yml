@@ -1,4 +1,4 @@
-name: Automatically Merge Dependabot Pull Requests
+name: Dependabot
 
 on:
   pull_request:
@@ -13,7 +13,7 @@ jobs:
 
   auto-merge-dependabot-pr:
 
-    name: Automatically Merge Dependabot Pull Requests
+    name: Automatically Approve & Merge PR
 
     if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
 
