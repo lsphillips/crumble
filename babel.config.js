@@ -1,5 +1,7 @@
-export default function config ()
+export default function config (api)
 {
+	api.cache(true);
+
 	return {
 
 		presets :
