@@ -39,7 +39,7 @@
         "eslint-plugin-promise" : "6.1.1",
         "eslint-config-protect-me-from-my-stupidity" : "9.5.1",
         "@babel/core" : "7.23.5",
-        "@babel/preset-env" : "7.23.5"
+        "@babel/preset-env" : "7.23.6"
     },
 
     "main" : "crumble.cjs",
