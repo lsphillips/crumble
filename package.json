@@ -34,10 +34,11 @@
         "chai" : "4.4.1",
         "chai-string" : "1.5.0",
         "sinon" : "17.0.1",
-        "eslint" : "8.56.0",
+        "eslint" : "8.57.0",
         "eslint-plugin-import" : "2.29.1",
         "eslint-plugin-promise" : "6.1.1",
-        "eslint-config-protect-me-from-my-stupidity" : "9.5.1",
+        "@stylistic/eslint-plugin-js" : "1.6.2",
+        "eslint-config-protect-me-from-my-stupidity" : "10.0.0",
         "@babel/core" : "7.23.9",
         "@babel/preset-env" : "7.23.9"
     },
