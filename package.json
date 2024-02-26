@@ -38,7 +38,7 @@
         "eslint-plugin-import" : "2.29.1",
         "eslint-plugin-promise" : "6.1.1",
         "@stylistic/eslint-plugin-js" : "1.6.2",
-        "eslint-config-protect-me-from-my-stupidity" : "10.0.0",
+        "eslint-config-protect-me-from-my-stupidity" : "10.1.0",
         "@babel/core" : "7.23.9",
         "@babel/preset-env" : "7.23.9"
     },
