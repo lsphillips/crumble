@@ -1,7 +1,7 @@
 {
     "name" : "crumble",
 
-    "version" : "3.0.0",
+    "version" : "3.0.1",
 
     "type" : "module",
 
@@ -18,11 +18,11 @@
         "cookies"
     ],
 
-    "homepage" : "https://github.com/lsphillips/Crumble",
+    "homepage" : "https://github.com/lsphillips/crumble",
 
     "bugs" :
     {
-        "url" : "https://github.com/lsphillips/Crumble/issues"
+        "url" : "https://github.com/lsphillips/crumble/issues"
     },
 
     "devDependencies" :
@@ -65,7 +65,7 @@
     "repository" :
     {
         "type" : "git",
-        "url" : "https://github.com/lsphillips/Crumble.git"
+        "url" : "https://github.com/lsphillips/crumble.git"
     },
 
     "license" : "MIT",
