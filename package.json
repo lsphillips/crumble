@@ -27,7 +27,7 @@
 
     "devDependencies" :
     {
-        "rollup" : "4.28.0",
+        "rollup" : "4.28.1",
         "@rollup/plugin-terser" : "0.4.4",
         "@rollup/plugin-babel" : "6.0.4",
         "mocha" : "10.8.2",
