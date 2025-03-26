@@ -30,10 +30,6 @@
         "rollup" : "4.37.0",
         "@rollup/plugin-terser" : "0.4.4",
         "@rollup/plugin-babel" : "6.0.4",
-        "mocha" : "10.8.2",
-        "chai" : "4.5.0",
-        "chai-string" : "1.6.0",
-        "sinon" : "19.0.2",
         "eslint" : "9.23.0",
         "eslint-config-protect-me-from-my-stupidity" : "15.0.0",
         "@babel/core" : "7.26.10",
@@ -70,7 +66,7 @@
     "scripts" :
     {
         "test:lint" : "eslint \"**/*.js\"",
-        "test:unit" : "mocha \"tests/**/*.test.js\"",
+        "test:unit" : "node --test",
         "test" : "npm run test:lint && npm run test:unit",
         "build" : "rollup --config",
         "prepack" : "npm run test && npm run build"

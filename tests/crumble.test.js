@@ -1,27 +1,48 @@
-import { expect, use }                                   from 'chai';
-import stringsForChai                                    from 'chai-string';
-import { useFakeTimers }                                 from 'sinon';
-import { getCookie, hasCookie, setCookie, removeCookie } from '../src/crumble.js';
+import {
+	describe,
+	beforeEach,
+	it
+} from 'node:test';
+import assert from 'node:assert';
+import {
+	getCookie,
+	hasCookie,
+	setCookie,
+	removeCookie
+} from '../src/crumble.js';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function assertStartsWith (target, value)
+{
+	assert.strictEqual(
+		target.startsWith(value), true, `"${target}" does not start with "${value}"`
+	);
+}
+
+function assertContains (target, value)
+{
+	assert.strictEqual(
+		target.includes(value), true, `"${target}" does not contain "${value}"`
+	);
+}
+
+function assertNotContains (target, value)
+{
+	assert.strictEqual(
+		target.includes(value), false, `"${target}" contains "${value}"`
+	);
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 describe('crumble', function ()
 {
-	let clock;
-
-	before(function ()
+	beforeEach(function ({ mock })
 	{
-		use(stringsForChai);
-	});
-
-	beforeEach(function ()
-	{
-		clock = useFakeTimers(344736000000);
-	});
-
-	afterEach(function ()
-	{
-		clock.restore();
+		mock.timers.enable({
+			apis : ['Date'], now : 344736000000
+		});
 	});
 
 	describe('getCookie(plate, name)', function ()
@@ -29,51 +50,53 @@ describe('crumble', function ()
 		it('returns the value of the cookie with a given name', function ()
 		{
 			// Act & Assert.
-			expect(
-				getCookie('one=three; two=one; three=two', 'one')
-			).to.equal('three');
+			assert.strictEqual(
+				getCookie('one=three; two=one; three=two', 'one'), 'three'
+			);
 
 			// Act & Assert.
-			expect(
-				getCookie('one=three; two=one; three=two', 'two')
-			).to.equal('one');
+			assert.strictEqual(
+				getCookie('one=three; two=one; three=two', 'two'), 'one'
+			);
 
 			// Act & Assert.
-			expect(
-				getCookie('one=three; two=one; three=two', 'three')
-			).to.equal('two');
+			assert.strictEqual(
+				getCookie('one=three; two=one; three=two', 'three'), 'two'
+			);
 		});
 
 		it('returns the value of the cookie with a given name that needs to be encoded', function ()
 		{
-			// Act & Assert.
-			expect(
-				getCookie('one=boring; %2C%3B%5C#$%25&+%3A%3C%3E%3D%2F%3F%40%5B%5D^%7B%7D`|%C3%A3%E2%82%AF%F0%A9%B8%BD%28%29!%22_=special; three=normal', ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_')
-			).to.equal('special');
+			// Act.
+			const result = getCookie('one=boring; %2C%3B%5C#$%25&+%3A%3C%3E%3D%2F%3F%40%5B%5D^%7B%7D`|%C3%A3%E2%82%AF%F0%A9%B8%BD%28%29!%22_=special; three=normal', ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_');
+
+			// Assert.
+			assert.strictEqual(result, 'special');
 		});
 
 		it('returns the value of the cookie that is decoded in accordance to RFC 6265', function ()
 		{
-			// Act & Assert.
-			expect(
-				getCookie('one=boring; two=%2C%3B%5C#$%25&+:<>=/?@[]^{}`|%C3%A3%E2%82%AF%F0%A9%B8%BD()!%22_; three=boring', 'two')
-			).to.equal(',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_');
+			// Act.
+			const result = getCookie('one=boring; two=%2C%3B%5C#$%25&+:<>=/?@[]^{}`|%C3%A3%E2%82%AF%F0%A9%B8%BD()!%22_; three=boring', 'two');
+
+			// Assert.
+			assert.strictEqual(result, ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_');
 		});
 
 		it('returns an empty string when the cookie does not have a value', function ()
 		{
 			// Act & Assert.
-			expect(
-				getCookie('one=three; two=; three=two', 'two')
-			).to.equal('');
+			assert.strictEqual(
+				getCookie('one=three; two=; three=two', 'two'), ''
+			);
 		});
 
 		it('returns `null` when a cookie does not exist', function ()
 		{
 			// Act & Assert.
-			expect(
-				getCookie('one=three; two=four; three=two', 'four')
-			).to.equal(null);
+			assert.strictEqual(
+				getCookie('one=three; two=four; three=two', 'four'), null
+			);
 		});
 	});
 
@@ -82,43 +105,44 @@ describe('crumble', function ()
 		it('returns `true` when the cookie exists with a given name', function ()
 		{
 			// Act & Assert.
-			expect(
-				hasCookie('one=three; two=one; three=two', 'one')
-			).to.be.true;
+			assert.strictEqual(
+				hasCookie('one=three; two=one; three=two', 'one'), true
+			);
 
 			// Act & Assert.
-			expect(
-				hasCookie('one=three; two=one; three=two', 'two')
-			).to.be.true;
+			assert.strictEqual(
+				hasCookie('one=three; two=one; three=two', 'two'), true
+			);
 
 			// Act & Assert.
-			expect(
-				hasCookie('one=three; two=one; three=two', 'three')
-			).to.be.true;
+			assert.strictEqual(
+				hasCookie('one=three; two=one; three=two', 'three'), true
+			);
 		});
 
 		it('returns `true` when the cookie exists with a given name that needs to be encoded', function ()
 		{
-			// Act & Assert.
-			expect(
-				hasCookie('one=boring; %2C%3B%5C#$%25&+%3A%3C%3E%3D%2F%3F%40%5B%5D^%7B%7D`|%C3%A3%E2%82%AF%F0%A9%B8%BD%28%29!%22_=special; three=normal', ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_')
-			).to.be.true;
+			// Act.
+			const result = hasCookie('one=boring; %2C%3B%5C#$%25&+%3A%3C%3E%3D%2F%3F%40%5B%5D^%7B%7D`|%C3%A3%E2%82%AF%F0%A9%B8%BD%28%29!%22_=special; three=normal', ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_');
+
+			// Assert.
+			assert.strictEqual(result, true);
 		});
 
 		it('returns `true` when the cookie does not have a value', function ()
 		{
 			// Act & Assert.
-			expect(
-				hasCookie('one=three; two=; three=two', 'two')
-			).to.be.true;
+			assert.strictEqual(
+				hasCookie('one=three; two=; three=two', 'two'), true
+			);
 		});
 
 		it('returns `false` when a cookie does not exist', function ()
 		{
 			// Act & Assert.
-			expect(
-				hasCookie('one=three; two=four; three=two', 'four')
-			).to.be.false;
+			assert.strictEqual(
+				hasCookie('one=three; two=four; three=two', 'four'), false
+			);
 		});
 	});
 
@@ -126,46 +150,46 @@ describe('crumble', function ()
 	{
 		it('creates a cookie with the name specified by `crumbs.name` and a value specified by `value`', function ()
 		{
-			// Act
+			// Act,
 			let cookie = setCookie({
 				name : 'name'
 			}, 'value');
 
 			// Assert.
-			expect(cookie).to.startWith('name=value');
+			assertStartsWith(cookie, 'name=value');
 		});
 
 		it('creates a cookie with the name encoded in accordance to RFC 6265', function ()
 		{
-			// Act
+			// Act.
 			let cookie = setCookie({
 				name : ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_'
 			}, 'value');
 
 			// Assert.
-			expect(cookie).to.startWith('%2C%3B%5C#$%25&+%3A%3C%3E%3D%2F%3F%40%5B%5D^%7B%7D`|%C3%A3%E2%82%AF%F0%A9%B8%BD%28%29!%22_=value');
+			assertStartsWith(cookie, '%2C%3B%5C#$%25&+%3A%3C%3E%3D%2F%3F%40%5B%5D^%7B%7D`|%C3%A3%E2%82%AF%F0%A9%B8%BD%28%29!%22_=value');
 		});
 
 		it('creates a cookie with the value specified by `crumbs.value` when `value` is not provided', function ()
 		{
-			// Act
+			// Act.
 			let cookie = setCookie({
 				name : 'name', value : 'value'
 			});
 
 			// Assert.
-			expect(cookie).to.startWith('name=value');
+			assertStartsWith(cookie, 'name=value');
 		});
 
 		it('creates a cookie by ignoring `crumbs.value` when `value` is provided', function ()
 		{
-			// Act
+			// Act.
 			let cookie = setCookie({
 				name : 'name', value : 'the value that should be ignored'
 			}, 'value');
 
 			// Assert.
-			expect(cookie).to.startWith('name=value');
+			assertStartsWith(cookie, 'name=value');
 		});
 
 		it('creates a cookie with the value encoded in accordance to RFC 6265', function ()
@@ -176,7 +200,7 @@ describe('crumble', function ()
 			}, ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_');
 
 			// Assert.
-			expect(cookieNotUsingValueCrumb).to.startWith('name=%2C%3B%5C#$%25&+:<>=/?@[]^{}`|%C3%A3%E2%82%AF%F0%A9%B8%BD()!%22_');
+			assertStartsWith(cookieNotUsingValueCrumb, 'name=%2C%3B%5C#$%25&+:<>=/?@[]^{}`|%C3%A3%E2%82%AF%F0%A9%B8%BD()!%22_');
 
 			// Act.
 			let cookieUsingValueCrumb = setCookie({
@@ -184,7 +208,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookieUsingValueCrumb).to.startWith('name=%2C%3B%5C#$%25&+:<>=/?@[]^{}`|%C3%A3%E2%82%AF%F0%A9%B8%BD()!%22_');
+			assertStartsWith(cookieUsingValueCrumb, 'name=%2C%3B%5C#$%25&+:<>=/?@[]^{}`|%C3%A3%E2%82%AF%F0%A9%B8%BD()!%22_');
 		});
 
 		it('creates a cookie with no value when `value` or `crumbs.value` is `null`', function ()
@@ -195,7 +219,7 @@ describe('crumble', function ()
 			}, null);
 
 			// Assert.
-			expect(cookieUsingValue).to.startWith('name=');
+			assertStartsWith(cookieUsingValue, 'name=;');
 
 			// Act.
 			let cookieUsingValueCrumb = setCookie({
@@ -203,7 +227,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookieUsingValueCrumb).to.startWith('name=');
+			assertStartsWith(cookieUsingValueCrumb, 'name=;');
 		});
 
 		it('creates a cookie with no value when `value` and `crumbs.value` are not provided', function ()
@@ -214,7 +238,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.startWith('name=');
+			assertStartsWith(cookie, 'name=;');
 		});
 
 		it('creates a cookie that is only available on the path specified by `crumbs.path`', function ()
@@ -225,7 +249,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';path=/a/document/path');
+			assertContains(cookie, ';path=/a/document/path');
 		});
 
 		it('creates a cookie that is only available on the path of the current document when `crumbs.path` is not provided', function ()
@@ -236,7 +260,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.not.contain(';path=');
+			assertNotContains(cookie, ';path=');
 		});
 
 		it('creates a cookie that is only available on the domain specified by `crumbs.domain`', function ()
@@ -247,7 +271,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';domain=sub.domain.com');
+			assertContains(cookie, ';domain=sub.domain.com');
 		});
 
 		it('creates a cookie that is only available on the domain of the current document when `crumbs.domain` is not provided', function ()
@@ -258,7 +282,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.not.contain(';domain=');
+			assertNotContains(cookie, ';domain=');
 		});
 
 		it('creates a cookie that is only available over HTTPS when `crumbs.secure` is `true`', function ()
@@ -269,7 +293,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';secure');
+			assertContains(cookie, ';secure');
 		});
 
 		it('creates a cookie that is available over both HTTP and HTTPS when `crumbs.secure` is `false`', function ()
@@ -280,7 +304,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.not.contain(';secure');
+			assertNotContains(cookie, ';secure');
 		});
 
 		it('creates a cookie that is available over both HTTP and HTTPS when `crumbs.secure` is not provided', function ()
@@ -291,7 +315,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.not.contain(';secure');
+			assertNotContains(cookie, ';secure');
 		});
 
 		it('creates a cookie that will expire after the number of milliseconds specified by `crumbs.age`', function ()
@@ -302,10 +326,10 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';max-age=3600');
+			assertContains(cookie, ';max-age=3600');
 
 			// Assert.
-			expect(cookie).to.contain(';expires=Thu, 04 Dec 1980 01:00:00 GMT');
+			assertContains(cookie, ';expires=Thu, 04 Dec 1980 01:00:00 GMT');
 		});
 
 		it('creates a cookie that will expire at `23:59:59 on 31 Dec 9999` when `crumbs.age` is `Infinity`', function ()
@@ -316,10 +340,10 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';max-age=253057564799');
+			assertContains(cookie, ';max-age=253057564799');
 
 			// Assert.
-			expect(cookie).to.contain(';expires=Fri, 31 Dec 9999 23:59:59 GMT');
+			assertContains(cookie, ';expires=Fri, 31 Dec 9999 23:59:59 GMT');
 		});
 
 		it('creates a cookie that will expire at the date specified by `crumbs.expires` as a date object', function ()
@@ -330,10 +354,10 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';max-age=7200');
+			assertContains(cookie, ';max-age=7200');
 
 			// Assert.
-			expect(cookie).to.contain(';expires=Thu, 04 Dec 1980 02:00:00 GMT');
+			assertContains(cookie, ';expires=Thu, 04 Dec 1980 02:00:00 GMT');
 		});
 
 		it('creates a cookie that will expire at the date specified by `crumbs.expires` as a date string', function ()
@@ -344,10 +368,10 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';max-age=10800');
+			assertContains(cookie, ';max-age=10800');
 
 			// Assert.
-			expect(cookie).to.contain(';expires=Thu, 04 Dec 1980 03:00:00 GMT');
+			assertContains(cookie, ';expires=Thu, 04 Dec 1980 03:00:00 GMT');
 		});
 
 		it('creates a cookie that will expire at the date specified by `crumbs.expires` as a timestamp', function ()
@@ -358,10 +382,10 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';max-age=14400');
+			assertContains(cookie, ';max-age=14400');
 
 			// Assert.
-			expect(cookie).to.contain(';expires=Thu, 04 Dec 1980 04:00:00 GMT');
+			assertContains(cookie, ';expires=Thu, 04 Dec 1980 04:00:00 GMT');
 		});
 
 		it('creates a cookie that will expire at `23:59:59 on 31 Dec 9999` when `crumbs.expires` is `Infinity`', function ()
@@ -372,10 +396,10 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';max-age=253057564799');
+			assertContains(cookie, ';max-age=253057564799');
 
 			// Assert.
-			expect(cookie).to.contain(';expires=Fri, 31 Dec 9999 23:59:59 GMT');
+			assertContains(cookie, ';expires=Fri, 31 Dec 9999 23:59:59 GMT');
 		});
 
 		it('creates a cookie that will expire at the end of the current session when both `crumbs.age` and `crumbs.expires` are not provided', function ()
@@ -386,10 +410,10 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.not.contain(';max-age=');
+			assertNotContains(cookie, ';max-age=');
 
 			// Assert.
-			expect(cookie).to.not.contain(';expires=');
+			assertNotContains(cookie, ';expires=');
 		});
 
 		it('creates a cookie by ignoring `crumbs.expires` when `crumbs.age` is provided', function ()
@@ -400,10 +424,10 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';max-age=3600');
+			assertContains(cookie, ';max-age=3600');
 
 			// Assert.
-			expect(cookie).to.contain(';expires=Thu, 04 Dec 1980 01:00:00 GMT');
+			assertContains(cookie, ';expires=Thu, 04 Dec 1980 01:00:00 GMT');
 		});
 
 		it('creates a cookie with a SameSite policy specified by `crumbs.sameSite`', function ()
@@ -414,7 +438,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';samesite=strict');
+			assertContains(cookie, ';samesite=strict');
 		});
 
 		it('creates a cookie with a Lax SameSite policy when `crumbs.sameSite` is not provided', function ()
@@ -425,83 +449,83 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';samesite=lax');
+			assertContains(cookie, ';samesite=lax');
 		});
 
 		it('throws a type error when `crumbs.name` is `null` or not provided', function ()
 		{
 			// Act & Assert.
-			expect(function ()
+			assert.throws(function ()
 			{
 				setCookie({});
 
-			}).to.throw(TypeError);
+			}, TypeError);
 
 			// Act & Assert.
-			expect(function ()
+			assert.throws(function ()
 			{
 				setCookie({
 					name : null
 				});
 
-			}).to.throw(TypeError);
+			}, TypeError);
 		});
 
 		it('throws a type error when `crumbs.age` is not a valid number', function ()
 		{
 			// Act & Assert.
-			expect(function ()
+			assert.throws(function ()
 			{
 				setCookie({
 					name : 'name', value : 'value', age : 'not a number'
 				});
 
-			}).to.throw(TypeError);
+			}, TypeError);
 		});
 
 		it('throws a type error when `crumbs.expires` does not represent a valid date', function ()
 		{
 			// Act & Assert.
-			expect(function ()
+			assert.throws(function ()
 			{
 				setCookie({
 					name : 'name', value : 'value', expires : new Date('An invalid date string')
 				});
 
-			}).to.throw(TypeError);
+			}, TypeError);
 
 			// Act & Assert.
-			expect(function ()
+			assert.throws(function ()
 			{
 				setCookie({
 					name : 'name', value : 'value', expires : 'An invalid date string'
 				});
 
-			}).to.throw(TypeError);
+			}, TypeError);
 		});
 
 		it('throws a type error when `crumbs.sameSite` is not `none`, `lax` or `strict`', function ()
 		{
 			// Act & Assert.
-			expect(function ()
+			assert.throws(function ()
 			{
 				setCookie({
 					name : 'name', value : 'value', sameSite : 'spy'
 				});
 
-			}).to.throw(TypeError);
+			}, TypeError);
 		});
 
 		it('throws an error when `crumbs.secure` is `false` and `crumbs.sameSite` is `none`', function ()
 		{
 			// Act & Assert.
-			expect(function ()
+			assert.throws(function ()
 			{
 				setCookie({
 					name : 'name', value : 'value', sameSite : 'none', secure : false
 				});
 
-			}).to.throw(Error);
+			}, Error);
 		});
 	});
 
@@ -515,24 +539,24 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.startWith('name=');
+			assertStartsWith(cookie, 'name=;');
 
 			// Assert.
-			expect(cookie).to.contain(';max-age=-3600');
+			assertContains(cookie, ';max-age=-3600');
 
 			// Assert.
-			expect(cookie).to.contain(';expires=Wed, 03 Dec 1980 23:00:00 GMT');
+			assertContains(cookie, ';expires=Wed, 03 Dec 1980 23:00:00 GMT');
 		});
 
 		it('removes a cookie with the name encoded in accordance to RFC 6265', function ()
 		{
-			// Act
+			// Act.
 			let cookie = removeCookie({
 				name : ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_'
 			});
 
 			// Assert.
-			expect(cookie).to.startWith('%2C%3B%5C#$%25&+%3A%3C%3E%3D%2F%3F%40%5B%5D^%7B%7D`|%C3%A3%E2%82%AF%F0%A9%B8%BD%28%29!%22_=');
+			assertStartsWith(cookie, '%2C%3B%5C#$%25&+%3A%3C%3E%3D%2F%3F%40%5B%5D^%7B%7D`|%C3%A3%E2%82%AF%F0%A9%B8%BD%28%29!%22_=');
 		});
 
 		it('removes a cookie from the path specified by `crumbs.path`', function ()
@@ -543,7 +567,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';path=/a/document/path');
+			assertContains(cookie, ';path=/a/document/path');
 		});
 
 		it('removes a cookie from the path of the current document when `crumbs.path` is not provided', function ()
@@ -554,7 +578,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.not.contain(';path=');
+			assertNotContains(cookie, ';path=');
 		});
 
 		it('removes a cookie from the the domain specified by `crumbs.domain`', function ()
@@ -565,7 +589,7 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.contain(';domain=co.uk');
+			assertContains(cookie, ';domain=co.uk');
 		});
 
 		it('removes a cookie from the domain of the current document when `crumbs.domain` is not provided', function ()
@@ -576,26 +600,26 @@ describe('crumble', function ()
 			});
 
 			// Assert.
-			expect(cookie).to.not.contain(';domain=');
+			assertNotContains(cookie, ';domain=');
 		});
 
 		it('throws a type error when `crumbs.name` is `null` or not provided', function ()
 		{
 			// Act & Assert.
-			expect(function ()
+			assert.throws(function ()
 			{
 				removeCookie({});
 
-			}).to.throw(TypeError);
+			}, TypeError);
 
 			// Act & Assert.
-			expect(function ()
+			assert.throws(function ()
 			{
 				removeCookie({
 					name : null
 				});
 
-			}).to.throw(TypeError);
+			}, TypeError);
 		});
 	});
 });
