@@ -151,7 +151,7 @@ describe('crumble', function ()
 		it('creates a cookie with the name specified by `crumbs.name` and a value specified by `value`', function ()
 		{
 			// Act,
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name'
 			}, 'value');
 
@@ -162,7 +162,7 @@ describe('crumble', function ()
 		it('creates a cookie with the name encoded in accordance to RFC 6265', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_'
 			}, 'value');
 
@@ -173,7 +173,7 @@ describe('crumble', function ()
 		it('creates a cookie with the value specified by `crumbs.value` when `value` is not provided', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value'
 			});
 
@@ -184,7 +184,7 @@ describe('crumble', function ()
 		it('creates a cookie by ignoring `crumbs.value` when `value` is provided', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'the value that should be ignored'
 			}, 'value');
 
@@ -195,7 +195,7 @@ describe('crumble', function ()
 		it('creates a cookie with the value encoded in accordance to RFC 6265', function ()
 		{
 			// Act.
-			let cookieNotUsingValueCrumb = setCookie({
+			const cookieNotUsingValueCrumb = setCookie({
 				name : 'name'
 			}, ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_');
 
@@ -203,7 +203,7 @@ describe('crumble', function ()
 			assertStartsWith(cookieNotUsingValueCrumb, 'name=%2C%3B%5C#$%25&+:<>=/?@[]^{}`|%C3%A3%E2%82%AF%F0%A9%B8%BD()!%22_');
 
 			// Act.
-			let cookieUsingValueCrumb = setCookie({
+			const cookieUsingValueCrumb = setCookie({
 				name : 'name', value : ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_'
 			});
 
@@ -214,7 +214,7 @@ describe('crumble', function ()
 		it('creates a cookie with no value when `value` or `crumbs.value` is `null`', function ()
 		{
 			// Act.
-			let cookieUsingValue = setCookie({
+			const cookieUsingValue = setCookie({
 				name : 'name'
 			}, null);
 
@@ -222,7 +222,7 @@ describe('crumble', function ()
 			assertStartsWith(cookieUsingValue, 'name=;');
 
 			// Act.
-			let cookieUsingValueCrumb = setCookie({
+			const cookieUsingValueCrumb = setCookie({
 				name : 'name', value : null
 			});
 
@@ -233,7 +233,7 @@ describe('crumble', function ()
 		it('creates a cookie with no value when `value` and `crumbs.value` are not provided', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name'
 			});
 
@@ -244,7 +244,7 @@ describe('crumble', function ()
 		it('creates a cookie that is only available on the path specified by `crumbs.path`', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value', path : '/a/document/path'
 			});
 
@@ -255,7 +255,7 @@ describe('crumble', function ()
 		it('creates a cookie that is only available on the path of the current document when `crumbs.path` is not provided', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value'
 			});
 
@@ -266,7 +266,7 @@ describe('crumble', function ()
 		it('creates a cookie that is only available on the domain specified by `crumbs.domain`', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value', domain : 'sub.domain.com'
 			});
 
@@ -277,7 +277,7 @@ describe('crumble', function ()
 		it('creates a cookie that is only available on the domain of the current document when `crumbs.domain` is not provided', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value'
 			});
 
@@ -288,7 +288,7 @@ describe('crumble', function ()
 		it('creates a cookie that is only available over HTTPS when `crumbs.secure` is `true`', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value', secure : true
 			});
 
@@ -299,7 +299,7 @@ describe('crumble', function ()
 		it('creates a cookie that is available over both HTTP and HTTPS when `crumbs.secure` is `false`', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value', secure : false
 			});
 
@@ -310,7 +310,7 @@ describe('crumble', function ()
 		it('creates a cookie that is available over both HTTP and HTTPS when `crumbs.secure` is not provided', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value'
 			});
 
@@ -321,7 +321,7 @@ describe('crumble', function ()
 		it('creates a cookie that will expire after the number of milliseconds specified by `crumbs.age`', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value', age : 3600000
 			});
 
@@ -335,7 +335,7 @@ describe('crumble', function ()
 		it('creates a cookie that will expire at `23:59:59 on 31 Dec 9999` when `crumbs.age` is `Infinity`', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value', age : Infinity
 			});
 
@@ -349,7 +349,7 @@ describe('crumble', function ()
 		it('creates a cookie that will expire at the date specified by `crumbs.expires` as a date object', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value', expires : new Date('Thu, 04 Dec 1980 02:00:00 GMT')
 			});
 
@@ -363,7 +363,7 @@ describe('crumble', function ()
 		it('creates a cookie that will expire at the date specified by `crumbs.expires` as a date string', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value', expires : 'Thu, 04 Dec 1980 03:00:00 GMT'
 			});
 
@@ -377,7 +377,7 @@ describe('crumble', function ()
 		it('creates a cookie that will expire at the date specified by `crumbs.expires` as a timestamp', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value', expires : 344750400000
 			});
 
@@ -391,7 +391,7 @@ describe('crumble', function ()
 		it('creates a cookie that will expire at `23:59:59 on 31 Dec 9999` when `crumbs.expires` is `Infinity`', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value', expires : Infinity
 			});
 
@@ -405,7 +405,7 @@ describe('crumble', function ()
 		it('creates a cookie that will expire at the end of the current session when both `crumbs.age` and `crumbs.expires` are not provided', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value'
 			});
 
@@ -419,7 +419,7 @@ describe('crumble', function ()
 		it('creates a cookie by ignoring `crumbs.expires` when `crumbs.age` is provided', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value', age : 3600000, expires : new Date('Thu, 04 Dec 1980 05:00:00 GMT')
 			});
 
@@ -433,7 +433,7 @@ describe('crumble', function ()
 		it('creates a cookie with a SameSite policy specified by `crumbs.sameSite`', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value', sameSite : 'strict'
 			});
 
@@ -444,7 +444,7 @@ describe('crumble', function ()
 		it('creates a cookie with a Lax SameSite policy when `crumbs.sameSite` is not provided', function ()
 		{
 			// Act.
-			let cookie = setCookie({
+			const cookie = setCookie({
 				name : 'name', value : 'value'
 			});
 
@@ -534,7 +534,7 @@ describe('crumble', function ()
 		it('removes a cookie with the name specified by `crumbs.name` by forcing it to immediately expire', function ()
 		{
 			// Act.
-			let cookie = removeCookie({
+			const cookie = removeCookie({
 				name : 'name'
 			});
 
@@ -551,7 +551,7 @@ describe('crumble', function ()
 		it('removes a cookie with the name encoded in accordance to RFC 6265', function ()
 		{
 			// Act.
-			let cookie = removeCookie({
+			const cookie = removeCookie({
 				name : ',;\\#$%&+:<>=/?@[]^{}`|ã₯𩸽()!"_'
 			});
 
@@ -562,7 +562,7 @@ describe('crumble', function ()
 		it('removes a cookie from the path specified by `crumbs.path`', function ()
 		{
 			// Act.
-			let cookie = removeCookie({
+			const cookie = removeCookie({
 				name : 'name', path : '/a/document/path'
 			});
 
@@ -573,7 +573,7 @@ describe('crumble', function ()
 		it('removes a cookie from the path of the current document when `crumbs.path` is not provided', function ()
 		{
 			// Act.
-			let cookie = removeCookie({
+			const cookie = removeCookie({
 				name : 'name'
 			});
 
@@ -584,7 +584,7 @@ describe('crumble', function ()
 		it('removes a cookie from the the domain specified by `crumbs.domain`', function ()
 		{
 			// Act.
-			let cookie = removeCookie({
+			const cookie = removeCookie({
 				name : 'name', domain : 'co.uk'
 			});
 
@@ -595,7 +595,7 @@ describe('crumble', function ()
 		it('removes a cookie from the domain of the current document when `crumbs.domain` is not provided', function ()
 		{
 			// Act.
-			let cookie = removeCookie({
+			const cookie = removeCookie({
 				name : 'name'
 			});
 
