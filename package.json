@@ -27,7 +27,7 @@
 
     "devDependencies" :
     {
-        "rollup" : "4.48.1",
+        "rollup" : "4.50.0",
         "@rollup/plugin-terser" : "0.4.4",
         "@rollup/plugin-babel" : "6.0.4",
         "eslint" : "9.34.0",
